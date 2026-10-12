@@ -84,6 +84,7 @@ Team members should read and consult the documents in the following order:
 8. [TESTING_AND_ACCEPTANCE.md](file:///c:/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/docs/roadmap/TESTING_AND_ACCEPTANCE.md): Full test matrix covering build verification, data integrity (`diff -r`), concurrency, fault injection, edge cases, and automated test script specifications.
 9. [PERFORMANCE_EXPERIMENT_PLAN.md](file:///c:/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/docs/roadmap/PERFORMANCE_EXPERIMENT_PLAN.md): Mathematical metric definitions, monotonic timing, raw CSV logging schema, and graph generation specs.
 10. [FINAL_SUBMISSION_CHECKLIST.md](file:///c:/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/docs/roadmap/FINAL_SUBMISSION_CHECKLIST.md): Strict grader compliance checks, folder hierarchy, report requirements, and packaging script (`scripts/package_submission.sh`).
+11. [CODING_STANDARDS.md](file:///c:/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/docs/roadmap/CODING_STANDARDS.md): C programming mentor guide, POSIX standards, socket patterns, mutex discipline, and viva defense checklist.
 
 ---
 

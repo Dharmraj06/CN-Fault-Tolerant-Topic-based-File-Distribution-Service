@@ -30,6 +30,7 @@ The complete implementation plan, architecture, wire protocol specifications, me
 * **[Performance Experiment Plan](docs/roadmap/PERFORMANCE_EXPERIMENT_PLAN.md)**: Formal metric formulas, CSV schemas, and plotting specifications.
 * **[GitHub Workflow](docs/roadmap/GITHUB_WORKFLOW.md)**: Branching policy, PR rules, Conventional Commits, and code review criteria.
 * **[Final Submission Checklist](docs/roadmap/FINAL_SUBMISSION_CHECKLIST.md)**: Directory layout, grader compliance, and packaging automation.
+* **[Coding Standards & Implementation Guide](docs/roadmap/CODING_STANDARDS.md)**: Undergraduate C systems standards, framing helpers, mutex discipline, and viva guide.
 
 ---
 
