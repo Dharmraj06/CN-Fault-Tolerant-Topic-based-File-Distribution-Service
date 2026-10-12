@@ -1,0 +1,30 @@
+# Build Artifacts
+*.o
+*.a
+*.so
+server
+client
+*.exe
+
+# Archives & Packages
+*.zip
+*.tar.gz
+
+# Test Output & Data Directories
+output/
+output*/
+temp/
+/tmp/
+
+# OS and Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python cache (for test and benchmark scripts)
+__pycache__/
+*.py[cod]
+*$py.class
