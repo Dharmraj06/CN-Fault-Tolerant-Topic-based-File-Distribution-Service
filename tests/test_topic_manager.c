@@ -6,7 +6,6 @@
  * File: tests/test_topic_manager.c
  * Description: Comprehensive Unit & Security Test Suite for common/topic_manager.*
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Task 1.2 Topic Security & Manifest Verification)
  * ============================================================================
  */
@@ -329,7 +328,6 @@ int main(void) {
 
     printf("===============================================================\n");
     printf("IT305 Topic Manager Unit & Security Test Suite\n");
-    printf("Owner: Jay Vaghela (202401237) - Phase 1 Task 1.2\n");
     printf("===============================================================\n\n");
 
     setup_test_fixtures();

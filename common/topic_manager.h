@@ -6,7 +6,6 @@
  * File: common/topic_manager.h
  * Description: Topic Discovery, Directory Traversal Security, and Manifest Engine.
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Core Wire Framing & Baseline Server)
  * Status: FROZEN v1.0
  *
@@ -70,7 +69,7 @@ typedef struct {
  * Complete topic manifest containing the sorted list of regular files,
  * total byte count, and a deterministic 32-bit CRC32 fingerprint.
  *
- * VIVA NOTE: A topic manifest is built once when a topic is requested.
+ * A topic manifest is built once when a topic is requested.
  * Sorting filenames lexicographically via qsort() guarantees that all
  * worker threads, resumed sessions, and clients process files in the exact
  * same deterministic sequence regardless of filesystem readdir() order.

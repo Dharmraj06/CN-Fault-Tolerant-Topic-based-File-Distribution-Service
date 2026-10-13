@@ -6,7 +6,6 @@
  * File: common/protocol.h
  * Description: Binary Wire Protocol Framing Definitions and Interface.
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Core Wire Framing & Baseline Server)
  * Status: FROZEN v1.0
  *
@@ -37,7 +36,7 @@ extern "C" {
 
 /**
  * PROTOCOL_MAGIC: Fixed 2-byte marker ASCII 'T', 'F' (0x5446)
- * VIVA NOTE: Magic numbers allow immediate detection of protocol mismatches
+ * Magic numbers allow immediate detection of protocol mismatches
  * or random non-protocol network probes before allocating any buffers.
  */
 #define PROTOCOL_MAGIC 0x5446
@@ -91,7 +90,7 @@ extern "C" {
  *   [0x06 - 0x07] : uint16_t reserved    (Reserved padding, must be 0x0000)
  *   [0x08 - 0x0F] : uint64_t payload_len (Payload length in bytes, big-endian)
  *
- * VIVA NOTE: TCP is a continuous byte-stream protocol without message boundaries.
+ * TCP is a continuous byte-stream protocol without message boundaries.
  * We enforce a fixed 16-byte binary header so the receiver can ALWAYS read
  * exactly 16 bytes first to discover the exact length of the subsequent payload.
  */

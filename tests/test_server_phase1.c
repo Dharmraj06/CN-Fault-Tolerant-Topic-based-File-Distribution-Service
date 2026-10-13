@@ -6,7 +6,6 @@
  * File: tests/test_server_phase1.c
  * Description: Loopback Socket Integration Test Suite for Part1/server.c.
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Task 1.3 Server Verification)
  * ============================================================================
  */
@@ -283,7 +282,6 @@ int main(int argc, char *argv[]) {
 
     printf("===============================================================\n");
     printf("IT305 Part 1 Server Integration Test Suite\n");
-    printf("Owner: Jay Vaghela (202401237) - Phase 1 Task 1.3\n");
     printf("Testing Server on port: %d\n", server_port);
     printf("===============================================================\n\n");
 

@@ -6,7 +6,6 @@
  * File: tests/test_protocol.c
  * Description: Comprehensive Unit Test Suite for common/protocol.*
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Task 1.1 Protocol Verification)
  * ============================================================================
  */
@@ -485,7 +484,6 @@ int main(void) {
 
     printf("===============================================================\n");
     printf("IT305 Protocol Unit Test Suite (common/protocol.*)\n");
-    printf("Owner: Jay Vaghela (202401237) - Phase 1 Task 1.1\n");
     printf("===============================================================\n\n");
 
     run_test("Static Wire Layout & Struct Packing", test_wire_layout);

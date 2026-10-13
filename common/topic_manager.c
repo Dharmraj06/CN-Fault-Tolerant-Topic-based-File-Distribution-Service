@@ -6,7 +6,6 @@
  * File: common/topic_manager.c
  * Description: Topic Discovery, Directory Traversal Security, and Manifest Implementation.
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Core Wire Framing & Baseline Server)
  * Status: FROZEN v1.0
  *
@@ -298,7 +297,7 @@ TopicError build_topic_manifest(const char *root_dir, const char *topic, TopicMa
         }
 
         /*
-         * VIVA NOTE: Use fstatat() with AT_SYMLINK_NOFOLLOW via dirfd.
+         * Use fstatat() with AT_SYMLINK_NOFOLLOW via dirfd.
          * This avoids string path concatenation and TOCTOU symlink races.
          * If the file is a symlink, S_ISLNK is true and S_ISREG is false,
          * ensuring symlinks to sensitive files are strictly excluded!

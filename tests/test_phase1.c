@@ -6,7 +6,6 @@
  * File: tests/test_phase1.c
  * Description: Master Phase 1 Acceptance & Verification Test Harness.
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Framing, Topic Manager, Part 1 Server)
  * Status: Acceptance Gates Verification
  *
@@ -568,7 +567,6 @@ int main(void) {
 
     printf("=================================================================\n");
     printf("IT305 COMPUTER NETWORKS: MASTER PHASE 1 ACCEPTANCE VERIFICATION\n");
-    printf("Author: Jay Vaghela (Student ID: 202401237) - Phase 1 Lead\n");
     printf("Target Modules: common/protocol.*, common/topic_manager.*, Part1/server\n");
     printf("=================================================================\n");
 

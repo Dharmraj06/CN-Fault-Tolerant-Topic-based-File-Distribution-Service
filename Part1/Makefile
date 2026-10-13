@@ -4,7 +4,6 @@
 #
 # Directory: Part1/
 # Target: server
-# Author: Jay Vaghela (Student ID: 202401237)
 # Phase: Phase 1 (Baseline Server Build Specification)
 # ==============================================================================
 
