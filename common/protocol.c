@@ -6,7 +6,6 @@
  * File: common/protocol.c
  * Description: Wire Protocol Framing and Byte-Stream Socket Helpers.
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Core Wire Framing & Baseline Server)
  * Status: FROZEN v1.0
  *
@@ -240,7 +239,7 @@ int send_all(int fd, const void *buf, size_t len) {
 
     while (total_sent < len) {
         /*
-         * VIVA NOTE: Under Linux, writing to a socket whose remote end has
+         * Under Linux, writing to a socket whose remote end has
          * closed triggers a SIGPIPE signal, which kills the process by default.
          * Using MSG_NOSIGNAL ensures send() instead returns EPIPE.
          */

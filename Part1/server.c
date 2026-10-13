@@ -6,7 +6,6 @@
  * File: Part1/server.c
  * Description: Part 1 Baseline Topic File Server (Sequential & Multi-Threaded).
  *
- * Author: Jay Vaghela (Student ID: 202401237)
  * Phase: Phase 1 (Core Wire Framing & Baseline Server)
  * Status: Implementation Complete & Verified
  *
@@ -206,7 +205,7 @@ static void process_client(int client_fd, const char *topics_root, const struct 
         char file_path[2048];
         snprintf(file_path, sizeof(file_path), "%s/%s", manifest->directory_path, file->filename);
 
-        /* VIVA NOTE: Use O_RDONLY | O_NOFOLLOW to prevent symlink traversal at file level */
+        /* Open regular file for streaming */
         int file_fd = open(file_path, O_RDONLY);
         if (file_fd < 0) {
             fprintf(stderr, "[SERVER] Error opening file '%s' for %s:%d: %s\n",
@@ -421,7 +420,7 @@ int main(int argc, char *argv[]) {
     }
 
     /*
-     * VIVA NOTE: Ignore SIGPIPE so broken client sockets return EPIPE
+     * Ignore SIGPIPE so broken client sockets return EPIPE
      * instead of killing the server process.
      */
     signal(SIGPIPE, SIG_IGN);
@@ -441,7 +440,6 @@ int main(int argc, char *argv[]) {
 
     printf("===============================================================\n");
     printf("IT305 Baseline Topic File Server (Part 1)\n");
-    printf("Author: Jay Vaghela (202401237)\n");
     printf("Listening Port    : %d\n", config.listen_port);
     printf("Topics Root Dir   : %s\n", config.topics_root_dir);
     printf("Operational Mode  : %s\n", (config.mode == SERVER_MODE_MT) ? "Multi-Threaded (MT)" : "Sequential");

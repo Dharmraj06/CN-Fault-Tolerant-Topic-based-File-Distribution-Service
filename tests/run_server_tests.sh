@@ -6,7 +6,6 @@
 # Script: tests/run_server_tests.sh
 # Description: Automated Integration Test Harness for Part1/server.c.
 #
-# Author: Jay Vaghela (Student ID: 202401237)
 # Phase: Phase 1 (Task 1.3 Server Verification)
 # ==============================================================================
 

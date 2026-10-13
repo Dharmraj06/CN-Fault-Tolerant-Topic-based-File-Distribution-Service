@@ -4,13 +4,12 @@ IT305 COMPUTER NETWORKS: PHASE 1 OFFICIAL ACCEPTANCE VERIFICATION LOG
 Project: Fault-Tolerant Topic-Based File Distribution Service
 Course:  IT305 Computer Networks Lab (Autumn 2026), DA-IICT
 Phase:   Phase 1 (Core Wire Framing, Topic Manager, Part 1 Server)
-Owner:   Jay Vaghela (Student ID: 202401237)
 Target:  common/protocol.*, common/topic_manager.*, Part1/server.c, Part1/Makefile
 ================================================================================
 
 1. TEST ENVIRONMENT AUDIT
 --------------------------------------------------------------------------------
-Timestamp: 2026-10-13 15:51:27 UTC
+Timestamp: 2026-10-13 16:34:46 UTC
 Kernel:    Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
 Compiler:  gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
 Make:      GNU Make 4.3
@@ -37,7 +36,6 @@ Run Command:   ./tests/test_protocol
 Test Output:
 ===============================================================
 IT305 Protocol Unit Test Suite (common/protocol.*)
-Owner: Jay Vaghela (202401237) - Phase 1 Task 1.1
 ===============================================================
 
 [RUNNING] Test 1: Static Wire Layout & Struct Packing
@@ -79,7 +77,6 @@ Run Command:   ./tests/test_topic_manager
 Test Output:
 ===============================================================
 IT305 Topic Manager Unit & Security Test Suite
-Owner: Jay Vaghela (202401237) - Phase 1 Task 1.2
 ===============================================================
 
 [RUNNING] Test 1: Topic Name Traversal & Metacharacter Validation
@@ -111,25 +108,24 @@ Gate 3 Status: PASSED (Path traversal, symlink escapes, regular-file filter 100%
 Script Command: ./tests/run_server_tests.sh
 Test Output:
 >>> Compiling test_server_phase1 test client...
->>> Setting up temporary test fixtures in /tmp/test_topics_harness_556...
+>>> Setting up temporary test fixtures in /tmp/test_topics_harness_408...
 >>> 1. Starting Part1/server in MULTI-THREADED (MT) mode on port 19998...
 >>> 2. Executing server integration test suite against MT server...
 ===============================================================
 IT305 Part 1 Server Integration Test Suite
-Owner: Jay Vaghela (202401237) - Phase 1 Task 1.3
 Testing Server on port: 19998
 ===============================================================
 
 [RUNNING] Test 1: Valid Topic Loopback Transfer
   [PASS] Valid Topic Loopback Transfer
 [RUNNING] Test 2: Invalid / Nonexistent Topic Rejection (404)
-[SERVER] Rejecting topic 'nonexistent_topic_12345' from 127.0.0.1:43816: Topic directory not found (code 404)
+[SERVER] Rejecting topic 'nonexistent_topic_12345' from 127.0.0.1:40344: Topic directory not found (code 404)
   [PASS] Invalid / Nonexistent Topic Rejection (404)
 [RUNNING] Test 3: Path Traversal Security Rejection (403)
-[SERVER] Rejecting topic '../../etc/passwd' from 127.0.0.1:43822: Invalid topic name (path traversal or forbidden characters) (code 403)
+[SERVER] Rejecting topic '../../etc/passwd' from 127.0.0.1:40350: Invalid topic name (path traversal or forbidden characters) (code 403)
   [PASS] Path Traversal Security Rejection (403)
 [RUNNING] Test 4: Abrupt Client Disconnection Clean Recovery
-[SERVER] Client 127.0.0.1:43824 disconnected during MSG_FILE_BEGIN for 'file_a.txt'
+[SERVER] Client 127.0.0.1:40354 disconnected during MSG_FILE_BEGIN for 'file_a.txt'
   [PASS] Abrupt Client Disconnection Clean Recovery
 [RUNNING] Test 5: Concurrency Test (8 Simultaneous Clients)
   [PASS] Concurrency Test (Simultaneous Clients)
@@ -141,58 +137,57 @@ Status: Part1/server.c Fully Verified and Gate 1.3 Ready
 >>> 3. Stopping MT server...
 ===============================================================
 IT305 Baseline Topic File Server (Part 1)
-Author: Jay Vaghela (202401237)
 Listening Port    : 19998
-Topics Root Dir   : /tmp/test_topics_harness_556
+Topics Root Dir   : /tmp/test_topics_harness_408
 Operational Mode  : Multi-Threaded (MT)
 ===============================================================
 [SERVER] Ready and listening for incoming client requests...
-[SERVER] Connection accepted from 127.0.0.1:43806 (fd=4)
-[SERVER] Client 127.0.0.1:43806 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43806 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43806
-[SERVER] Connection accepted from 127.0.0.1:43816 (fd=5)
-[SERVER] Client 127.0.0.1:43816 requested topic: 'nonexistent_topic_12345'
-[SERVER] Connection accepted from 127.0.0.1:43822 (fd=4)
-[SERVER] Client 127.0.0.1:43822 requested topic: '../../etc/passwd'
-[SERVER] Connection accepted from 127.0.0.1:43824 (fd=5)
-[SERVER] Client 127.0.0.1:43824 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43824 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Topic transfer for 'valid_topic' to 127.0.0.1:43824 aborted prematurely
-[SERVER] Connection accepted from 127.0.0.1:43836 (fd=4)
-[SERVER] Client 127.0.0.1:43836 closed connection before sending request (EOF)
-[SERVER] Connection accepted from 127.0.0.1:43842 (fd=5)
-[SERVER] Client 127.0.0.1:43842 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43842 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Connection accepted from 127.0.0.1:43844 (fd=4)
-[SERVER] Client 127.0.0.1:43844 requested topic: 'valid_topic'
-[SERVER] Connection accepted from 127.0.0.1:43856 (fd=8)
-[SERVER] Client 127.0.0.1:43856 requested topic: 'valid_topic'
-[SERVER] Connection accepted from 127.0.0.1:43870 (fd=9)
-[SERVER] Client 127.0.0.1:43870 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43844 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43856 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43870 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43870
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43844
-[SERVER] Connection accepted from 127.0.0.1:43880 (fd=11)
-[SERVER] Client 127.0.0.1:43880 requested topic: 'valid_topic'
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43856
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43880 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Connection accepted from 127.0.0.1:43892 (fd=13)
-[SERVER] Client 127.0.0.1:43892 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43892 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Connection accepted from 127.0.0.1:43908 (fd=6)
-[SERVER] Client 127.0.0.1:43908 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43908 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Connection accepted from 127.0.0.1:43906 (fd=9)
-[SERVER] Client 127.0.0.1:43906 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43906 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43908
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43842
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43892
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43880
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43906
+[SERVER] Connection accepted from 127.0.0.1:40340 (fd=4)
+[SERVER] Client 127.0.0.1:40340 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40340 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40340
+[SERVER] Connection accepted from 127.0.0.1:40344 (fd=5)
+[SERVER] Client 127.0.0.1:40344 requested topic: 'nonexistent_topic_12345'
+[SERVER] Connection accepted from 127.0.0.1:40350 (fd=4)
+[SERVER] Client 127.0.0.1:40350 requested topic: '../../etc/passwd'
+[SERVER] Connection accepted from 127.0.0.1:40354 (fd=5)
+[SERVER] Client 127.0.0.1:40354 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40354 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic transfer for 'valid_topic' to 127.0.0.1:40354 aborted prematurely
+[SERVER] Connection accepted from 127.0.0.1:40360 (fd=4)
+[SERVER] Client 127.0.0.1:40360 closed connection before sending request (EOF)
+[SERVER] Connection accepted from 127.0.0.1:40376 (fd=5)
+[SERVER] Client 127.0.0.1:40376 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40376 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Connection accepted from 127.0.0.1:40380 (fd=4)
+[SERVER] Client 127.0.0.1:40380 requested topic: 'valid_topic'
+[SERVER] Connection accepted from 127.0.0.1:40378 (fd=6)
+[SERVER] Client 127.0.0.1:40378 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40380 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40376
+[SERVER] Connection accepted from 127.0.0.1:40400 (fd=8)
+[SERVER] Client 127.0.0.1:40400 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40400 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40378 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40380
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40378
+[SERVER] Connection accepted from 127.0.0.1:40402 (fd=9)
+[SERVER] Client 127.0.0.1:40402 requested topic: 'valid_topic'
+[SERVER] Connection accepted from 127.0.0.1:40408 (fd=4)
+[SERVER] Client 127.0.0.1:40408 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40408 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Connection accepted from 127.0.0.1:40418 (fd=6)
+[SERVER] Client 127.0.0.1:40418 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40402 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40418 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Connection accepted from 127.0.0.1:40424 (fd=11)
+[SERVER] Client 127.0.0.1:40424 requested topic: 'valid_topic'
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40400
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40408
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40418
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40424 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40424
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40402
 
 [SERVER] Shutting down server and releasing socket...
 [SERVER] Clean exit completed.
@@ -201,19 +196,19 @@ Operational Mode  : Multi-Threaded (MT)
 >>> 5. Executing server integration test suite against SEQUENTIAL server...
 ===============================================================
 IT305 Part 1 Server Integration Test Suite
-Owner: Jay Vaghela (202401237) - Phase 1 Task 1.3
 Testing Server on port: 19998
 ===============================================================
 
 [RUNNING] Test 1: Valid Topic Loopback Transfer
   [PASS] Valid Topic Loopback Transfer
 [RUNNING] Test 2: Invalid / Nonexistent Topic Rejection (404)
-[SERVER] Rejecting topic 'nonexistent_topic_12345' from 127.0.0.1:43932: Topic directory not found (code 404)
+[SERVER] Rejecting topic 'nonexistent_topic_12345' from 127.0.0.1:40438: Topic directory not found (code 404)
   [PASS] Invalid / Nonexistent Topic Rejection (404)
 [RUNNING] Test 3: Path Traversal Security Rejection (403)
-[SERVER] Rejecting topic '../../etc/passwd' from 127.0.0.1:43934: Invalid topic name (path traversal or forbidden characters) (code 403)
+[SERVER] Rejecting topic '../../etc/passwd' from 127.0.0.1:40446: Invalid topic name (path traversal or forbidden characters) (code 403)
   [PASS] Path Traversal Security Rejection (403)
 [RUNNING] Test 4: Abrupt Client Disconnection Clean Recovery
+[SERVER] Client 127.0.0.1:40460 disconnected during MSG_FILE_BEGIN for 'file_a.txt'
   [PASS] Abrupt Client Disconnection Clean Recovery
 [RUNNING] Test 5: Concurrency Test (8 Simultaneous Clients)
   [PASS] Concurrency Test (Simultaneous Clients)
@@ -225,58 +220,57 @@ Status: Part1/server.c Fully Verified and Gate 1.3 Ready
 >>> 6. Stopping SEQUENTIAL server...
 ===============================================================
 IT305 Baseline Topic File Server (Part 1)
-Author: Jay Vaghela (202401237)
 Listening Port    : 19998
-Topics Root Dir   : /tmp/test_topics_harness_556
+Topics Root Dir   : /tmp/test_topics_harness_408
 Operational Mode  : Sequential
 ===============================================================
 [SERVER] Ready and listening for incoming client requests...
-[SERVER] Connection accepted from 127.0.0.1:43930 (fd=4)
-[SERVER] Client 127.0.0.1:43930 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43930 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43930
-[SERVER] Connection accepted from 127.0.0.1:43932 (fd=4)
-[SERVER] Client 127.0.0.1:43932 requested topic: 'nonexistent_topic_12345'
-[SERVER] Connection accepted from 127.0.0.1:43934 (fd=4)
-[SERVER] Client 127.0.0.1:43934 requested topic: '../../etc/passwd'
-[SERVER] Connection accepted from 127.0.0.1:43942 (fd=4)
-[SERVER] Client 127.0.0.1:43942 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43942 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43942
-[SERVER] Connection accepted from 127.0.0.1:43954 (fd=4)
-[SERVER] Client 127.0.0.1:43954 closed connection before sending request (EOF)
-[SERVER] Connection accepted from 127.0.0.1:43966 (fd=4)
-[SERVER] Client 127.0.0.1:43966 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43966 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43966
-[SERVER] Connection accepted from 127.0.0.1:43964 (fd=4)
-[SERVER] Client 127.0.0.1:43964 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43964 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43964
-[SERVER] Connection accepted from 127.0.0.1:43980 (fd=4)
-[SERVER] Client 127.0.0.1:43980 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43980 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43980
-[SERVER] Connection accepted from 127.0.0.1:43986 (fd=4)
-[SERVER] Client 127.0.0.1:43986 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43986 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43986
-[SERVER] Connection accepted from 127.0.0.1:43998 (fd=4)
-[SERVER] Client 127.0.0.1:43998 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:43998 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:43998
-[SERVER] Connection accepted from 127.0.0.1:44014 (fd=4)
-[SERVER] Client 127.0.0.1:44014 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:44014 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:44014
-[SERVER] Connection accepted from 127.0.0.1:44024 (fd=4)
-[SERVER] Client 127.0.0.1:44024 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:44024 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:44024
-[SERVER] Connection accepted from 127.0.0.1:44038 (fd=4)
-[SERVER] Client 127.0.0.1:44038 requested topic: 'valid_topic'
-[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:44038 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
-[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:44038
+[SERVER] Connection accepted from 127.0.0.1:40428 (fd=4)
+[SERVER] Client 127.0.0.1:40428 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40428 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40428
+[SERVER] Connection accepted from 127.0.0.1:40438 (fd=4)
+[SERVER] Client 127.0.0.1:40438 requested topic: 'nonexistent_topic_12345'
+[SERVER] Connection accepted from 127.0.0.1:40446 (fd=4)
+[SERVER] Client 127.0.0.1:40446 requested topic: '../../etc/passwd'
+[SERVER] Connection accepted from 127.0.0.1:40460 (fd=4)
+[SERVER] Client 127.0.0.1:40460 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40460 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic transfer for 'valid_topic' to 127.0.0.1:40460 aborted prematurely
+[SERVER] Connection accepted from 127.0.0.1:40470 (fd=4)
+[SERVER] Client 127.0.0.1:40470 closed connection before sending request (EOF)
+[SERVER] Connection accepted from 127.0.0.1:40484 (fd=4)
+[SERVER] Client 127.0.0.1:40484 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40484 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40484
+[SERVER] Connection accepted from 127.0.0.1:40492 (fd=4)
+[SERVER] Client 127.0.0.1:40492 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40492 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40492
+[SERVER] Connection accepted from 127.0.0.1:40508 (fd=4)
+[SERVER] Client 127.0.0.1:40508 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40508 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40508
+[SERVER] Connection accepted from 127.0.0.1:40502 (fd=4)
+[SERVER] Client 127.0.0.1:40502 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40502 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40502
+[SERVER] Connection accepted from 127.0.0.1:40520 (fd=4)
+[SERVER] Client 127.0.0.1:40520 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40520 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40520
+[SERVER] Connection accepted from 127.0.0.1:40510 (fd=4)
+[SERVER] Client 127.0.0.1:40510 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40510 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40510
+[SERVER] Connection accepted from 127.0.0.1:40528 (fd=4)
+[SERVER] Client 127.0.0.1:40528 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40528 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40528
+[SERVER] Connection accepted from 127.0.0.1:40544 (fd=4)
+[SERVER] Client 127.0.0.1:40544 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:40544 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:40544
 
 [SERVER] Shutting down server and releasing socket...
 [SERVER] Clean exit completed.
@@ -294,7 +288,6 @@ Run Command:   ./tests/test_phase1_asan
 Test Output:
 =================================================================
 IT305 COMPUTER NETWORKS: MASTER PHASE 1 ACCEPTANCE VERIFICATION
-Author: Jay Vaghela (Student ID: 202401237) - Phase 1 Lead
 Target Modules: common/protocol.*, common/topic_manager.*, Part1/server
 =================================================================
 
@@ -363,5 +356,4 @@ FINAL VERIFICATION SUMMARY & PHASE 1 EXIT GATE APPROVAL
 
 OVERALL RESULT: ALL 5 ACCEPTANCE GATES SATISFIED (100% PASS RATE)
 PHASE 1 DELIVERABLES FROZEN AND READY FOR PHASE 2 HANDOFF
-Signed-off by: Jay Vaghela (Student ID: 202401237)
 ================================================================================
