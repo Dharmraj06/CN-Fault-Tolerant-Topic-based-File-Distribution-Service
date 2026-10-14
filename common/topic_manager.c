@@ -330,7 +330,7 @@ TopicError build_topic_manifest(const char *root_dir, const char *topic, TopicMa
         file_list[count].filename[MAX_FILENAME_LEN - 1] = '\0';
 
         snprintf(file_list[count].relative_path, sizeof(file_list[count].relative_path),
-                 "%s/%s", topic, entry->d_name);
+                 "%s", entry->d_name);
 
         file_list[count].file_size = (uint64_t)st.st_size;
         total_bytes += (uint64_t)st.st_size;
