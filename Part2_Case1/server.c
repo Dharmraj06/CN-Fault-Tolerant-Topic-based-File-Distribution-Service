@@ -221,7 +221,9 @@ static void process_client(ClientContext *ctx) {
 
             /* --- PROBABILISTIC FAULT INJECTION POINT --- */
             if (should_inject_fault()) {
-                char fault_desc[256];
+                /* Worst case: 255-byte topic + 255-byte filename + counters is
+                 * about 516 bytes, so 1024 holds the full message untruncated. */
+                char fault_desc[1024];
                 snprintf(fault_desc, sizeof(fault_desc),
                          "Client %s:%d, Topic '%s', File '%s' [%u/%u], Chunk offset %lu/%lu bytes",
                          client_ip, client_port, req_payload.topic, file->filename,

@@ -1,0 +1,727 @@
+================================================================================
+IT305 PHASE 3 MASTER INTEGRATION & ACCEPTANCE VERIFICATION
+Target Binaries: Part2_Case1/server & Part2_Case1/client
+Timestamp: 2026-10-14 12:40:09 UTC
+Environment: Linux 5.15.167.4-microsoft-standard-WSL2 (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0)
+================================================================================
+
+--------------------------------------------------------------------------------
+GATE 0: Build Cleanliness Audit (Part2_Case1/Makefile)
+--------------------------------------------------------------------------------
+Command: make -C Part2_Case1 clean && make -C Part2_Case1
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+rm -f server client server.o client.o ../common/fault_injection.o
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/fault_injection.c -o ../common/fault_injection.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o -pthread
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+[PASS] Part2_Case1/server and Part2_Case1/client built cleanly with zero compiler warnings
+
+>>> Setting up temporary test fixtures in /tmp/test_phase3_fixtures_33617...
+[INFO] Fixtures prepared successfully
+
+--- SCENARIO 1: CLI Argument Parsing & Validation ---
+Usage: /mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1/server <port> <topics_root_dir> <failure probability>
+  <port>                : Listening port (1024-65535)
+  <topics_root_dir>     : Path to directory containing topic sub-folders
+  <failure probability> : Probability in range [0.0, 1.0] to drop connection
+Error: Invalid failure probability '-0.1'. Must be a float between 0.0 and 1.0.
+Error: Invalid failure probability '1.5'. Must be a float between 0.0 and 1.0.
+Error: Invalid failure probability 'invalid_prob'. Must be a float between 0.0 and 1.0.
+Usage: /mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1/client <server_ip> <server_port> <topic> <output_dir>
+  <server_ip>   : IPv4 address of server (e.g., 127.0.0.1)
+  <server_port> : TCP listening port (1024-65535)
+  <topic>       : Topic name to download (e.g., cane)
+  <output_dir>  : Local directory where topic will be created
+[CLIENT] Error: Invalid topic name '../etc' (forbidden characters or traversal attempt)
+  [PASS] Scenario 1: CLI argument validation strictly enforces boundary and security rules
+
+--- SCENARIO 2: Zero-Fault Baseline Transfer (p = 0.0) ---
+Starting server with failure_prob = 0.0 on port 19992...
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19992
+Topic Requested  : topic_alpha
+Output Directory : /tmp/test_phase3_downloads_33617/out_sc2/topic_alpha
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'topic_alpha' successfully transferred!
+[CLIENT] Total Files Saved   : 4
+[CLIENT] Total Bytes Saved   : 438305 bytes
+[CLIENT] Total Attempts      : 1 (Retries: 0)
+[CLIENT] Elapsed Total Time  : 0.039 seconds
+[CLIENT] Saved Directory     : /tmp/test_phase3_downloads_33617/out_sc2/topic_alpha
+===============================================================
+  [PASS] Scenario 2: Zero-fault transfer completed on attempt 1 with bit-exact SHA-256 match
+
+--- SCENARIO 3: Fault Injection & Full Restart Recovery (p = 0.05) ---
+Starting server with failure_prob = 0.05 on port 19993...
+[FAULT] [2026-10-14 12:40:13] Injected disconnect on socket fd=4: Client 127.0.0.1:56350, Topic 'topic_beta', File 'chunked_1.bin' [1/3], Chunk offset 0/153600 bytes
+[CLIENT] Server connection severed during data transfer of 'chunked_1.bin' (offset 0/153600)
+[CLIENT] Transfer failed on attempt 1 due to connection termination.
+[FAULT] [2026-10-14 12:40:13] Injected disconnect on socket fd=5: Client 127.0.0.1:56366, Topic 'topic_beta', File 'chunked_2.bin' [2/3], Chunk offset 196608/204800 bytes
+[CLIENT] Server connection severed during data transfer of 'chunked_2.bin' (offset 196608/204800)
+[CLIENT] Transfer failed on attempt 2 due to connection termination.
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19993
+Topic Requested  : topic_beta
+Output Directory : /tmp/test_phase3_downloads_33617/out_sc3/topic_beta
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'topic_beta'...
+[CLIENT] Server accepted topic 'topic_beta': 3 files, 358431 total bytes (fingerprint 0xC56BBA9E)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc3/topic_beta' to eliminate residue...
+[CLIENT] Backing off for 200 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #2 for topic 'topic_beta'...
+[CLIENT] Server accepted topic 'topic_beta': 3 files, 358431 total bytes (fingerprint 0xC56BBA9E)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc3/topic_beta' to eliminate residue...
+[CLIENT] Backing off for 400 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #3 for topic 'topic_beta'...
+[CLIENT] Server accepted topic 'topic_beta': 3 files, 358431 total bytes (fingerprint 0xC56BBA9E)
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'topic_beta' successfully transferred!
+[CLIENT] Total Files Saved   : 3
+[CLIENT] Total Bytes Saved   : 358431 bytes
+[CLIENT] Total Attempts      : 3 (Retries: 2)
+[CLIENT] Elapsed Total Time  : 0.653 seconds
+[CLIENT] Saved Directory     : /tmp/test_phase3_downloads_33617/out_sc3/topic_beta
+===============================================================
+  [PASS] Scenario 3: Server injected drops, client purged and restarted, completed bit-exact
+
+--- SCENARIO 4: No Partial File Residue on Aborted Transfer ---
+Starting server with failure_prob = 0.50 on port 19994...
+[FAULT] [2026-10-14 12:40:14] Injected disconnect on socket fd=5: Client 127.0.0.1:52000, Topic 'topic_large', File 'stream_2m.bin' [1/1], Chunk offset 0/2097152 bytes
+[CLIENT] Server connection severed during data transfer of 'stream_2m.bin' (offset 0/2097152)
+[CLIENT] Transfer failed on attempt 1 due to connection termination.
+[FAULT] [2026-10-14 12:40:14] Injected disconnect on socket fd=4: Client 127.0.0.1:52010, Topic 'topic_large', File 'stream_2m.bin' [1/1], Chunk offset 0/2097152 bytes
+[CLIENT] Server connection severed during data transfer of 'stream_2m.bin' (offset 0/2097152)
+[CLIENT] Transfer failed on attempt 2 due to connection termination.
+[FAULT] [2026-10-14 12:40:15] Injected disconnect on socket fd=5: Client 127.0.0.1:52024, Topic 'topic_large', File 'stream_2m.bin' [1/1], Chunk offset 65536/2097152 bytes
+[CLIENT] Server connection severed during data transfer of 'stream_2m.bin' (offset 65536/2097152)
+[CLIENT] Transfer failed on attempt 3 due to connection termination.
+  [INFO] Scenario 4: first client interrupted mid-transfer, exit status 143
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19994
+Topic Requested  : topic_large
+Output Directory : /tmp/test_phase3_downloads_33617/out_sc4/topic_large
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'topic_large'...
+[CLIENT] Server accepted topic 'topic_large': 1 files, 2097152 total bytes (fingerprint 0x31350624)
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'topic_large' successfully transferred!
+[CLIENT] Total Files Saved   : 1
+[CLIENT] Total Bytes Saved   : 2097152 bytes
+[CLIENT] Total Attempts      : 1 (Retries: 0)
+[CLIENT] Elapsed Total Time  : 0.017 seconds
+[CLIENT] Saved Directory     : /tmp/test_phase3_downloads_33617/out_sc4/topic_large
+===============================================================
+  [PASS] Scenario 4: Partial file residue cleanly purged; restarted transfer matches 100%
+
+--- SCENARIO 5: Persistent Failure & Max Retry Abort (p = 1.0) ---
+Starting server with failure_prob = 1.0 on port 19995...
+[FAULT] [2026-10-14 12:40:16] Injected disconnect on socket fd=4: Client 127.0.0.1:41754, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 1 due to connection termination.
+[FAULT] [2026-10-14 12:40:16] Injected disconnect on socket fd=5: Client 127.0.0.1:41760, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 2 due to connection termination.
+[FAULT] [2026-10-14 12:40:16] Injected disconnect on socket fd=4: Client 127.0.0.1:41764, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 3 due to connection termination.
+[FAULT] [2026-10-14 12:40:17] Injected disconnect on socket fd=5: Client 127.0.0.1:41780, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 4 due to connection termination.
+[FAULT] [2026-10-14 12:40:19] Injected disconnect on socket fd=4: Client 127.0.0.1:41782, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 5 due to connection termination.
+[FAULT] [2026-10-14 12:40:21] Injected disconnect on socket fd=5: Client 127.0.0.1:41798, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 6 due to connection termination.
+[FAULT] [2026-10-14 12:40:23] Injected disconnect on socket fd=4: Client 127.0.0.1:41810, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 7 due to connection termination.
+[FAULT] [2026-10-14 12:40:25] Injected disconnect on socket fd=5: Client 127.0.0.1:33952, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 8 due to connection termination.
+[FAULT] [2026-10-14 12:40:27] Injected disconnect on socket fd=4: Client 127.0.0.1:33958, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 9 due to connection termination.
+[FAULT] [2026-10-14 12:40:29] Injected disconnect on socket fd=5: Client 127.0.0.1:33972, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 10 due to connection termination.
+[FAULT] [2026-10-14 12:40:31] Injected disconnect on socket fd=4: Client 127.0.0.1:33976, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 11 due to connection termination.
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19995
+Topic Requested  : topic_alpha
+Output Directory : /tmp/test_phase3_downloads_33617/out_sc5/topic_alpha
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 200 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #2 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 400 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #3 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 800 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #4 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 1600 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #5 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #6 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #7 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #8 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #9 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #10 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #11 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing [FAULT] [2026-10-14 12:40:33] Injected disconnect on socket fd=5: Client 127.0.0.1:33986, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 12 due to connection termination.
+[FAULT] [2026-10-14 12:40:35] Injected disconnect on socket fd=4: Client 127.0.0.1:45770, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 13 due to connection termination.
+[FAULT] [2026-10-14 12:40:37] Injected disconnect on socket fd=5: Client 127.0.0.1:45774, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 14 due to connection termination.
+[FAULT] [2026-10-14 12:40:39] Injected disconnect on socket fd=4: Client 127.0.0.1:45776, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 15 due to connection termination.
+===============================================================
+IT305 Fault-Injecting Topic File Server (Part 2 Case 1)
+Listening Port       : 19995
+Topics Root Dir      : /tmp/test_phase3_fixtures_33617
+Failure Probability  : 1.0000 (100.00%)
+Operational Mode     : Multi-Threaded (Zero Session State)
+===============================================================
+[SERVER] Ready and listening for incoming client requests...
+[SERVER] Connection accepted from 127.0.0.1:41754 (fd=4)
+[SERVER] Client 127.0.0.1:41754 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41754 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:41760 (fd=5)
+[SERVER] Client 127.0.0.1:41760 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41760 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:41764 (fd=4)
+[SERVER] Client 127.0.0.1:41764 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41764 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:41780 (fd=5)
+[SERVER] Client 127.0.0.1:41780 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41780 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:41782 (fd=4)
+[SERVER] Client 127.0.0.1:41782 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41782 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:41798 (fd=5)
+[SERVER] Client 127.0.0.1:41798 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41798 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:41810 (fd=4)
+[SERVER] Client 127.0.0.1:41810 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:41810 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:33952 (fd=5)
+[SERVER] Client 127.0.0.1:33952 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:33952 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:33958 (fd=4)
+[SERVER] Client 127.0.0.1:33958 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:33958 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:33972 (fd=5)
+[SERVER] Client 127.0.0.1:33972 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:33972 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:33976 (fd=4)
+[SERVER] Client 127.0.0.1:33976 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:33976 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:33986 (fd=5)
+[SERVER] Client 127.0.0.1:33986 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:33986 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:45770 (fd=4)
+[SERVER] Client 127.0.0.1:45770 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:45770 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:45774 (fd=5)
+[SERVER] Client 127.0.0.1:45774 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:45774 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:45776 (fd=4)
+[SERVER] Client 127.0.0.1:45776 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:45776 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:45784 (fd=5)
+[SERVER] Client 127.0.0.1:45784 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:45784 (4 files, [FAULT] [2026-10-14 12:40:41] Injected disconnect on socket fd=5: Client 127.0.0.1:45784, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 16 due to connection termination.
+[FAULT] [2026-10-14 12:40:43] Injected disconnect on socket fd=4: Client 127.0.0.1:45788, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 17 due to connection termination.
+[FAULT] [2026-10-14 12:40:45] Injected disconnect on socket fd=5: Client 127.0.0.1:47544, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 18 due to connection termination.
+[FAULT] [2026-10-14 12:40:47] Injected disconnect on socket fd=4: Client 127.0.0.1:47558, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 19 due to connection termination.
+[FAULT] [2026-10-14 12:40:49] Injected disconnect on socket fd=5: Client 127.0.0.1:47560, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 20 due to connection termination.
+[FAULT] [2026-10-14 12:40:51] Injected disconnect on socket fd=4: Client 127.0.0.1:47572, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 21 due to connection termination.
+[FAULT] [2026-10-14 12:40:53] Injected disconnect on socket fd=5: Client 127.0.0.1:47580, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 22 due to connection termination.
+[FAULT] [2026-10-14 12:40:55] Injected disconnect on socket fd=4: Client 127.0.0.1:49480, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 23 due to connection termination.
+off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #12 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #13 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #14 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #15 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #16 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #17 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #18 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #19 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #20 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #21 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #22 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #23 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off [FAULT] [2026-10-14 12:40:57] Injected disconnect on socket fd=5: Client 127.0.0.1:49484, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 24 due to connection termination.
+[FAULT] [2026-10-14 12:40:59] Injected disconnect on socket fd=4: Client 127.0.0.1:49486, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 25 due to connection termination.
+[FAULT] [2026-10-14 12:41:01] Injected disconnect on socket fd=5: Client 127.0.0.1:49490, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 26 due to connection termination.
+[FAULT] [2026-10-14 12:41:03] Injected disconnect on socket fd=4: Client 127.0.0.1:49492, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 27 due to connection termination.
+[FAULT] [2026-10-14 12:41:05] Injected disconnect on socket fd=5: Client 127.0.0.1:36904, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 28 due to connection termination.
+[FAULT] [2026-10-14 12:41:07] Injected disconnect on socket fd=4: Client 127.0.0.1:36920, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 29 due to connection termination.
+[FAULT] [2026-10-14 12:41:09] Injected disconnect on socket fd=5: Client 127.0.0.1:36934, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 30 due to connection termination.
+[FAULT] [2026-10-14 12:41:11] Injected disconnect on socket fd=4: Client 127.0.0.1:36944, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 31 due to connection termination.
+[FAULT] [2026-10-14 12:41:13] Injected disconnect on socket fd=5: Client 127.0.0.1:36948, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 32 due to connection termination.
+[FAULT] [2026-10-14 12:41:15] Injected disconnect on socket fd=4: Client 127.0.0.1:59160, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 33 due to connection termination.
+438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:45788 (fd=4)
+[SERVER] Client 127.0.0.1:45788 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:45788 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:47544 (fd=5)
+[SERVER] Client 127.0.0.1:47544 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:47544 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:47558 (fd=4)
+[SERVER] Client 127.0.0.1:47558 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:47558 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:47560 (fd=5)
+[SERVER] Client 127.0.0.1:47560 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:47560 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:47572 (fd=4)
+[SERVER] Client 127.0.0.1:47572 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:47572 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:47580 (fd=5)
+[SERVER] Client 127.0.0.1:47580 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:47580 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:49480 (fd=4)
+[SERVER] Client 127.0.0.1:49480 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:49480 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:49484 (fd=5)
+[SERVER] Client 127.0.0.1:49484 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:49484 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:49486 (fd=4)
+[SERVER] Client 127.0.0.1:49486 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:49486 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:49490 (fd=5)
+[SERVER] Client 127.0.0.1:49490 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:49490 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:49492 (fd=4)
+[SERVER] Client 127.0.0.1:49492 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:49492 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:36904 (fd=5)
+[SERVER] Client 127.0.0.1:36904 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:36904 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:36920 (fd=4)
+[SERVER] Client 127.0.0.1:36920 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:36920 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:36934 (fd=5)
+[SERVER] Client 127.0.0.1:36934 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:36934 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:36944 (fd=4)
+[SERVER] Client 127.0.0.1:36944 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:36944 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:36948 (fd=5)
+[SERVER] Client 127.0.0.1:36948 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:36948 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:59160 (fd=4)
+[SERVER] Client 127.0.0.1:59160 requested topic: 'topic_alpha'
+[SERVER] Topic 'topic_alpha' resolved for 127.0.0.1:59160 (4 files, 438305 total bytes, fingerprint 0x2F10BC4A)
+[SERVER] Connection accepted from 127.0.0.1:59170 (fd=5)
+[SERVER] Client 127.0.0.1:59170 requested topic: 't[FAULT] [2026-10-14 12:41:17] Injected disconnect on socket fd=5: Client 127.0.0.1:59170, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 34 due to connection termination.
+[FAULT] [2026-10-14 12:41:19] Injected disconnect on socket fd=4: Client 127.0.0.1:59182, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 35 due to connection termination.
+for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #24 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #25 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #26 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #27 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #28 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #29 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #30 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #31 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #32 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #33 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #34 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #35 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for [FAULT] [2026-10-14 12:41:21] Injected disconnect on socket fd=5: Client 127.0.0.1:59184, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 36 due to connection termination.
+[FAULT] [2026-10-14 12:41:23] Injected disconnect on socket fd=4: Client 127.0.0.1:59198, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 37 due to connection termination.
+[FAULT] [2026-10-14 12:41:25] Injected disconnect on socket fd=5: Client 127.0.0.1:55950, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 38 due to connection termination.
+[FAULT] [2026-10-14 12:41:27] Injected disconnect on socket fd=4: Client 127.0.0.1:55960, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 39 due to connection termination.
+[FAULT] [2026-10-14 12:41:29] Injected disconnect on socket fd=5: Client 127.0.0.1:55964, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 40 due to connection termination.
+[FAULT] [2026-10-14 12:41:31] Injected disconnect on socket fd=4: Client 127.0.0.1:55972, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 41 due to connection termination.
+[FAULT] [2026-10-14 12:41:33] Injected disconnect on socket fd=5: Client 127.0.0.1:55984, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 42 due to connection termination.
+[FAULT] [2026-10-14 12:41:35] Injected disconnect on socket fd=4: Client 127.0.0.1:54810, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 43 due to connection termination.
+[FAULT] [2026-10-14 12:41:37] Injected disconnect on socket fd=5: Client 127.0.0.1:54812, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 44 due to connection termination.
+[FAULT] [2026-10-14 12:41:39] Injected disconnect on socket fd=4: Client 127.0.0.1:54826, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 45 due to connection termination.
+[FAULT] [2026-10-14 12:41:41] Injected disconnect on socket fd=5: Client 127.0.0.1:54832, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 46 due to connection termination.
+[FAULT] [2026-10-14 12:41:43] Injected disconnect on socket fd=4: Client 127.0.0.1:54842, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 47 due to connection termination.
+2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #36 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #37 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #38 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #39 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #40 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #41 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #42 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #43 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #44 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #45 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #46 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #47 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000[FAULT] [2026-10-14 12:41:45] Injected disconnect on socket fd=5: Client 127.0.0.1:40532, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 48 due to connection termination.
+[FAULT] [2026-10-14 12:41:47] Injected disconnect on socket fd=4: Client 127.0.0.1:40546, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 49 due to connection termination.
+[FAULT] [2026-10-14 12:41:49] Injected disconnect on socket fd=5: Client 127.0.0.1:40560, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 50 due to connection termination.
+[FAULT] [2026-10-14 12:41:51] Injected disconnect on socket fd=4: Client 127.0.0.1:40562, Topic 'topic_alpha', File 'data_128k.bin' [1/4], Chunk offset 0/131072 bytes
+[CLIENT] Server connection severed during data transfer of 'data_128k.bin' (offset 0/131072)
+[CLIENT] Transfer failed on attempt 51 due to connection termination.
+[CLIENT] Error: Maximum retry limit (50) reached without completing transfer.
+
+[CLIENT] FAILED: Topic 'topic_alpha' could not be transferred after 50 attempts (95.25 seconds).
+ ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #48 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #49 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #50 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+[CLIENT] Backing off for 2000 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #51 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc5/topic_alpha' to eliminate residue...
+  [PASS] Scenario 5: At p=1.0, client cleanly aborted after max retries with zero file residue
+
+--- SCENARIO 6: Multi-Client Concurrent Isolation under Faults ---
+Starting server with failure_prob = 0.03 on port 19996...
+[FAULT] [2026-10-14 12:41:51] Injected disconnect on socket fd=5: Client 127.0.0.1:40534, Topic 'topic_beta', File 'chunked_1.bin' [1/3], Chunk offset 0/153600 bytes
+[CLIENT] Server connection severed during data transfer of 'chunked_1.bin' (offset 0/153600)
+[CLIENT] Transfer failed on attempt 1 due to connection termination.
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19996
+Topic Requested  : topic_alpha
+Output Directory : /tmp/test_phase3_downloads_33617/out_sc6_alpha/topic_alpha
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'topic_alpha'...
+[CLIENT] Server accepted topic 'topic_alpha': 4 files, 438305 total bytes (fingerprint 0x2F10BC4A)
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'topic_alpha' successfully transferred!
+[CLIENT] Total Files Saved   : 4
+[CLIENT] Total Bytes Saved   : 438305 bytes
+[CLIENT] Total Attempts      : 1 (Retries: 0)
+[CLIENT] Elapsed Total Time  : 0.040 seconds
+[CLIENT] Saved Directory     : /tmp/test_phase3_downloads_33617/out_sc6_alpha/topic_alpha
+===============================================================
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19996
+Topic Requested  : topic_beta
+Output Directory : /tmp/test_phase3_downloads_33617/out_sc6_beta/topic_beta
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'topic_beta'...
+[CLIENT] Server accepted topic 'topic_beta': 3 files, 358431 total bytes (fingerprint 0xC56BBA9E)
+[CLIENT] Purging incomplete topic directory '/tmp/test_phase3_downloads_33617/out_sc6_beta/topic_beta' to eliminate residue...
+[CLIENT] Backing off for 200 ms before reconnecting...
+
+[CLIENT] ---> Transfer Attempt #2 for topic 'topic_beta'...
+[CLIENT] Server accepted topic 'topic_beta': 3 files, 358431 total bytes (fingerprint 0xC56BBA9E)
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'topic_beta' successfully transferred!
+[CLIENT] Total Files Saved   : 3
+[CLIENT] Total Bytes Saved   : 358431 bytes
+[CLIENT] Total Attempts      : 2 (Retries: 1)
+[CLIENT] Elapsed Total Time  : 0.240 seconds
+[CLIENT] Saved Directory     : /tmp/test_phase3_downloads_33617/out_sc6_beta/topic_beta
+===============================================================
+  [PASS] Scenario 6: Concurrent clients recovered independently and finished bit-exact
+
+================================================================================
+PHASE 3 VERIFICATION SUMMARY: 6 / 6 SCENARIOS PASSED
+Detailed log available at: /mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/tests/phase3_fault_recovery.log
+================================================================================
+STATUS: ALL PHASE 3 ACCEPTANCE GATES PASSED [100%]

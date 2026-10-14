@@ -13,8 +13,13 @@ DOWNLOAD_BASE="/tmp/test_phase3_downloads_$$"
 VERIFICATION_LOG="${REPO_ROOT}/tests/phase3_fault_recovery.log"
 
 SERVER_PID=""
+CLIENT_PID=""
 
 cleanup() {
+    if [ -n "${CLIENT_PID}" ]; then
+        kill -9 "${CLIENT_PID}" 2>/dev/null || true
+        wait "${CLIENT_PID}" 2>/dev/null || true
+    fi
     if [ -n "${SERVER_PID}" ]; then
         kill -9 "${SERVER_PID}" 2>/dev/null || true
         wait "${SERVER_PID}" 2>/dev/null || true
@@ -76,6 +81,19 @@ dd if=/dev/urandom of="${FIXTURE_DIR}/topic_large/stream_2m.bin" bs=1048576 coun
 
 log_msg "[INFO] Fixtures prepared successfully"
 log_msg ""
+
+# Poll until a TCP port accepts connections (replaces a fixed sleep after starting the server)
+wait_for_port() {
+    local port="$1"
+    local i
+    for i in $(seq 1 100); do
+        if (exec 3<>"/dev/tcp/127.0.0.1/${port}") 2>/dev/null; then
+            return 0
+        fi
+        sleep 0.05
+    done
+    return 1
+}
 
 # Helper function to verify transfer directory and SHA256 integrity
 verify_transfer() {
@@ -215,25 +233,53 @@ PORT=$((PORT + 1))
 log_msg "Starting server with failure_prob = 0.50 on port ${PORT}..."
 "${REPO_ROOT}/Part2_Case1/server" "${PORT}" "${FIXTURE_DIR}" 0.50 >> "${VERIFICATION_LOG}" 2>&1 &
 SERVER_PID=$!
-sleep 0.5
+wait_for_port "${PORT}" || { log_msg "  [FAIL] Scenario 4: server did not start listening"; exit 1; }
 
 OUT4="${DOWNLOAD_BASE}/out_sc4"
 mkdir -p "${OUT4}"
-# Run client in background and kill it after 1 second during active transfer
+# Start the first client in the background and capture its PID.
+# We interrupt it with SIGTERM, not SIGINT: a non-interactive bash starts
+# background (&) commands with SIGINT/SIGQUIT set to "ignore", and ignored
+# signals stay ignored across exec(), so 'kill -INT' would have no effect.
+# SIGTERM is not ignored and the client has no handler, so the default action
+# (terminate) applies.
 "${REPO_ROOT}/Part2_Case1/client" 127.0.0.1 "${PORT}" topic_large "${OUT4}" >> "${VERIFICATION_LOG}" 2>&1 &
 CLIENT_PID=$!
-sleep 0.8
-kill -INT "${CLIENT_PID}" 2>/dev/null || true
-wait "${CLIENT_PID}" 2>/dev/null || true
+
+# Wait (no fixed sleep) until the client has started writing the file locally,
+# i.e. it is genuinely in the middle of a transfer attempt.
+MID_TRANSFER=0
+for _ in $(seq 1 20000); do
+    if compgen -G "${OUT4}/topic_large/*" > /dev/null; then
+        MID_TRANSFER=1
+        break
+    fi
+    kill -0 "${CLIENT_PID}" 2>/dev/null || break
+    sleep 0.001
+done
+
+kill -TERM "${CLIENT_PID}" 2>/dev/null || true
+RC_FIRST=0
+wait "${CLIENT_PID}" 2>/dev/null || RC_FIRST=$?
+CLIENT_PID=""
 
 kill -9 "${SERVER_PID}" 2>/dev/null || true
 wait "${SERVER_PID}" 2>/dev/null || true
 SERVER_PID=""
 
-# Now verify that when client runs again, it purges destination before/after
+# The interrupted client must be dead from SIGTERM (128 + 15 = 143)
+INTERRUPT_OK=0
+if [ "${MID_TRANSFER}" -eq 1 ] && [ "${RC_FIRST}" -eq 143 ]; then
+    INTERRUPT_OK=1
+    log_msg "  [INFO] Scenario 4: first client interrupted mid-transfer, exit status ${RC_FIRST}"
+else
+    log_msg "  [INFO] Scenario 4: interruption check failed (mid_transfer=${MID_TRANSFER}, first client exit=${RC_FIRST}, expected 143)"
+fi
+
+# Now verify that a fresh client run purges any residue and restarts from byte 0
 "${REPO_ROOT}/Part2_Case1/server" "${PORT}" "${FIXTURE_DIR}" 0.0 >> "${VERIFICATION_LOG}" 2>&1 &
 SERVER_PID=$!
-sleep 0.5
+wait_for_port "${PORT}" || { log_msg "  [FAIL] Scenario 4: second server did not start listening"; exit 1; }
 
 RC=0
 "${REPO_ROOT}/Part2_Case1/client" 127.0.0.1 "${PORT}" topic_large "${OUT4}" >> "${VERIFICATION_LOG}" 2>&1 || RC=$?
@@ -242,7 +288,7 @@ kill -9 "${SERVER_PID}" 2>/dev/null || true
 wait "${SERVER_PID}" 2>/dev/null || true
 SERVER_PID=""
 
-if [ "${RC}" -eq 0 ] && verify_transfer "topic_large" "${OUT4}"; then
+if [ "${INTERRUPT_OK}" -eq 1 ] && [ "${RC}" -eq 0 ] && verify_transfer "topic_large" "${OUT4}"; then
     log_msg "  [PASS] Scenario 4: Partial file residue cleanly purged; restarted transfer matches 100%"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
