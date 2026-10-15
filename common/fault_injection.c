@@ -86,15 +86,11 @@ int parse_failure_probability(const char *str, double *out_prob) {
 }
 
 /* Portable thread-safe PRNG wrapper (uses POSIX rand_r on Linux, LCG fallback on others) */
-static inline int fault_rand_r(unsigned int *seed) {
-#if defined(__linux__)
-    return rand_r(seed);
-#else
+static inline int fault_rand_r(unsigned int *seed)
+{
     *seed = *seed * 1103515245U + 12345U;
-    return (int)((*seed / 65536U) % ((unsigned int)RAND_MAX + 1U));
-#endif
+    return (int)((*seed >> 16) & 0x7fffU);
 }
-
 bool should_inject_fault(void) {
     if (g_failure_prob <= 0.0) {
         return false;
@@ -114,8 +110,8 @@ bool should_inject_fault(void) {
     }
 
     /* Sample uniform pseudo-random number in [0.0, 1.0) */
-    int r = fault_rand_r(&s_thread_seed);
-    double sample = (double)r / ((double)RAND_MAX + 1.0);
+  int r = fault_rand_r(&s_thread_seed);
+double sample = (double)r / 32768.0;
 
     return (sample < g_failure_prob);
 }
