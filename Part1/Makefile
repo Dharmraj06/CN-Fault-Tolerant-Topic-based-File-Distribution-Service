@@ -1,27 +1,14 @@
-# ==============================================================================
-# IT305 Computer Networks Lab - Autumn 2026
-# Project: Fault-Tolerant Topic-Based File Distribution Service
-#
-# Directory: Part1/
-# Target: server, client
-# Phase: Phase 1 & Phase 2 Baseline Build Specification
-# ==============================================================================
-
 CC      := gcc
 CFLAGS  := -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common
 LDFLAGS := -pthread
 
-# Object files
-COMMON_OBJS := ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o
-
-# Primary targets
+COMMON_OBJS := ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o
 TARGETS := server client
 
 .PHONY: all clean rebuild
-
 all: $(TARGETS)
 
-server: server.o ../common/protocol.o ../common/topic_manager.o
+server: server.o ../common/protocol.o ../common/topic_manager.o ../common/logging.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 client: client.o $(COMMON_OBJS)
@@ -40,6 +27,9 @@ client.o: client.c ../common/protocol.h ../common/file_transfer.h ../common/topi
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ../common/file_transfer.o: ../common/file_transfer.c ../common/file_transfer.h ../common/protocol.h ../common/topic_manager.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+../common/logging.o: ../common/logging.c ../common/logging.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

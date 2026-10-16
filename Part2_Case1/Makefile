@@ -2,20 +2,16 @@ CC      := gcc
 CFLAGS  := -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common
 LDFLAGS := -pthread
 
-# Object files
-COMMON_OBJS := ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o
-
-# Primary targets
+COMMON_OBJS := ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o ../common/logging.o
 TARGETS := server client
 
 .PHONY: all clean rebuild
-
 all: $(TARGETS)
 
-server: server.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o
+server: server.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/logging.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-client: client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o
+client: client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 server.o: server.c ../common/protocol.h ../common/topic_manager.h ../common/fault_injection.h
@@ -36,7 +32,10 @@ client.o: client.c ../common/protocol.h ../common/file_transfer.h ../common/topi
 ../common/fault_injection.o: ../common/fault_injection.c ../common/fault_injection.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
+../common/logging.o: ../common/logging.c ../common/logging.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
-	rm -f $(TARGETS) server.o client.o ../common/fault_injection.o
+	rm -f $(TARGETS) server.o client.o ../common/fault_injection.o ../common/logging.o
 
 rebuild: clean all

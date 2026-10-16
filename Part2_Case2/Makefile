@@ -1,23 +1,11 @@
-# ==============================================================================
-# IT305 Computer Networks Lab - Autumn 2026
-# Project: Fault-Tolerant Topic-Based File Distribution Service
-#
-# Part 2 Case 2: In-Memory Session Resume Server and Client
-# ==============================================================================
+CC      := gcc
+CFLAGS  := -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common
+LDFLAGS := -pthread
 
-CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common
-LDFLAGS = -pthread
+COMMON_OBJS := ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o ../common/session.o ../common/logging.o
+TARGETS := server client
 
-COMMON_DIR = ../common
-COMMON_OBJS = $(COMMON_DIR)/protocol.o \
-              $(COMMON_DIR)/topic_manager.o \
-              $(COMMON_DIR)/file_transfer.o \
-              $(COMMON_DIR)/fault_injection.o \
-              $(COMMON_DIR)/session.o
-
-TARGETS = server client
-
+.PHONY: all clean rebuild
 all: $(TARGETS)
 
 server: server.o $(COMMON_OBJS)
@@ -26,16 +14,31 @@ server: server.o $(COMMON_OBJS)
 client: client.o $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-server.o: server.c
+server.o: server.c ../common/protocol.h ../common/topic_manager.h ../common/fault_injection.h ../common/session.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-client.o: client.c
+client.o: client.c ../common/protocol.h ../common/file_transfer.h ../common/session.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(COMMON_DIR)/%.o: $(COMMON_DIR)/%.c $(COMMON_DIR)/%.h
+../common/protocol.o: ../common/protocol.c ../common/protocol.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+../common/topic_manager.o: ../common/topic_manager.c ../common/topic_manager.h ../common/protocol.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+../common/file_transfer.o: ../common/file_transfer.c ../common/file_transfer.h ../common/protocol.h ../common/topic_manager.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+../common/fault_injection.o: ../common/fault_injection.c ../common/fault_injection.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+../common/session.o: ../common/session.c ../common/session.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+../common/logging.o: ../common/logging.c ../common/logging.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f server client server.o client.o $(COMMON_DIR)/session.o
+	rm -f $(TARGETS) server.o client.o ../common/session.o ../common/logging.o
 
-.PHONY: all clean
+rebuild: clean all

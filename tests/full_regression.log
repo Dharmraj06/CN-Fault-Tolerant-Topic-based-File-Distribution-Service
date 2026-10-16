@@ -1,0 +1,239 @@
+======================================================================
+IT305 Master 4-Variant Correctness & Regression Test Harness (Phase 6)
+Timestamp: 2026-10-15 21:26:47 UTC
+======================================================================
+
+--- Section 1: Strict Compiler Build Validation (-Wall -Wextra -Werror) ---
+make: Entering directory '/tmp/cnp_repo/Part1'
+rm -f server client server.o client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o
+make: Leaving directory '/tmp/cnp_repo/Part1'
+make: Entering directory '/tmp/cnp_repo/Part1'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/protocol.c -o ../common/protocol.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/topic_manager.c -o ../common/topic_manager.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/file_transfer.c -o ../common/file_transfer.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o -pthread
+make: Leaving directory '/tmp/cnp_repo/Part1'
+[PASS] Clean build & binaries verified in Part1/
+make: Entering directory '/tmp/cnp_repo/Part2_Case1'
+rm -f server client server.o client.o ../common/fault_injection.o ../common/logging.o
+make: Leaving directory '/tmp/cnp_repo/Part2_Case1'
+make: Entering directory '/tmp/cnp_repo/Part2_Case1'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/fault_injection.c -o ../common/fault_injection.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o -pthread
+make: Leaving directory '/tmp/cnp_repo/Part2_Case1'
+[PASS] Clean build & binaries verified in Part2_Case1/
+make: Entering directory '/tmp/cnp_repo/Part2_Case2'
+rm -f server client server.o client.o ../common/session.o ../common/logging.o
+make: Leaving directory '/tmp/cnp_repo/Part2_Case2'
+make: Entering directory '/tmp/cnp_repo/Part2_Case2'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/session.c -o ../common/session.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o ../common/session.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o ../common/session.o ../common/logging.o -pthread
+make: Leaving directory '/tmp/cnp_repo/Part2_Case2'
+[PASS] Clean build & binaries verified in Part2_Case2/
+make: Entering directory '/tmp/cnp_repo/Part2_Case2_Enhanced'
+rm -f server client server.o client.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/session.o ../common/work_plan.o ../common/logging.o
+make: Leaving directory '/tmp/cnp_repo/Part2_Case2_Enhanced'
+make: Entering directory '/tmp/cnp_repo/Part2_Case2_Enhanced'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/protocol.c -o ../common/protocol.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/topic_manager.c -o ../common/topic_manager.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/fault_injection.c -o ../common/fault_injection.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/session.c -o ../common/session.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/work_plan.c -o ../common/work_plan.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/session.o ../common/work_plan.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/session.o ../common/work_plan.o ../common/logging.o -pthread
+make: Leaving directory '/tmp/cnp_repo/Part2_Case2_Enhanced'
+[PASS] Clean build & binaries verified in Part2_Case2_Enhanced/
+2026-10-15 21:26:51.934 [INFO ] [UNIT_TEST] Monotonic delta = 1544096 ns
+[PASS] Phase 6 common/logging.* unit test (monotonic clock + thread-safe CSV)
+
+--- Section 2: Preparing Synthetic & Binary Topic Datasets ---
+[PASS] Dataset created (empty_topic, small_topic, large_topic, cane, gatto, cavallo, elefante)
+
+--- Section 3: CLI Argument & Boundary Validation ---
+Usage: /tmp/cnp_repo/Part1/server <port> <topics_root_dir> [mode]
+  <port>            : Listening port (1024-65535)
+  <topics_root_dir> : Path to directory containing topic sub-folders
+  [mode]            : Optional: 'mt' (default) or 'sequential'
+[PASS] Part1/server rejects missing CLI arguments
+Error: Invalid port '70000'. Port must be an integer between 1024 and 65535.
+[PASS] Part1/server rejects invalid port (70000)
+Error: Invalid failure probability '-0.1'. Must be a float between 0.0 and 1.0.
+Error: Invalid failure probability '1.5'. Must be a float between 0.0 and 1.0.
+[PASS] Part2_Case1/server rejects out-of-range failure probabilities (-0.1, 1.5)
+Error: Invalid failure probability '-0.1' (must be between 0.0 and 1.0)
+Error: Invalid failure probability '1.5' (must be between 0.0 and 1.0)
+[PASS] Part2_Case2/server rejects out-of-range failure probabilities (-0.1, 1.5)
+Failure probability must be between 0.0 and 1.0
+Failure probability must be between 0.0 and 1.0
+[PASS] Part2_Case2_Enhanced/server rejects out-of-range failure probabilities (-0.1, 1.5)
+Invalid number of connections (1-16)
+Invalid number of connections (1-16)
+[PASS] Part2_Case2_Enhanced/client rejects invalid connection counts (0, 32)
+
+--- Section 4: Part 1 Baseline (Edge Topics, Security & Concurrency) ---
+[CLIENT] Error: Invalid topic name '../etc' (forbidden characters or traversal attempt)
+[PASS] Part 1 rejects path traversal topic ('../etc')
+[CLIENT] Topic 'empty_topic' accepted: 0 files, 0 total bytes (fingerprint 0x00000000)
+[CLIENT] Transfer complete: 0 files (0 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_empty_topic/empty_topic'
+[PASS] Part 1 bit-exact transfer for topic 'empty_topic'
+[CLIENT] Topic 'small_topic' accepted: 1 files, 100 total bytes (fingerprint 0xF94E777A)
+[CLIENT] Transfer complete: 1 files (100 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_small_topic/small_topic'
+[PASS] Part 1 bit-exact transfer for topic 'small_topic'
+[CLIENT] Topic 'large_topic' accepted: 1 files, 2097152 total bytes (fingerprint 0xACC377DC)
+[CLIENT] Transfer complete: 1 files (2097152 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_large_topic/large_topic'
+[PASS] Part 1 bit-exact transfer for topic 'large_topic'
+[CLIENT] Topic 'cane' accepted: 5 files, 745760 total bytes (fingerprint 0x84AF20D9)
+[CLIENT] Transfer complete: 5 files (745760 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_cane/cane'
+[PASS] Part 1 bit-exact transfer for topic 'cane'
+[CLIENT] Topic 'cane' accepted: 5 files, 745760 total bytes (fingerprint 0x84AF20D9)
+[CLIENT] Transfer complete: 5 files (745760 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_conc/c1/cane'
+[CLIENT] Topic 'gatto' accepted: 5 files, 720760 total bytes (fingerprint 0x2AE4EA21)
+[CLIENT] Transfer complete: 5 files (720760 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_conc/c2/gatto'
+[CLIENT] Topic 'cavallo' accepted: 5 files, 735760 total bytes (fingerprint 0x3FE1F37C)
+[CLIENT] Transfer complete: 5 files (735760 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_conc/c3/cavallo'
+[CLIENT] Topic 'elefante' accepted: 5 files, 705760 total bytes (fingerprint 0xE7969FF1)
+[CLIENT] Transfer complete: 5 files (705760 bytes) successfully saved to '/tmp/it305_regression_8499/downloads/p1_conc/c4/elefante'
+[PASS] Part 1 concurrent 4-client transfer verified (100% diff match)
+
+--- Section 5: Part 2 Case 1 (Fault Injection & Full Restart) ---
+===============================================================
+IT305 Fault-Tolerant Topic File Client (Part 2 Case 1)
+Server Target    : 127.0.0.1:19202
+Topic Requested  : cane
+Output Directory : /tmp/it305_regression_8499/downloads/c1_out/cane
+Recovery Policy  : Purge Partial Data & Full Restart
+Max Retries      : 50
+===============================================================
+
+[CLIENT] ---> Transfer Attempt #1 for topic 'cane'...
+[CLIENT] Server accepted topic 'cane': 5 files, 745760 total bytes (fingerprint 0x84AF20D9)
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'cane' successfully transferred!
+[CLIENT] Total Files Saved   : 5
+[CLIENT] Total Bytes Saved   : 745760 bytes
+[CLIENT] Total Attempts      : 1 (Retries: 0)
+[CLIENT] Elapsed Total Time  : 0.011 seconds
+[CLIENT] Saved Directory     : /tmp/it305_regression_8499/downloads/c1_out/cane
+===============================================================
+[PASS] Part 2 Case 1 fault recovery (p=0.05) & bit-exact diff verified
+
+--- Section 6: Part 2 Case 2 (Session Management & Checkpoint Resume) ---
+[FAULT] [2026-10-15 21:26:53] Injected disconnect on socket fd=4: Session 0x6AD12E96552D23C6: File 'cane_img_02.jpg' offset 131072/132768
+[FAULT] [2026-10-15 21:26:53] Injected disconnect on socket fd=4: Session 0x6AD12E96552D23C6: File 'cane_img_04.jpg' offset 65536/165536
+[CLIENT] ---> Transfer Attempt #1 for topic 'cane' (session=0x0000000000000000, file=0, off=0)...
+[CLIENT] Sending MSG_SESSION_START for topic 'cane'...
+[CLIENT] Server created Session 0x6AD12E96552D23C6: 5 files, fingerprint 0x84AF20D9
+[CLIENT] Streaming 'cane_img_01.jpg' [0] starting at offset 0 / 116384 bytes
+[CLIENT] Completed file [0]: 116384 bytes verified
+[CLIENT] Streaming 'cane_img_02.jpg' [1] starting at offset 0 / 132768 bytes
+[CLIENT] Server closed connection (EOF) during transfer
+[CLIENT] Connection severed mid-transfer. Preserving local checkpoint [file 1, offset 131072 bytes]...
+[CLIENT] Backing off for 200 ms before reconnecting...
+[CLIENT] ---> Transfer Attempt #2 for topic 'cane' (session=0x6AD12E96552D23C6, file=1, off=131072)...
+[CLIENT] Requesting RESUME for Session 0x6AD12E96552D23C6 at [file 1, offset 131072 bytes]...
+[CLIENT] Resume ACCEPTED: Authoritative Checkpoint [file 1, offset 131072 bytes] (flags=0x0000)
+[CLIENT] Streaming 'cane_img_02.jpg' [1] starting at offset 131072 / 132768 bytes
+[CLIENT] Completed file [1]: 132768 bytes verified
+[CLIENT] Streaming 'cane_img_03.jpg' [2] starting at offset 0 / 149152 bytes
+[CLIENT] Completed file [2]: 149152 bytes verified
+[CLIENT] Streaming 'cane_img_04.jpg' [3] starting at offset 0 / 165536 bytes
+[CLIENT] Server closed connection (EOF) during transfer
+[CLIENT] Connection severed mid-transfer. Preserving local checkpoint [file 3, offset 65536 bytes]...
+[CLIENT] Backing off for 400 ms before reconnecting...
+[CLIENT] ---> Transfer Attempt #3 for topic 'cane' (session=0x6AD12E96552D23C6, file=3, off=65536)...
+[CLIENT] Requesting RESUME for Session 0x6AD12E96552D23C6 at [file 3, offset 65536 bytes]...
+[CLIENT] Resume ACCEPTED: Authoritative Checkpoint [file 3, offset 65536 bytes] (flags=0x0000)
+[CLIENT] Streaming 'cane_img_04.jpg' [3] starting at offset 65536 / 165536 bytes
+[CLIENT] Completed file [3]: 165536 bytes verified
+[CLIENT] Streaming 'cane_img_05.jpg' [4] starting at offset 0 / 181920 bytes
+[CLIENT] Completed file [4]: 181920 bytes verified
+[CLIENT] Received MSG_TRANSFER_END: Entire topic transfer complete!
+
+===============================================================
+[CLIENT] SUCCESS: Topic 'cane' successfully transferred via Case 2 Resume!
+[CLIENT] Assigned Session ID : 0x6AD12E96552D23C6
+===============================================================
+[PASS] Part 2 Case 2 mid-file checkpoint resume (p=0.10) & bit-exact diff verified
+
+--- Section 7: Part 2 Case 2 Enhanced (4-Arg Fallback & Parallel TCP) ---
+Enhanced Phase 5 server listening on port 19204
+Topics root: /tmp/it305_regression_8499/dataset
+Failure probability: 0.000
+Session accepted: ID=7696984457070060486, files=5, connections=1
+[worker 0] connected
+[worker 0] Manifest received: 5 files, 5 units
+[worker 0] Assigned unit 0
+[worker 0] Assigned unit 1
+[worker 0] Assigned unit 2
+[worker 0] Assigned unit 3
+[worker 0] Assigned unit 4
+[worker 0] Transfer complete
+[worker 0] disconnected
+Client finished.
+[PASS] Part 2 Case 2 Enhanced mandatory 4-arg default CLI (1 connection) verified
+Enhanced Phase 5 server listening on port 19205
+Topics root: /tmp/it305_regression_8499/dataset
+Failure probability: 0.050
+Session accepted: ID=7696984457069208518, files=1, connections=4
+[worker 0] connected
+[worker 0] Manifest received: 1 files, 8 units
+[worker 0] Assigned unit 0
+[worker 1] connected
+[worker 2] connected
+[FAULT] [2026-10-15 21:26:54] Injected disconnect on socket fd=5: worker=1 unit=1 offset=262144
+[worker 2] Manifest received: 1 files, 8 units
+[worker 2] Assigned unit 1
+[worker 1] Manifest received: 1 files, 8 units
+[worker 1] Assigned unit 1
+[worker 1] Connection interrupted; reconnecting
+[worker 3] connected
+[worker 3] Manifest received: 1 files, 8 units
+[worker 3] Assigned unit 2
+[worker 0] Assigned unit 3
+[worker 3] Assigned unit 4
+[worker 2] Assigned unit 5
+[worker 0] Assigned unit 6
+[FAULT] [2026-10-15 21:26:54] Injected disconnect on socket fd=7: worker=3 unit=4 offset=1245184
+[worker 3] Connection interrupted; reconnecting
+[worker 2] Assigned unit 4
+[worker 2] Assigned unit 7
+[FAULT] [2026-10-15 21:26:54] Injected disconnect on socket fd=6: worker=2 unit=7 offset=1966080
+[worker 2] Connection interrupted; reconnecting
+[worker 0] Assigned unit 7
+[worker 0] disconnected
+[worker 0] Transfer complete
+[worker 1] connected
+[worker 1] Manifest received: 1 files, 8 units
+[worker 1] Transfer complete
+[worker 1] disconnected
+[worker 3] connected
+[worker 3] disconnected
+[worker 3] Manifest received: 1 files, 8 units
+[worker 3] Transfer complete
+[worker 2] connected
+[worker 2] Manifest received: 1 files, 8 units
+[worker 2] disconnected
+[worker 2] Transfer complete
+Client finished.
+[PASS] Part 2 Case 2 Enhanced 4-connection parallel pwrite() under fault injection (p=0.05) verified
+
+======================================================================
+REGRESSION SUMMARY: 22 PASSED, 0 FAILED
+Full Log Saved To : /tmp/cnp_repo/tests/full_regression.log
+======================================================================

@@ -469,14 +469,14 @@ static void *worker_main(void *argument)
             fd = connect_server(session);
 
             if (fd < 0) {
-                sleep(1);
+                { struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL); }
                 continue;
             }
 
             if (send_worker_hello(fd, session, worker_id) != 0) {
                 close(fd);
                 fd = -1;
-                sleep(1);
+                { struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL); }
                 continue;
             }
         }
@@ -492,7 +492,7 @@ static void *worker_main(void *argument)
         fprintf(stderr,
                 "[worker %d] Connection interrupted; reconnecting\n",
                 worker_id);
-        sleep(1);
+        { struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL); }
     }
 
     return NULL;
@@ -558,14 +558,14 @@ int main(int argc, char **argv)
     memset(&session, 0, sizeof(session));
 
     if (strlen(argv[1]) >= sizeof(session.ip) ||
-        strlen(argv[4]) >= sizeof(session.output_dir) ||
+        strlen(argv[4]) + 1 + strlen(argv[3]) >= sizeof(session.output_dir) ||
         strlen(argv[3]) >= sizeof(request.topic)) {
         fprintf(stderr, "An argument is too long\n");
         return EXIT_FAILURE;
     }
 
     strcpy(session.ip, argv[1]);
-    strcpy(session.output_dir, argv[4]);
+    snprintf(session.output_dir, sizeof(session.output_dir), "%s/%s", argv[4], argv[3]);
     session.port = port;
 
     if (pthread_mutex_init(&session.manifest_mutex, NULL) != 0) {
