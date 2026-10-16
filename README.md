@@ -1,64 +1,108 @@
 # Fault-Tolerant Topic-Based File Distribution Service
 
-**Course**: IT305 Computer Networks Lab (Autumn 2026)  
-**Academic Institution**: Dhirubhai Ambani Institute of Information and Communication Technology (DA-IICT)  
-**Group**: Merged Group 071 + Group 072  
+**Course:** IT305 Computer Networks Lab (Autumn 2026)  
+**Institution:** Dhirubhai Ambani University (Formerly DA-IICT), Gandhinagar  
+**Merged Group:** Group 071 + Group 072  
 
-## Team Members
+## Team Members & Phase Ownership
 
-1. **Jay Vaghela** — 202401237
-2. **Dharmraj Vaghela** — 202401236 (Repository Owner)
-3. **Vivek Dodiya** — 202401253
-4. **Atharv Trivedi** — 202401230
-5. **Shlok Topaliya** — 202401229
-6. **Yug Malaviya** — 202401256
+| Phase | Member Name | Roll Number | Core Subsystem & Deliverables Owned |
+| :---: | :--- | :---: | :--- |
+| **Phase 1** | **Jay Vaghela** | `202401237` | 16-Byte Binary Framing (`common/protocol.*`), Topic Manifest & Path Security (`common/topic_manager.*`), `Part1/server.c` |
+| **Phase 2** | **Vivek Dodiya** | `202401253` | Bounded 64 KiB File Streaming Engine (`common/file_transfer.*`), `Part1/client.c`, `Part1/Makefile` |
+| **Phase 3** | **Atharv Trivedi** | `202401230` | Thread-Safe Probabilistic Fault Engine (`common/fault_injection.*`), `Part2_Case1/` Server & Full-Restart Client |
+| **Phase 4** | **Dharmraj Vaghela** | `202401236` | Mutex-Protected In-Memory Session Table (`common/session.*`), `Part2_Case2/` Checkpoint Server & Resume Client |
+| **Phase 5** | **Shlok Topaliya** | `202401229` | Disjoint Work-Unit Partitioning (`common/work_plan.*`), `Part2_Case2_Enhanced/` Parallel TCP Server & `pwrite()` Client |
+| **Phase 6** | **Yug Malaviya** | `202401256` | Thread-Safe Monotonic Logger (`common/logging.*`), Regression & Benchmark Suite (`scripts/*`, `Results/*`), `FinalReport_Group_071_072.pdf` |
 
----
+## Directory Structure
 
-## Project Documentation & Architecture Guides
+- `Part1/` — Baseline topic file distribution service (supports both Multi-Threaded and Sequential server modes).
+- `Part2_Case1/` — Multi-threaded server with probabilistic fault injection and stateless client recovery (directory purge + full restart from File 0, Offset 0).
+- `Part2_Case2/` — Multi-threaded server with in-memory session management (`SESSION_START`, `CHUNK_ACK`, `SESSION_RESUME`) and mid-file checkpoint resumption with `ftruncate()` reconciliation.
+- `Part2_Case2_Enhanced/` — High-performance multi-socket parallel TCP transfer partitioning topics into non-overlapping `WorkUnit`s written concurrently via POSIX `pwrite()`.
+- `common/` — Shared C99 modules (`protocol.*`, `topic_manager.*`, `file_transfer.*`, `fault_injection.*`, `session.*`, `work_plan.*`, `logging.*`).
+- `Results/` — Raw CSV benchmark measurements (`exp1..exp4_*.csv`) and publication-grade PNG performance plots.
+- `scripts/` — Automated correctness regression suite (`test_correctness.sh`), benchmark runner (`run_benchmarks.py`), plot generator (`plot_results.py`), and clean-sandbox submission packager (`package_submission.sh`).
+- `FinalReport_Group_071_072.pdf` — Consolidated final project report containing architecture specifications, design refinements, and experimental performance analysis.
 
-The project governance, execution roadmap, codebase architecture, and development guidelines are organized as follows:
-* **[Master Phase-Wise Execution Roadmap](PART2_TASKS_ROADMAP.md)**: Authoritative single source of truth for phase tasks, frozen protocol contracts, acceptance gates, requirement traceability, and packaging rules.
-* **[Codebase Structure & Architecture Reference](docs/architecture/CODEBASE_STRUCTURE.md)**: Comprehensive guide to directory responsibilities, file-by-file matrix, module dependencies, runtime data flows, and testing map.
-* **[Development Workflow & Handoff Protocol](docs/development/DEVELOPMENT_WORKFLOW.md)**: Sequential execution governance, phase entry checklists, Git branching conventions, testing routines, and handoff templates.
-* **[College-Level C Coding Guidelines & Viva Guide](docs/development/COLLEGE_LEVEL_CODING_GUIDELINES.md)**: Standards for undergraduate systems C programming, socket conventions, thread safety, error handling, and peer review.
+## Build Instructions
 
----
+Each implementation directory contains an independent `Makefile` compiling under strict C99 flags (`gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread`) and producing two executables named `server` and `client`:
 
-## Sequential Engineering Ownership Model
+```bash
+make -C Part1
+make -C Part2_Case1
+make -C Part2_Case2
+make -C Part2_Case2_Enhanced
+```
 
-Execution proceeds through a strictly linear, single-owner phase dependency chain:
-**Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6**
+To clean intermediate `.o` files and binaries in any directory:
 
-| Phase | Responsible Member | Student ID | Core Engineering Deliverable | Primary Files Owned |
-|:---:|---|:---:|---|---|
-| **Phase 1** | **Jay Vaghela** | 202401237 | Wire Protocol Framing Engine & Part 1 Baseline Server | `common/protocol.*`, `common/topic_manager.*`, `Part1/server.c` |
-| **Phase 2** | **Vivek Dodiya** | 202401253 | Bounded File Streaming Engine & Part 1 Baseline Client | `common/file_transfer.*`, `Part1/client.c` |
-| **Phase 3** | **Atharv Trivedi** | 202401230 | Fault Injection Subsystem & Part 2 Case 1 End-to-End | `common/fault_injection.*`, `Part2_Case1/server.c`, `Part2_Case1/client.c` |
-| **Phase 4** | **Dharmraj Vaghela** | 202401236 | In-Memory Session Management & Part 2 Case 2 End-to-End | `common/session.*`, `Part2_Case2/server.c`, `Part2_Case2/client.c` |
-| **Phase 5** | **Shlok Topaliya** | 202401229 | Parallel TCP Architecture & Part 2 Case 2 Enhanced End-to-End | `common/work_plan.*`, `Part2_Case2_Enhanced/server.c`, `Part2_Case2_Enhanced/client.c` |
-| **Phase 6** | **Yug Malaviya** | 202401256 | Logging, Regression Harness, Benchmarks, Report & Packaging | `common/logging.*`, `scripts/*`, `Results/*`, `FinalReport_Group_071_072.pdf` |
+```bash
+make -C Part1 clean
+make -C Part2_Case1 clean
+make -C Part2_Case2 clean
+make -C Part2_Case2_Enhanced clean
+```
 
----
+## Standard Command-Line Invocations (Auto-Grader Compliant)
 
-## Directory Structure Overview
+### 1. Part 1 (Baseline Service)
+```bash
+# Start Part 1 Server (defaults to Multi-Threaded; pass optional 3rd arg 'sequential' for single-threaded mode)
+./Part1/server <port> <topics_root_dir> [mt|sequential]
 
-The four required implementation variants are isolated in independent directories, each featuring its own `Makefile` producing runnable `server` and `client` binaries:
-- `Part1/` — Single-threaded and multi-threaded baseline topic servers and client.
-- `Part2_Case1/` — Multi-threaded server with fault injection and complete topic restart recovery.
-- `Part2_Case2/` — Multi-threaded server with in-memory session management and chunk checkpoint resumption.
-- `Part2_Case2_Enhanced/` — High-performance transfer using parallel TCP connections and work unit partitioning.
-- `Results/` — Raw CSV benchmark logs and generated performance graphs.
-- `scripts/` — Automated test harness, benchmark runners, plotting scripts, and packaging automation.
+# Run Part 1 Client (downloads all regular files in <topics_root_dir>/<topic> into <output_dir>/<topic>/)
+./Part1/client <server_ip> <server_port> <topic> <output_dir>
+```
 
----
+### 2. Part 2 — Case 1 (No Session Management / Full Topic Restart)
+```bash
+# Start Case 1 Server with chunk failure probability in [0.0, 1.0]
+./Part2_Case1/server <port> <topics_root_dir> <failure probability>
 
-## Standard CLI Invocations (Mandatory Grader Compliance)
+# Run Case 1 Client (purges <output_dir>/<topic>/ and restarts from File 0, Offset 0 on disconnect)
+./Part2_Case1/client <server_ip> <server_port> <topic> <output_dir>
+```
 
-### Server Programs
-- **Part 1:** `./server <port> <topics_root_dir>`
-- **Part 2 (All Cases):** `./server <port> <topics_root_dir> <failure probability>`
+### 3. Part 2 — Case 2 (In-Memory Session Management & Checkpoint Resume)
+```bash
+# Start Case 2 Server with chunk failure probability in [0.0, 1.0]
+./Part2_Case2/server <port> <topics_root_dir> <failure probability>
 
-### Client Programs
-- **All Cases:** `./client <server_ip> <server_port> <topic> <output_dir> [num_connections]`
-  *(Note: For Case 2 Enhanced, the optional `[num_connections]` argument defaults strictly to 1 if omitted, ensuring 100% compatibility with automated grading scripts).*
+# Run Case 2 Client (acknowledges chunks via MSG_CHUNK_ACK and resumes from last committed offset)
+./Part2_Case2/client <server_ip> <server_port> <topic> <output_dir>
+```
+
+### 4. Part 2 — Case 2 Enhanced (Parallel TCP Connections & Concurrent `pwrite()`)
+```bash
+# Start Case 2 Enhanced Server with chunk failure probability in [0.0, 1.0]
+./Part2_Case2_Enhanced/server <port> <topics_root_dir> <failure probability>
+
+# Run Case 2 Enhanced Client ([num_connections] is optional, 1..16, defaulting strictly to 1 when omitted)
+./Part2_Case2_Enhanced/client <server_ip> <server_port> <topic> <output_dir> [num_connections]
+```
+
+## Fault-Injection Mechanism Used for Testing
+
+All Part 2 servers (`Part2_Case1/server`, `Part2_Case2/server`, and `Part2_Case2_Enhanced/server`) link against `common/fault_injection.c`:
+1. **Configuration:** At startup, `parse_failure_probability()` validates that `<failure probability>` is a valid floating-point number $p \in [0.0, 1.0]$.
+2. **Thread-Safe Per-Chunk Decision:** Immediately before transmitting each 64 KiB file data chunk (`MSG_FILE_DATA` or `MSG_WORK_DATA`), the worker thread invokes `should_inject_fault()`. Each worker thread maintains a thread-local seed (`__thread unsigned int tls_seed`) and calls `rand_r(&tls_seed)` so concurrent threads never contend on global PRNG locks.
+3. **Abrupt Socket Termination:** If the random draw is less than $p$, `execute_fault_disconnect(socket_fd, context_msg)` logs the exact timestamp, socket descriptor, active filename, and byte offset to `stderr` (`[FAULT] ...`) and immediately closes `socket_fd` via `close()` without transmitting any closing protocol frame.
+
+## Running Automated Regression Tests, Benchmarks & Packaging
+
+```bash
+# 1. Run the 22-check automated correctness & diff verification suite across all 4 variants
+bash scripts/test_correctness.sh
+
+# 2. Execute the 4 benchmark experiments (generates Results/exp1..exp4_*.csv)
+python3 scripts/run_benchmarks.py
+
+# 3. Render the 4 publication-grade Matplotlib PNG graphs in Results/
+python3 scripts/plot_results.py
+
+# 4. Build and verify FinalSubmission_Group_071_072.tar.gz in a clean /tmp sandbox
+bash scripts/package_submission.sh
+```
