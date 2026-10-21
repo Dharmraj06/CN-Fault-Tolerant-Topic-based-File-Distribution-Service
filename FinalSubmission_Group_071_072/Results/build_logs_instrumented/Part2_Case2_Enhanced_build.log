@@ -1,0 +1,19 @@
+=== Part2_Case2_Enhanced: make clean (2026-10-21T06:44:28+00:00) ===
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+rm -f server client server.o client.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/session.o ../common/work_plan.o ../common/logging.o
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+exit=0
+=== Part2_Case2_Enhanced: make (2026-10-21T06:44:28+00:00) ===
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/protocol.c -o ../common/protocol.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/topic_manager.c -o ../common/topic_manager.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/fault_injection.c -o ../common/fault_injection.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/session.c -o ../common/session.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/work_plan.c -o ../common/work_plan.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/session.o ../common/work_plan.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -I. -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/fault_injection.o ../common/session.o ../common/work_plan.o ../common/logging.o -pthread
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+exit=0

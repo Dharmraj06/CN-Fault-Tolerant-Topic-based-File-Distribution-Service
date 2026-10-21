@@ -13,6 +13,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <math.h>
 
 /* ----------------------------------------------------------------------------
  * Internal Global State & Mutex Protection
@@ -76,8 +77,8 @@ int parse_failure_probability(const char *str, double *out_prob) {
         return -1; /* Trailing non-numeric garbage found */
     }
 
-    /* Strictly enforce boundary [0.0, 1.0] */
-    if (val < 0.0 || val > 1.0) {
+    /* Strictly enforce boundary [0.0, 1.0] and reject non-finite values (NaN, Inf) */
+    if (isnan(val) || !isfinite(val) || val < 0.0 || val > 1.0) {
         return -1;
     }
 

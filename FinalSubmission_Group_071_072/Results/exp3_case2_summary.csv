@@ -1,0 +1,7 @@
+implementation,topic,failure_probability,measured_runs,successful_runs,failed_runs,mean_useful_throughput_Bps,median_useful_throughput_Bps,sd_useful_throughput_Bps,mean_completion_s,median_completion_s,sd_completion_s,mean_useful_bytes,mean_total_transmitted_bytes,sd_total_transmitted_bytes,mean_redundant_payload_bytes,sd_redundant_payload_bytes,mean_protocol_control_bytes,mean_byte_overhead_pct,median_byte_overhead_pct,sd_byte_overhead_pct,mean_reconnects,mean_faults_injected
+Case2,gatto_big150,0.00,5,5,0,113056.5,112633.5,2411.3,15.873186,15.927012,0.337393,1793915.0,1850511.0,0.0,0.0,0.0,56596.0,3.1549,3.1549,0.0000,0.000,0.000
+Case2,gatto_big150,0.05,5,5,0,67386.6,68224.4,24945.8,30.077168,26.294314,11.952426,1793915.0,1855391.4,2996.3,0.0,0.0,61476.4,3.4269,3.3770,0.1670,9.800,9.800
+Case2,gatto_fault20,0.00,5,5,0,566065.2,586661.9,28903.7,1.692102,1.629214,0.088323,955798.0,960314.0,0.0,0.0,0.0,4516.0,0.4725,0.4725,0.0000,0.000,0.000
+Case2,gatto_fault20,0.01,5,5,0,564628.9,566667.4,17678.3,1.694122,1.686700,0.053182,955798.0,960314.0,0.0,0.0,0.0,4516.0,0.4725,0.4725,0.0000,0.000,0.000
+Case2,gatto_fault20,0.05,5,5,0,448080.1,437957.8,90474.6,2.214193,2.182397,0.509102,955798.0,961210.4,416.7,0.0,0.0,5412.4,0.5663,0.5767,0.0436,1.800,1.800
+Case2,gatto_fault20,0.10,5,5,0,463716.2,502250.0,89377.6,2.138693,1.903032,0.506604,955798.0,961110.8,445.4,0.0,0.0,5312.8,0.5559,0.5246,0.0466,1.600,1.600

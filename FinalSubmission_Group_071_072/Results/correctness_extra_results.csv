@@ -1,0 +1,102 @@
+test,status,evidence
+part1: server with no args rejected,PASS,rc=1
+part1: server invalid port 'abc' rejected,PASS,rc=1
+part1: server invalid port '0' rejected,PASS,rc=1
+part1: server invalid port '70000' rejected,PASS,rc=1
+part1: server nonexistent topics root rejected,PASS,rc=1
+part1: client with no args rejected,PASS,rc=1
+part1: client invalid IP rejected/failed,PASS,rc=1
+part1: client invalid port rejected/failed,PASS,rc=1
+part1: client connection refused terminates (no hang),PASS,rc=1
+case1: server with no args rejected,PASS,rc=1
+case1: server invalid port 'abc' rejected,PASS,rc=1
+case1: server invalid port '0' rejected,PASS,rc=1
+case1: server invalid port '70000' rejected,PASS,rc=1
+case1: server invalid failure probability 'abc' rejected,PASS,rc=1
+case1: server invalid failure probability '-0.1' rejected,PASS,rc=1
+case1: server invalid failure probability '1.5' rejected,PASS,rc=1
+case1: server invalid failure probability 'nan' rejected,PASS,rc=1
+case1: server invalid failure probability '0.1x' rejected,PASS,rc=1
+case1: server without failure probability rejected,PASS,rc=1
+case1: server nonexistent topics root rejected,PASS,rc=1
+case1: client with no args rejected,PASS,rc=1
+case1: client invalid IP rejected/failed,PASS,rc=1
+case1: client invalid port rejected/failed,PASS,rc=1
+case1: client connection refused terminates (no hang),PASS,rc=1
+case2: server with no args rejected,PASS,rc=1
+case2: server invalid port 'abc' rejected,PASS,rc=1
+case2: server invalid port '0' rejected,PASS,rc=1
+case2: server invalid port '70000' rejected,PASS,rc=1
+case2: server invalid failure probability 'abc' rejected,PASS,rc=1
+case2: server invalid failure probability '-0.1' rejected,PASS,rc=1
+case2: server invalid failure probability '1.5' rejected,PASS,rc=1
+case2: server invalid failure probability 'nan' rejected,PASS,rc=1
+case2: server invalid failure probability '0.1x' rejected,PASS,rc=1
+case2: server without failure probability rejected,PASS,rc=1
+case2: server nonexistent topics root rejected,PASS,rc=1
+case2: client with no args rejected,PASS,rc=1
+case2: client invalid IP rejected/failed,PASS,rc=1
+case2: client invalid port rejected/failed,PASS,rc=1
+case2: client connection refused terminates (no hang),PASS,rc=1
+enhanced: server with no args rejected,PASS,rc=1
+enhanced: server invalid port 'abc' rejected,PASS,rc=1
+enhanced: server invalid port '0' rejected,PASS,rc=1
+enhanced: server invalid port '70000' rejected,PASS,rc=1
+enhanced: server invalid failure probability 'abc' rejected,PASS,rc=1
+enhanced: server invalid failure probability '-0.1' rejected,PASS,rc=1
+enhanced: server invalid failure probability '1.5' rejected,PASS,rc=1
+enhanced: server invalid failure probability 'nan' rejected,PASS,rc=1
+enhanced: server invalid failure probability '0.1x' rejected,PASS,rc=1
+enhanced: server without failure probability rejected,PASS,rc=1
+enhanced: server nonexistent topics root rejected,PASS,rc=1
+enhanced: client with no args rejected,PASS,rc=1
+enhanced: client invalid IP rejected/failed,PASS,rc=1
+enhanced: client invalid port rejected/failed,PASS,rc=1
+enhanced: client connection refused terminates (no hang),PASS,rc=1
+part1: topic 'bin_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=6 bytes=3286274 
+part1: output saved under <output_dir>/<topic>/,PASS,/home/dharmraj/it305/work_audit/part1_bin_topic/bin_topic
+part1: topic 'multi_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=25 bytes=2834663 
+part1: topic 'nozero_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=2 bytes=100005 
+part1: topic 'empty_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=0 bytes=0 
+case1: topic 'bin_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=6 bytes=3286274 
+case1: output saved under <output_dir>/<topic>/,PASS,/home/dharmraj/it305/work_audit/case1_bin_topic/bin_topic
+case1: topic 'multi_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=25 bytes=2834663 
+case1: topic 'nozero_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=2 bytes=100005 
+case1: topic 'empty_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=0 bytes=0 
+case2: topic 'bin_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=6 bytes=3286274 
+case2: output saved under <output_dir>/<topic>/,PASS,/home/dharmraj/it305/work_audit/case2_bin_topic/bin_topic
+case2: topic 'multi_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=25 bytes=2834663 
+case2: topic 'nozero_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=2 bytes=100005 
+case2: topic 'empty_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=0 bytes=0 
+enhanced: topic 'bin_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=6 bytes=3286274 
+enhanced: output saved under <output_dir>/<topic>/,PASS,/home/dharmraj/it305/work_audit/enhanced_bin_topic/bin_topic
+enhanced: topic 'multi_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=25 bytes=2834663 
+enhanced: topic 'nozero_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=2 bytes=100005 
+enhanced: topic 'empty_topic' transfer + SHA-256 byte-exact,PASS,rc=0 timed_out=False files=0 bytes=0 
+"part1: unknown topic -> client error exit, no hang",PASS,rc=1 timed_out=False
+part1: server keeps serving after an unknown-topic request,PASS,second client rc=0 
+"case1: unknown topic -> client error exit, no hang",PASS,rc=1 timed_out=False
+case1: server keeps serving after an unknown-topic request,PASS,second client rc=0 
+"case2: unknown topic -> client error exit, no hang",PASS,rc=1 timed_out=False
+case2: server keeps serving after an unknown-topic request,PASS,second client rc=0 
+"enhanced: unknown topic -> client error exit, no hang",PASS,rc=1 timed_out=False
+enhanced: server keeps serving after an unknown-topic request,PASS,second client rc=0 
+case2: SESSION_START -> SESSION_ACCEPT with non-zero id,PASS,type=0x09 sid=0x6ad81b434e4523c6 files=25
+case2: valid resume accepted at authoritative checkpoint,PASS,"type=12 resp=(7698933538879775686, 0, 65536, 0)"
+case2: client/server offset disagreement -> server's authoritative offset wins,PASS,"client proposed 105536; response=(7698933538879775686, 0, 65536, 1) flags=0x0001"
+case2: manifest fingerprint mismatch rejected (RESUME_ERROR),PASS,type=13 code=409
+case2: unknown/stale session id rejected (RESUME_ERROR),PASS,type=13 msg=b'SESSION_NOT_FOUND: Unknown session I'
+case2: session state does NOT survive a server-process restart (in-memory only),PASS,after restart resume reply type=0x0d -> RESUME_ERROR expected; documented limitation: sessions survive connection loss only
+case1: faults -> purge partial output and restart whole topic from beginning,PASS,faults=10 attempts=11 purges=10 fresh topic requests=11 integrity=True
+case2: each injected fault followed by session RESUME at the fault offset,PASS,"faults=[('e832b8072cf6', 0), ('e835b40820f6', 0)] resumes=[(5, 0), (8, 0)] integrity=True"
+case2: no redundant payload resent after resume,PASS,data_payload_recv=955798 useful=955798
+enhanced: 4 worker connections established and bit-exact result (p=0.05),PASS,"workers=['0', '1', '2', '3'] server_max_threads=5 integrity=True faults=2"
+enhanced: connections concurrently active (server thread count),PASS,max server threads observed=5 (1 acceptor + up to 4 workers)
+enhanced: SAME server instance serves a SECOND client/session,PASS,first client rc=0; second client rc=0 timed_out=False verify='' (server keeps one global session: g_plan/g_session_id/first_worker_started)
+enhanced: 150-file real Animals-10 topic (gatto_big150) transfers bit-exact with N=4,PASS,rc=0 timed_out=False files=150 bytes=1793915 verify=''
+"enhanced: topic with >1024 files (real 'mucca', 1866 files) correctly rejected (capacity limit)",PASS,rc=1 timed_out=False (rejected by design ceiling MAX_WORK_UNITS=1024) server_err_tail=
+part1 sequential: 8 simultaneous clients all bit-exact,PASS,server max threads=1
+part1 sequential: server stayed single-threaded,PASS,max threads observed=1
+part1 mt: 8 simultaneous clients all bit-exact,PASS,server max threads=2
+part1 mt: server really serviced connections in separate threads,PASS,max threads observed=2
+no hard-coded IP/port/path in server or client logic (usage text/comments excluded),PASS,no matches

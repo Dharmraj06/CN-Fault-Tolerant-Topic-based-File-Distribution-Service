@@ -1,0 +1,11 @@
+[2026-10-21T06:55:45+00:00] CMD: python3 scripts/bench_exp1_part1.py
+[2026-10-21T06:55:45+00:00] EXIT_CODE: 0
+[2026-10-21T07:17:08+00:00] CMD: python3 scripts/bench_exp_faults.py exp2
+[2026-10-21T07:17:08+00:00] EXIT_CODE: 0
+[2026-10-21T07:18:03+00:00] CMD: python3 scripts/bench_exp_faults.py exp3
+[2026-10-21T07:18:03+00:00] EXIT_CODE: 0
+[2026-10-21T07:23:17+00:00] CMD: python3 scripts/bench_exp_faults.py exp4
+[2026-10-21T07:23:17+00:00] EXIT_CODE: 0
+[2026-10-21T07:29:35+00:00] CMD: python3 scripts/bench_analyze.py /home/dharmraj/it305/repo/Results
+analysis done
+[2026-10-21T07:29:35+00:00] EXIT_CODE: 0

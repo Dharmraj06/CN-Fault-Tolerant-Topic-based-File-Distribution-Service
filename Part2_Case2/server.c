@@ -136,6 +136,14 @@ static void* client_worker(void *arg) {
             return NULL;
         }
 
+        if (req.manifest_fingerprint != manifest->manifest_fingerprint) {
+            send_resume_error(client_fd, 409, "MANIFEST_CHANGED: Fingerprint mismatch");
+            free_topic_manifest(manifest);
+            close(client_fd);
+            free(ctx);
+            return NULL;
+        }
+
         uint32_t auth_file = 0;
         uint64_t auth_offset = 0;
         uint16_t flags = 0;

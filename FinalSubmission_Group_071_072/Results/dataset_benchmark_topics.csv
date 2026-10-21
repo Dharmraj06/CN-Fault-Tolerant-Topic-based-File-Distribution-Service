@@ -1,0 +1,4 @@
+benchmark_topic,origin,file_count,total_bytes,total_64KiB_chunks,data_kind
+mucca,"raw-img/mucca (complete, byte-exact copy)",1866,25833171,1866,REAL Animals-10 images (not synthetic)
+gatto_fault20,first 10 raw-img/gatto files with 64KiB<size<=128KiB,10,955798,20,REAL Animals-10 images (not synthetic)
+gatto_big150,first 150 raw-img/gatto files (sorted by name),150,1793915,150,REAL Animals-10 images (not synthetic)

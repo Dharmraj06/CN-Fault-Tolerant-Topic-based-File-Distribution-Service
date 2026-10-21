@@ -30,6 +30,51 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+/* ----------------------------------------------------------------------------
+ * Measurement instrumentation (added for the benchmark campaign).
+ * Process-wide application-level byte counters.  They never alter protocol
+ * behaviour and are only reported when the IT305_METRICS environment variable
+ * is set (one "[METRICS]" line on stderr at process exit).
+ *   wire_bytes_*   : every byte handed to send() / returned by recv()
+ *                    (frame headers + payloads, i.e. application-level framed
+ *                    bytes, excluding TCP/IP headers).
+ *   data_payload_* : original file-content bytes carried inside MSG_FILE_DATA
+ *                    and MSG_WORK_DATA frames (the 20-byte work-data sub-header
+ *                    of MSG_WORK_DATA is excluded).
+ * ---------------------------------------------------------------------------- */
+#define METRIC_WORK_DATA_SUBHEADER 20u /* sizeof(EnhancedWorkDataHeader) */
+static uint64_t g_wire_bytes_sent = 0;
+static uint64_t g_wire_bytes_recv = 0;
+static uint64_t g_data_payload_sent = 0;
+static uint64_t g_data_payload_recv = 0;
+
+static void metric_add(uint64_t *counter, uint64_t value) {
+    __atomic_fetch_add(counter, value, __ATOMIC_RELAXED);
+}
+
+static uint64_t metric_data_bytes(uint8_t type, uint64_t payload_len) {
+    if (type == MSG_FILE_DATA) {
+        return payload_len;
+    }
+    if (type == MSG_WORK_DATA && payload_len >= METRIC_WORK_DATA_SUBHEADER) {
+        return payload_len - METRIC_WORK_DATA_SUBHEADER;
+    }
+    return 0;
+}
+
+__attribute__((destructor)) static void proto_metrics_report(void) {
+    if (getenv("IT305_METRICS") == NULL) {
+        return;
+    }
+    fprintf(stderr,
+            "[METRICS] wire_bytes_sent=%llu wire_bytes_recv=%llu "
+            "data_payload_sent=%llu data_payload_recv=%llu\n",
+            (unsigned long long)__atomic_load_n(&g_wire_bytes_sent, __ATOMIC_RELAXED),
+            (unsigned long long)__atomic_load_n(&g_wire_bytes_recv, __ATOMIC_RELAXED),
+            (unsigned long long)__atomic_load_n(&g_data_payload_sent, __ATOMIC_RELAXED),
+            (unsigned long long)__atomic_load_n(&g_data_payload_recv, __ATOMIC_RELAXED));
+}
+
 #if defined(__linux__) || defined(__GLIBC__)
 #  include <endian.h>
 #endif
@@ -260,6 +305,7 @@ int send_all(int fd, const void *buf, size_t len) {
             return -1;
         }
         total_sent += (size_t)n;
+        metric_add(&g_wire_bytes_sent, (uint64_t)n);
     }
 
     return 0;
@@ -299,6 +345,7 @@ int recv_all(int fd, void *buf, size_t len) {
             }
         }
         total_received += (size_t)n;
+        metric_add(&g_wire_bytes_recv, (uint64_t)n);
     }
 
     return 0;
@@ -341,6 +388,7 @@ int send_frame(int fd, uint8_t type, uint16_t flags, const void *payload, uint64
         if (send_all(fd, payload, (size_t)payload_len) != 0) {
             return -1;
         }
+        metric_add(&g_data_payload_sent, metric_data_bytes(type, payload_len));
     }
 
     return 0;
@@ -423,6 +471,7 @@ int recv_frame_payload(int fd, const FrameHeader *hdr, void *buf, size_t max_buf
         /* Premature EOF mid-payload or socket error is a fatal error */
         return -1;
     }
+    metric_add(&g_data_payload_recv, metric_data_bytes(hdr->type, hdr->payload_len));
 
     return 0;
 }
@@ -461,6 +510,7 @@ int recv_frame_payload_alloc(int fd, const FrameHeader *hdr, void **out_buf) {
         return -1;
     }
 
+    metric_add(&g_data_payload_recv, metric_data_bytes(hdr->type, hdr->payload_len));
     *out_buf = mem;
     return 0;
 }

@@ -1,0 +1,105 @@
+================================================================================
+IT305 BENCHMARK EXECUTION ENVIRONMENT RECORD
+Timestamp: 2026-10-21T06:55:35+00:00
+================================================================================
+
+--- HOST OPERATING SYSTEM & KERNEL ---
+Linux DV-VICTUS 5.15.167.4-microsoft-standard-WSL2 #1 SMP Tue Nov 5 00:21:55 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+PRETTY_NAME="Ubuntu 24.04.3 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.3 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+
+--- CPU ARCHITECTURE & HARDWARE DETAILS ---
+Architecture:                         x86_64
+Byte Order:                           Little Endian
+CPU(s):                               12
+On-line CPU(s) list:                  0-11
+Model name:                           12th Gen Intel(R) Core(TM) i5-12450H
+Thread(s) per core:                   2
+Socket(s):                            1
+BogoMIPS:                             4991.99
+
+--- MEMORY CONFIGURATION ---
+               total        used        free      shared  buff/cache   available
+Mem:            7781         953        6629           3         448        6828
+Swap:           2048           0        2048
+
+--- COMPILER & TOOLCHAIN VERSIONS ---
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+GNU Make 4.3
+GNU ld (GNU Binutils for Ubuntu) 2.42
+
+--- PYTHON ENVIRONMENT & LIBRARIES ---
+Python 3.12.3
+matplotlib: 3.6.3 numpy: 1.26.4
+
+--- NETWORK & LOOPBACK CONFIGURATION ---
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet 10.255.255.254/32 brd 10.255.255.254 scope global lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+
+--- GIT REPOSITORY STATE ---
+/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service
+Branch: main
+Commit: caadaea3375bbaef8bcbba5d21a618daf7f5cb55
+Status:
+ D FinalReport_Group_071_072.pdf
+ D Results/Part1_throughput_vs_clients.png
+ D Results/Part2_Case1_vs_Case2_overhead.png
+ D Results/Part2_Case1_vs_Case2_throughput.png
+ D Results/Part2_Enhanced_speedup_comparison.png
+ D Results/exp1_part1_concurrency.csv
+ D Results/exp2_fault_tolerance.csv
+ D Results/exp3_overhead_comparison.csv
+ D Results/exp4_enhanced_speedup.csv
+ M common/protocol.c
+ D scripts/package_submission.sh
+ D scripts/plot_results.py
+ D scripts/run_benchmarks.py
+ D scripts/test_correctness.sh
+?? Results/benchmark_commands.log
+?? Results/benchmark_environment.txt
+?? Results/build_logs_instrumented/
+?? Results/build_logs_original/
+?? Results/correctness_extra.log
+?? Results/correctness_extra_results.csv
+?? Results/correctness_verification.log
+?? Results/dataset_benchmark_topics.csv
+?? Results/dataset_files_sha256.csv
+?? Results/dataset_inventory.csv
+?? _backup_pre_audit/
+?? scripts/apply_instrumentation.py
+?? scripts/assemble_correctness_log.py
+?? scripts/audit_build.sh
+?? scripts/audit_extra_tests.py
+?? scripts/audit_run_tests.sh
+?? scripts/bench_analyze.py
+?? scripts/bench_exp1_part1.py
+?? scripts/bench_exp_faults.py
+?? scripts/bench_lib.py
+?? scripts/bench_stage_dataset.py
+?? scripts/bench_stage_extra.py
+?? scripts/run_campaign.sh
+
+--- DATASET PROVENANCE & LOCATION ---
+Staged Topics Directory: /home/dharmraj/it305/bench_data
+benchmark_topic,origin,file_count,total_bytes,total_64KiB_chunks,data_kind
+mucca,"raw-img/mucca (complete, byte-exact copy)",1866,25833171,1866,REAL Animals-10 images (not synthetic)
+gatto_fault20,first 10 raw-img/gatto files with 64KiB<size<=128KiB,10,955798,20,REAL Animals-10 images (not synthetic)
+gatto_big150,first 150 raw-img/gatto files (sorted by name),150,1793915,150,REAL Animals-10 images (not synthetic)

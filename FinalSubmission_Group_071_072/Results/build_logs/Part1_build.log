@@ -1,0 +1,17 @@
+=== Part1: make clean (2026-10-21T07:55:05+00:00) ===
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+rm -f server client server.o client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+exit=0
+=== Part1: make (2026-10-21T07:55:05+00:00) ===
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/protocol.c -o ../common/protocol.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/topic_manager.c -o ../common/topic_manager.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/file_transfer.c -o ../common/file_transfer.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o -pthread
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+exit=0

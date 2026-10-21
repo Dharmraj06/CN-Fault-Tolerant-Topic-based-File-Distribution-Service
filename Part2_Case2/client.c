@@ -106,7 +106,19 @@ int main(int argc, char *argv[]) {
     }
 
     const char *server_ip = argv[1];
-    int server_port = atoi(argv[2]);
+    struct in_addr addr_test;
+    if (inet_pton(AF_INET, server_ip, &addr_test) != 1) {
+        fprintf(stderr, "[CLIENT] Error: Invalid IPv4 address '%s'\n", server_ip);
+        return 1;
+    }
+
+    char *endptr = NULL;
+    long port = strtol(argv[2], &endptr, 10);
+    if (*endptr != '\0' || port < 1 || port > 65535) {
+        fprintf(stderr, "[CLIENT] Error: Invalid port '%s' (must be 1-65535)\n", argv[2]);
+        return 1;
+    }
+    int server_port = (int)port;
     const char *topic = argv[3];
     const char *output_dir = argv[4];
 
@@ -135,6 +147,10 @@ int main(int argc, char *argv[]) {
         int sock_fd = connect_server(server_ip, server_port);
         if (sock_fd < 0) {
             fprintf(stderr, "[CLIENT] Failed to connect to %s:%d\n", server_ip, server_port);
+            if (session_id == 0 && attempt >= 3) {
+                fprintf(stderr, "[CLIENT] Server unreachable on initial connection attempt. Aborting.\n");
+                return 1;
+            }
             usleep(backoff);
             backoff = (backoff * 2 > 2000000) ? 2000000 : backoff * 2;
             continue;

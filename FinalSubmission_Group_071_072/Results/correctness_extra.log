@@ -1,0 +1,103 @@
+[2026-10-21T07:58:36.422+00:00] supplementary correctness audit start; single host (WSL2 Ubuntu, kernel 5.15.167.4-microsoft-standard-WSL2), 12th Gen Intel(R) Core(TM) i5-12450H, 12 logical CPUs, 7781 MiB RAM, loopback 127.0.0.1 (server and all clients on the same machine)
+[2026-10-21T07:58:36.468+00:00] [PASS] part1: server with no args rejected :: rc=1
+[2026-10-21T07:58:36.485+00:00] [PASS] part1: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.500+00:00] [PASS] part1: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:36.514+00:00] [PASS] part1: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:36.528+00:00] [PASS] part1: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:36.542+00:00] [PASS] part1: client with no args rejected :: rc=1
+[2026-10-21T07:58:36.557+00:00] [PASS] part1: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:36.572+00:00] [PASS] part1: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:36.587+00:00] [PASS] part1: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:36.602+00:00] [PASS] case1: server with no args rejected :: rc=1
+[2026-10-21T07:58:36.618+00:00] [PASS] case1: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.632+00:00] [PASS] case1: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:36.648+00:00] [PASS] case1: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:36.665+00:00] [PASS] case1: server invalid failure probability 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.682+00:00] [PASS] case1: server invalid failure probability '-0.1' rejected :: rc=1
+[2026-10-21T07:58:36.697+00:00] [PASS] case1: server invalid failure probability '1.5' rejected :: rc=1
+[2026-10-21T07:58:36.712+00:00] [PASS] case1: server invalid failure probability 'nan' rejected :: rc=1
+[2026-10-21T07:58:36.746+00:00] [PASS] case1: server invalid failure probability '0.1x' rejected :: rc=1
+[2026-10-21T07:58:36.762+00:00] [PASS] case1: server without failure probability rejected :: rc=1
+[2026-10-21T07:58:36.780+00:00] [PASS] case1: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:36.803+00:00] [PASS] case1: client with no args rejected :: rc=1
+[2026-10-21T07:58:36.820+00:00] [PASS] case1: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:36.838+00:00] [PASS] case1: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:36.854+00:00] [PASS] case1: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:36.878+00:00] [PASS] case2: server with no args rejected :: rc=1
+[2026-10-21T07:58:36.898+00:00] [PASS] case2: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.915+00:00] [PASS] case2: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:36.933+00:00] [PASS] case2: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:36.955+00:00] [PASS] case2: server invalid failure probability 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.982+00:00] [PASS] case2: server invalid failure probability '-0.1' rejected :: rc=1
+[2026-10-21T07:58:37.005+00:00] [PASS] case2: server invalid failure probability '1.5' rejected :: rc=1
+[2026-10-21T07:58:37.025+00:00] [PASS] case2: server invalid failure probability 'nan' rejected :: rc=1
+[2026-10-21T07:58:37.041+00:00] [PASS] case2: server invalid failure probability '0.1x' rejected :: rc=1
+[2026-10-21T07:58:37.059+00:00] [PASS] case2: server without failure probability rejected :: rc=1
+[2026-10-21T07:58:37.076+00:00] [PASS] case2: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:37.092+00:00] [PASS] case2: client with no args rejected :: rc=1
+[2026-10-21T07:58:37.107+00:00] [PASS] case2: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:37.123+00:00] [PASS] case2: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:37.747+00:00] [PASS] case2: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:37.766+00:00] [PASS] enhanced: server with no args rejected :: rc=1
+[2026-10-21T07:58:37.782+00:00] [PASS] enhanced: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:37.797+00:00] [PASS] enhanced: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:37.818+00:00] [PASS] enhanced: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:37.837+00:00] [PASS] enhanced: server invalid failure probability 'abc' rejected :: rc=1
+[2026-10-21T07:58:37.860+00:00] [PASS] enhanced: server invalid failure probability '-0.1' rejected :: rc=1
+[2026-10-21T07:58:37.883+00:00] [PASS] enhanced: server invalid failure probability '1.5' rejected :: rc=1
+[2026-10-21T07:58:37.905+00:00] [PASS] enhanced: server invalid failure probability 'nan' rejected :: rc=1
+[2026-10-21T07:58:37.925+00:00] [PASS] enhanced: server invalid failure probability '0.1x' rejected :: rc=1
+[2026-10-21T07:58:37.946+00:00] [PASS] enhanced: server without failure probability rejected :: rc=1
+[2026-10-21T07:58:37.973+00:00] [PASS] enhanced: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:38.002+00:00] [PASS] enhanced: client with no args rejected :: rc=1
+[2026-10-21T07:58:38.023+00:00] [PASS] enhanced: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:38.045+00:00] [PASS] enhanced: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:38.064+00:00] [PASS] enhanced: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:38.177+00:00] [PASS] part1: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:38.182+00:00] [PASS] part1: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/part1_bin_topic/bin_topic
+[2026-10-21T07:58:38.383+00:00] [PASS] part1: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:38.429+00:00] [PASS] part1: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:38.466+00:00] [PASS] part1: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:38.562+00:00] [PASS] case1: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:38.566+00:00] [PASS] case1: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/case1_bin_topic/bin_topic
+[2026-10-21T07:58:38.766+00:00] [PASS] case1: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:38.824+00:00] [PASS] case1: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:38.859+00:00] [PASS] case1: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:41.771+00:00] [PASS] case2: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:41.776+00:00] [PASS] case2: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/case2_bin_topic/bin_topic
+[2026-10-21T07:58:46.199+00:00] [PASS] case2: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:46.520+00:00] [PASS] case2: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:46.577+00:00] [PASS] case2: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:49.579+00:00] [PASS] enhanced: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:49.595+00:00] [PASS] enhanced: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/enhanced_bin_topic/bin_topic
+[2026-10-21T07:58:54.202+00:00] [PASS] enhanced: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:54.513+00:00] [PASS] enhanced: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:54.567+00:00] [PASS] enhanced: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:54.780+00:00] [PASS] part1: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:58:54.787+00:00] [PASS] part1: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:58:55.017+00:00] [PASS] case1: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:58:55.031+00:00] [PASS] case1: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:58:59.503+00:00] [PASS] case2: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:58:59.511+00:00] [PASS] case2: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:59:04.105+00:00] [PASS] enhanced: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:59:04.112+00:00] [PASS] enhanced: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:59:04.145+00:00] [PASS] case2: SESSION_START -> SESSION_ACCEPT with non-zero id :: type=0x09 sid=0x6ad81b434e4523c6 files=25
+[2026-10-21T07:59:04.753+00:00] [PASS] case2: valid resume accepted at authoritative checkpoint :: type=12 resp=(7698933538879775686, 0, 65536, 0)
+[2026-10-21T07:59:04.760+00:00] [PASS] case2: client/server offset disagreement -> server's authoritative offset wins :: client proposed 105536; response=(7698933538879775686, 0, 65536, 1) flags=0x0001
+[2026-10-21T07:59:04.767+00:00] [PASS] case2: manifest fingerprint mismatch rejected (RESUME_ERROR) :: type=13 code=409
+[2026-10-21T07:59:04.774+00:00] [PASS] case2: unknown/stale session id rejected (RESUME_ERROR) :: type=13 msg=b'SESSION_NOT_FOUND: Unknown session I'
+[2026-10-21T07:59:04.800+00:00] [PASS] case2: session state does NOT survive a server-process restart (in-memory only) :: after restart resume reply type=0x0d -> RESUME_ERROR expected; documented limitation: sessions survive connection loss only
+[2026-10-21T07:59:17.464+00:00] [PASS] case1: faults -> purge partial output and restart whole topic from beginning :: faults=10 attempts=11 purges=10 fresh topic requests=11 integrity=True
+[2026-10-21T07:59:19.671+00:00] [PASS] case2: each injected fault followed by session RESUME at the fault offset :: faults=[('e832b8072cf6', 0), ('e835b40820f6', 0)] resumes=[(5, 0), (8, 0)] integrity=True
+[2026-10-21T07:59:19.676+00:00] [PASS] case2: no redundant payload resent after resume :: data_payload_recv=955798 useful=955798
+[2026-10-21T07:59:20.230+00:00] [PASS] enhanced: 4 worker connections established and bit-exact result (p=0.05) :: workers=['0', '1', '2', '3'] server_max_threads=5 integrity=True faults=2
+[2026-10-21T07:59:20.239+00:00] [PASS] enhanced: connections concurrently active (server thread count) :: max server threads observed=5 (1 acceptor + up to 4 workers)
+[2026-10-21T07:59:23.578+00:00] [PASS] enhanced: SAME server instance serves a SECOND client/session :: first client rc=0; second client rc=0 timed_out=False verify='' (server keeps one global session: g_plan/g_session_id/first_worker_started)
+[2026-10-21T07:59:27.672+00:00] [PASS] enhanced: 150-file real Animals-10 topic (gatto_big150) transfers bit-exact with N=4 :: rc=0 timed_out=False files=150 bytes=1793915 verify=''
+[2026-10-21T07:59:27.781+00:00] [PASS] enhanced: topic with >1024 files (real 'mucca', 1866 files) correctly rejected (capacity limit) :: rc=1 timed_out=False (rejected by design ceiling MAX_WORK_UNITS=1024) server_err_tail=
+[2026-10-21T07:59:28.247+00:00] [PASS] part1 sequential: 8 simultaneous clients all bit-exact :: server max threads=1
+[2026-10-21T07:59:28.260+00:00] [PASS] part1 sequential: server stayed single-threaded :: max threads observed=1
+[2026-10-21T07:59:28.709+00:00] [PASS] part1 mt: 8 simultaneous clients all bit-exact :: server max threads=2
+[2026-10-21T07:59:28.722+00:00] [PASS] part1 mt: server really serviced connections in separate threads :: max threads observed=2
+[2026-10-21T07:59:29.004+00:00] [PASS] no hard-coded IP/port/path in server or client logic (usage text/comments excluded) :: no matches
+[2026-10-21T07:59:29.022+00:00] SUMMARY: 101 PASS / 0 FAIL of 101

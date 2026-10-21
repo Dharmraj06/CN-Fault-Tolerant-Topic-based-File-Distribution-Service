@@ -1,0 +1,15 @@
+=== Part2_Case2: make clean (2026-10-21T06:44:25+00:00) ===
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+rm -f server client server.o client.o ../common/session.o ../common/logging.o
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+exit=0
+=== Part2_Case2: make (2026-10-21T06:44:25+00:00) ===
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/session.c -o ../common/session.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o ../common/session.o ../common/logging.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/fault_injection.o ../common/session.o ../common/logging.o -pthread
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+exit=0

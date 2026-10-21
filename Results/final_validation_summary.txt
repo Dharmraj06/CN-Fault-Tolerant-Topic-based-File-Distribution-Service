@@ -1,0 +1,59 @@
+================================================================================
+IT305 COMPUTER NETWORKS LABORATORY - FINAL AUDIT VALIDATION SUMMARY
+================================================================================
+Timestamp: 2026-10-21T13:30:00+05:30
+Merged Groups: 071 & 072
+Repository: CN-Fault-Tolerant-Topic-Based-File-Distribution-Service
+
+1. STRICT BUILD AUDIT
+--------------------------------------------------------------------------------
+- Flags: gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread
+- Part1:               BUILD CLEAN (warnings: 0, exit: 0)
+- Part2_Case1:         BUILD CLEAN (warnings: 0, exit: 0)
+- Part2_Case2:         BUILD CLEAN (warnings: 0, exit: 0)
+- Part2_Case2_Enhanced: BUILD CLEAN (warnings: 0, exit: 0)
+- Executables present: server and client in all 4 directories
+
+2. CORRECTNESS & REGRESSION TEST RESULTS
+--------------------------------------------------------------------------------
+- Core Regression Suites: 62 / 62 PASSED (100% PASS, 0 FAIL)
+  * run_server_tests.sh: 5 / 5 PASSED
+  * test_phase2.sh:      5 / 5 PASSED
+  * test_phase3.sh:      5 / 5 PASSED
+  * test_phase4.sh:      6 / 6 PASSED
+  * test_correctness.sh: 41 / 41 PASSED
+- Supplementary Edge-Case Audit: 101 / 101 PASSED (100% PASS, 0 FAIL)
+  * Pre-fix status: 91 PASS / 10 FAIL
+  * Post-fix status: 101 PASS / 0 FAIL (All 10 edge-case defects resolved)
+- Total Automated Test Cases: 163 / 163 PASSED
+
+3. BENCHMARK RUN RECONCILIATION
+--------------------------------------------------------------------------------
+- Total Raw Runs Executed: 176 unique runs
+  * Experiment 1 (Part 1 Concurrency):    32 runs (8 warm-up + 24 measured)
+  * Experiment 2 (Case 1 Full Restart):   24 runs (4 warm-up + 20 measured)
+  * Experiment 3 (Case 2 Resume):         36 runs (6 warm-up + 30 measured)
+  * Experiment 4 (Case 2 Enhanced):       84 runs (14 warm-up + 70 measured)
+- Master Manifest Status: 176 entries, 176 unique IDs, 0 duplicates
+- Cryptographic SHA-256 Integrity: 176 / 176 PASSED (100.0%)
+
+4. DATASET PROVENANCE & COVERAGE
+--------------------------------------------------------------------------------
+- Real Animals-10 images in repository: 17,675 files (257,645,574 bytes)
+- Available classes (8): elefante, farfalla, gallina, gatto, mucca, pecora,
+  ragno, scoiattolo
+- Missing classes (2): cane (0 files), cavallo (0 files) - never committed to git
+- Staged benchmark topics:
+  * mucca:         1,866 files (25,833,171 bytes) - 100% real Animals-10 JPEG
+  * gatto_fault20: 10 files (20 chunks of 64 KiB, 955,798 bytes) - 100% real
+  * gatto_big150:  150 files (1,793,915 bytes) - 100% real
+
+5. THREE-COMPUTER EXPERIMENT STATUS
+--------------------------------------------------------------------------------
+- Test environment: Single-host WSL2 loopback (127.0.0.1)
+- Physical three-computer LAN setup: NOT VERIFIED (Honest disclosure)
+
+6. FINAL VERDICT
+--------------------------------------------------------------------------------
+VERDICT: READY FOR PROMPT 2 WITH DOCUMENTED LIMITATIONS
+================================================================================

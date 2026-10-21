@@ -1,0 +1,36 @@
+[Part1] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 46064 2026-10-21 07:55:07.652159900 +0000 Part1/client
+-rwxrwxrwx 1 dharmraj dharmraj 45808 2026-10-21 07:55:06.415789600 +0000 Part1/server
+Part1/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=e959619d4e21cb07708347b9bbd3ec99c1ce0843, for GNU/Linux 3.2.0, not stripped
+Part1/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=538368e07893c5b707afcca7063948ee0e250024, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+[Part2_Case1] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 54552 2026-10-21 07:55:10.370795500 +0000 Part2_Case1/client
+-rwxrwxrwx 1 dharmraj dharmraj 46560 2026-10-21 07:55:09.492781600 +0000 Part2_Case1/server
+Part2_Case1/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a656c2df527dfa69041eb6decbf4028ad268f706, for GNU/Linux 3.2.0, not stripped
+Part2_Case1/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=802e661cfe229c5d0d7d8b9799f4cc663432d626, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+[Part2_Case2] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 51768 2026-10-21 07:55:13.383509900 +0000 Part2_Case2/client
+-rwxrwxrwx 1 dharmraj dharmraj 55992 2026-10-21 07:55:12.390366900 +0000 Part2_Case2/server
+Part2_Case2/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=5cc195d566ee05f70cb1c32975f6f4955beca307, for GNU/Linux 3.2.0, not stripped
+Part2_Case2/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a5090e54d12e1a0e124119f66ffde80788d3063f, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+[Part2_Case2_Enhanced] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 56008 2026-10-21 07:55:18.083961500 +0000 Part2_Case2_Enhanced/client
+-rwxrwxrwx 1 dharmraj dharmraj 56248 2026-10-21 07:55:17.071789500 +0000 Part2_Case2_Enhanced/server
+Part2_Case2_Enhanced/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=9a894fd6015f659238c94a361b63f884983a232f, for GNU/Linux 3.2.0, not stripped
+Part2_Case2_Enhanced/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=b0366f8137681143415a384888f708196d02498d, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'

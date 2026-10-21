@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -427,7 +428,6 @@ int main(int argc, char **argv)
     long port_value;
     double failure_probability;
     int listener;
-    int first_worker_started = 0;
 
     if (argc != 4) {
         fprintf(stderr,
@@ -446,6 +446,12 @@ int main(int argc, char **argv)
 
     if (strlen(argv[2]) >= sizeof(g_topics_root)) {
         fprintf(stderr, "Topics root path is too long\n");
+        return EXIT_FAILURE;
+    }
+
+    struct stat st;
+    if (stat(argv[2], &st) != 0 || !S_ISDIR(st.st_mode)) {
+        fprintf(stderr, "Topics root path '%s' cannot be accessed or is not a directory\n", argv[2]);
         return EXIT_FAILURE;
     }
 
@@ -491,16 +497,33 @@ int main(int argc, char **argv)
 
         pthread_mutex_lock(&g_state_mutex);
 
-        if (!first_worker_started) {
+        FrameHeader peek_hdr;
+        ssize_t peek_n = recv(fd, &peek_hdr, sizeof(peek_hdr), MSG_PEEK);
+        if (peek_n != (ssize_t)sizeof(peek_hdr)) {
+            pthread_mutex_unlock(&g_state_mutex);
+            close(fd);
+            continue;
+        }
+
+        if (peek_hdr.type == MSG_SESSION_START) {
+            /* Reset previous session state if complete or idle */
+            if (g_plan != NULL) {
+                destroy_work_plan(g_plan);
+                g_plan = NULL;
+                if (g_manifest != NULL) {
+                    free_topic_manifest(g_manifest);
+                    g_manifest = NULL;
+                }
+                g_session_id = 0;
+            }
+
             if (initialize_session(fd) != 0) {
                 pthread_mutex_unlock(&g_state_mutex);
                 close(fd);
                 continue;
             }
-
-            first_worker_started = 1;
             worker_id = 0;
-        } else {
+        } else if (peek_hdr.type == MSG_WORK_ASSIGN && g_plan != NULL) {
             EnhancedWorkerHello hello;
 
             if (receive_payload(fd, MSG_WORK_ASSIGN,
@@ -521,6 +544,11 @@ int main(int argc, char **argv)
                 close(fd);
                 continue;
             }
+        } else {
+            pthread_mutex_unlock(&g_state_mutex);
+            (void)send_error_frame(fd, "Invalid message type for server state");
+            close(fd);
+            continue;
         }
 
         pthread_mutex_unlock(&g_state_mutex);

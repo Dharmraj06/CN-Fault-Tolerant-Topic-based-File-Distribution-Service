@@ -1,0 +1,525 @@
+================================================================================
+IT305 CORRECTNESS AND REGRESSION VERIFICATION CONSOLIDATED AUDIT LOG
+================================================================================
+
+[SECTION 1: ENVIRONMENT & BUILD VERIFICATION]
+[Part1] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 46064 2026-10-21 06:44:21.558256600 +0000 Part1/client
+-rwxrwxrwx 1 dharmraj dharmraj 45808 2026-10-21 06:44:19.965690500 +0000 Part1/server
+Part1/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=e959619d4e21cb07708347b9bbd3ec99c1ce0843, for GNU/Linux 3.2.0, not stripped
+Part1/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=538368e07893c5b707afcca7063948ee0e250024, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Nothing to be done for 'all'.
+make: warning:  Clock skew detected.  Your build may be incomplete.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+[Part2_Case1] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 54552 2026-10-21 06:44:25.089909000 +0000 Part2_Case1/client
+-rwxrwxrwx 1 dharmraj dharmraj 46560 2026-10-21 06:44:24.024505400 +0000 Part2_Case1/server
+Part2_Case1/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=bf06b68d3f77fbc7f06b4ead3939e45f9368717c, for GNU/Linux 3.2.0, not stripped
+Part2_Case1/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=802e661cfe229c5d0d7d8b9799f4cc663432d626, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case1'
+[Part2_Case2] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 51768 2026-10-21 06:44:28.466206600 +0000 Part2_Case2/client
+-rwxrwxrwx 1 dharmraj dharmraj 55992 2026-10-21 06:44:27.467598200 +0000 Part2_Case2/server
+Part2_Case2/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=edbae711500a9ddff34690003d3cf2197780027f, for GNU/Linux 3.2.0, not stripped
+Part2_Case2/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=c51f35eebb873468e4a1556feb5d9bb2eb1370d8, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2'
+[Part2_Case2_Enhanced] exits_ok=2/2 warnings=0
+-rwxrwxrwx 1 dharmraj dharmraj 56008 2026-10-21 06:44:33.361963000 +0000 Part2_Case2_Enhanced/client
+-rwxrwxrwx 1 dharmraj dharmraj 52152 2026-10-21 06:44:32.280689300 +0000 Part2_Case2_Enhanced/server
+Part2_Case2_Enhanced/server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=76326bf39026e3c71c29f59eb8511eb7972c470f, for GNU/Linux 3.2.0, not stripped
+Part2_Case2_Enhanced/client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=219b32fbfaadc37765d0e467c078044f2907d265, for GNU/Linux 3.2.0, not stripped
+-- second make (expect nothing to do):
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+make: Nothing to be done for 'all'.
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/Project/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part2_Case2_Enhanced'
+
+================================================================================
+[SECTION 2: REPOSITORY REGRESSION TEST SUITES (62/62 PASSED)]
+================================================================================
+################ run_server_tests.sh  (2026-10-21T06:42:24+00:00) ################
+CMD: bash tests/run_server_tests.sh
+>>> Compiling test_server_phase1 test client...
+>>> Setting up temporary test fixtures in /tmp/test_topics_harness_4723...
+>>> 1. Starting Part1/server in MULTI-THREADED (MT) mode on port 19998...
+>>> 2. Executing server integration test suite against MT server...
+===============================================================
+IT305 Part 1 Server Integration Test Suite
+Testing Server on port: 19998
+===============================================================
+
+[RUNNING] Test 1: Valid Topic Loopback Transfer
+  [PASS] Valid Topic Loopback Transfer
+[RUNNING] Test 2: Invalid / Nonexistent Topic Rejection (404)
+[SERVER] Rejecting topic 'nonexistent_topic_12345' from 127.0.0.1:36044: Topic directory not found (code 404)
+  [PASS] Invalid / Nonexistent Topic Rejection (404)
+[RUNNING] Test 3: Path Traversal Security Rejection (403)
+[SERVER] Rejecting topic '../../etc/passwd' from 127.0.0.1:36058: Invalid topic name (path traversal or forbidden characters) (code 403)
+  [PASS] Path Traversal Security Rejection (403)
+[RUNNING] Test 4: Abrupt Client Disconnection Clean Recovery
+[SERVER] Client 127.0.0.1:36060 disconnected during MSG_FILE_BEGIN for 'file_b.txt'
+  [PASS] Abrupt Client Disconnection Clean Recovery
+[RUNNING] Test 5: Concurrency Test (8 Simultaneous Clients)
+  [PASS] Concurrency Test (Simultaneous Clients)
+
+===============================================================
+Test Results: 5/5 Passed (100% Success Rate)
+Status: Part1/server.c Fully Verified and Gate 1.3 Ready
+===============================================================
+>>> 3. Stopping MT server...
+===============================================================
+IT305 Baseline Topic File Server (Part 1)
+Listening Port    : 19998
+Topics Root Dir   : /tmp/test_topics_harness_4723
+Operational Mode  : Multi-Threaded (MT)
+===============================================================
+[SERVER] Ready and listening for incoming client requests...
+[SERVER] Connection accepted from 127.0.0.1:36028 (fd=4)
+[SERVER] Client 127.0.0.1:36028 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36028 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36028
+[SERVER] Connection accepted from 127.0.0.1:36044 (fd=5)
+[SERVER] Client 127.0.0.1:36044 requested topic: 'nonexistent_topic_12345'
+[SERVER] Connection accepted from 127.0.0.1:36058 (fd=4)
+[SERVER] Client 127.0.0.1:36058 requested topic: '../../etc/passwd'
+[SERVER] Connection accepted from 127.0.0.1:36060 (fd=5)
+[SERVER] Client 127.0.0.1:36060 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36060 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic transfer for 'valid_topic' to 127.0.0.1:36060 aborted prematurely
+[SERVER] Connection accepted from 127.0.0.1:36076 (fd=4)
+[SERVER] Client 127.0.0.1:36076 closed connection before sending request (EOF)
+[SERVER] Connection accepted from 127.0.0.1:36078 (fd=5)
+[SERVER] Client 127.0.0.1:36078 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36078 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Connection accepted from 127.0.0.1:36094 (fd=4)
+[SERVER] Client 127.0.0.1:36094 requested topic: 'valid_topic'
+[SERVER] Connection accepted from 127.0.0.1:36110 (fd=8)
+[SERVER] Client 127.0.0.1:36110 requested topic: 'valid_topic'
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36078
+[SERVER] Connection accepted from 127.0.0.1:36132 (fd=11)
+[SERVER] Client 127.0.0.1:36132 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36110 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36132 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36132
+[SERVER] Connection accepted from 127.0.0.1:36120 (fd=9)
+[SERVER] Client 127.0.0.1:36120 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36120 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36094 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36120
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36110
+[SERVER] Connection accepted from 127.0.0.1:36148 (fd=5)
+[SERVER] Client 127.0.0.1:36148 requested topic: 'valid_topic'
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36094
+[SERVER] Connection accepted from 127.0.0.1:36150 (fd=6)
+[SERVER] Client 127.0.0.1:36150 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36148 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36150 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Connection accepted from 127.0.0.1:36160 (fd=8)
+[SERVER] Client 127.0.0.1:36160 requested topic: 'valid_topic'
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36150
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36148
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36160 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36160
+
+[SERVER] Shutting down server and releasing socket...
+[SERVER] Clean exit completed.
+
+>>> 4. Starting Part1/server in SEQUENTIAL mode on port 19998...
+>>> 5. Executing server integration test suite against SEQUENTIAL server...
+===============================================================
+IT305 Part 1 Server Integration Test Suite
+Testing Server on port: 19998
+===============================================================
+
+[RUNNING] Test 1: Valid Topic Loopback Transfer
+  [PASS] Valid Topic Loopback Transfer
+[RUNNING] Test 2: Invalid / Nonexistent Topic Rejection (404)
+[SERVER] Rejecting topic 'nonexistent_topic_12345' from 127.0.0.1:36170: Topic directory not found (code 404)
+  [PASS] Invalid / Nonexistent Topic Rejection (404)
+[RUNNING] Test 3: Path Traversal Security Rejection (403)
+[SERVER] Rejecting topic '../../etc/passwd' from 127.0.0.1:36180: Invalid topic name (path traversal or forbidden characters) (code 403)
+  [PASS] Path Traversal Security Rejection (403)
+[RUNNING] Test 4: Abrupt Client Disconnection Clean Recovery
+  [PASS] Abrupt Client Disconnection Clean Recovery
+[RUNNING] Test 5: Concurrency Test (8 Simultaneous Clients)
+  [PASS] Concurrency Test (Simultaneous Clients)
+
+===============================================================
+Test Results: 5/5 Passed (100% Success Rate)
+Status: Part1/server.c Fully Verified and Gate 1.3 Ready
+===============================================================
+>>> 6. Stopping SEQUENTIAL server...
+===============================================================
+IT305 Baseline Topic File Server (Part 1)
+Listening Port    : 19998
+Topics Root Dir   : /tmp/test_topics_harness_4723
+Operational Mode  : Sequential
+===============================================================
+[SERVER] Ready and listening for incoming client requests...
+[SERVER] Connection accepted from 127.0.0.1:36164 (fd=4)
+[SERVER] Client 127.0.0.1:36164 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36164 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36164
+[SERVER] Connection accepted from 127.0.0.1:36170 (fd=4)
+[SERVER] Client 127.0.0.1:36170 requested topic: 'nonexistent_topic_12345'
+[SERVER] Connection accepted from 127.0.0.1:36180 (fd=4)
+[SERVER] Client 127.0.0.1:36180 requested topic: '../../etc/passwd'
+[SERVER] Connection accepted from 127.0.0.1:36188 (fd=4)
+[SERVER] Client 127.0.0.1:36188 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36188 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36188
+[SERVER] Connection accepted from 127.0.0.1:36190 (fd=4)
+[SERVER] Client 127.0.0.1:36190 closed connection before sending request (EOF)
+[SERVER] Connection accepted from 127.0.0.1:36202 (fd=4)
+[SERVER] Client 127.0.0.1:36202 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36202 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36202
+[SERVER] Connection accepted from 127.0.0.1:36212 (fd=4)
+[SERVER] Client 127.0.0.1:36212 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36212 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36212
+[SERVER] Connection accepted from 127.0.0.1:36216 (fd=4)
+[SERVER] Client 127.0.0.1:36216 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36216 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36216
+[SERVER] Connection accepted from 127.0.0.1:36230 (fd=4)
+[SERVER] Client 127.0.0.1:36230 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36230 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36230
+[SERVER] Connection accepted from 127.0.0.1:36242 (fd=4)
+[SERVER] Client 127.0.0.1:36242 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36242 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36242
+[SERVER] Connection accepted from 127.0.0.1:36248 (fd=4)
+[SERVER] Client 127.0.0.1:36248 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36248 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36248
+[SERVER] Connection accepted from 127.0.0.1:36258 (fd=4)
+[SERVER] Client 127.0.0.1:36258 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36258 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36258
+[SERVER] Connection accepted from 127.0.0.1:36260 (fd=4)
+[SERVER] Client 127.0.0.1:36260 requested topic: 'valid_topic'
+[SERVER] Topic 'valid_topic' resolved for 127.0.0.1:36260 (3 files, 135 total bytes, fingerprint 0x5BD9F797)
+[SERVER] Successfully completed topic 'valid_topic' transfer to 127.0.0.1:36260
+
+[SERVER] Shutting down server and releasing socket...
+[SERVER] Clean exit completed.
+
+===============================================================
+ALL SERVER INTEGRATION TESTS PASSED SUCCESSFULLY (MT & SEQUENTIAL)
+===============================================================
+EXIT_CODE[run_server_tests.sh]=0
+
+################ test_phase2.sh  (2026-10-21T06:42:26+00:00) ################
+CMD: bash tests/test_phase2.sh
+================================================================================
+IT305 PHASE 2 MASTER INTEGRATION & ACCEPTANCE VERIFICATION
+Target Binaries: Part1/server & Part1/client
+Timestamp: 2026-10-21 06:42:26 UTC
+Environment: Linux 5.15.167.4-microsoft-standard-WSL2 (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0)
+================================================================================
+
+--------------------------------------------------------------------------------
+GATE 0: Build Cleanliness Audit (Part1/Makefile)
+--------------------------------------------------------------------------------
+Command: make -C Part1 clean && make -C Part1
+[PASS] Part1/server and Part1/client built cleanly with zero compiler warnings
+
+>>> Setting up temporary test fixtures in /tmp/test_phase2_fixtures_4777...
+[INFO] Fixtures prepared successfully
+
+>>> Starting baseline Part1/server on port 19990 (Multi-Threaded mode)...
+--- SCENARIO 1: Multiple Small Files ---
+  [PASS] Scenario 1: Multiple small files transferred bit-exact (exit code: 0)
+--- SCENARIO 2: Files Larger Than 64 KiB ---
+  [PASS] Scenario 2: Large files transferred across multiple chunks bit-exact (exit code: 0)
+--- SCENARIO 3: Exact Chunk Boundary (64 KiB, 128 KiB) ---
+  [PASS] Scenario 3: Exact chunk boundary files transferred bit-exact (exit code: 0)
+--- SCENARIO 4: Final Partial Chunks ---
+  [PASS] Scenario 4: Files with final partial chunks reassembled bit-exact (exit code: 0)
+--- SCENARIO 5: Empty Files (0 Bytes) ---
+  [PASS] Scenario 5: Zero-byte files created and verified bit-exact (exit code: 0)
+--- SCENARIO 6: Missing Topics (404 Rejection) ---
+  [PASS] Scenario 6: Nonexistent topic correctly rejected with error code (exit code: 1)
+--- SCENARIO 7: Filenames Containing Spaces ---
+  [PASS] Scenario 7: Files with spaces in filename transferred bit-exact (exit code: 0)
+--- SCENARIO 8: Traversal Attempts & Invalid Topics ---
+  [PASS] Scenario 8: All traversal and invalid topic attempts rejected safely
+--- SCENARIO 9: Server Disconnect Mid-Transfer ---
+  [PASS] Scenario 9: Client detected server disconnect and exited cleanly with error (exit code: 1)
+--- SCENARIO 10: Destination Write Failure ---
+  [PASS] Scenario 10: Destination write failure gracefully detected and handled (exit code: 1)
+--- SCENARIO 11 & 12: Eight Simultaneous Clients & Isolation ---
+  [PASS] Scenario 11: All 8 simultaneous independent clients completed with exit code 0
+  [PASS] Scenario 12: Perfect isolation verified across all 8 clients with zero cross-contamination
+
+================================================================================
+VERIFICATION SUMMARY: 12 / 12 SCENARIOS PASSED
+Integrity Report Generated: /home/dharmraj/it305/test_scratch/tests/phase2_integrity_report.txt
+Verification Log Generated: /home/dharmraj/it305/test_scratch/tests/phase2_verification.log
+DECISION: PASS (All Phase 2 Acceptance Criteria 100% Satisfied)
+================================================================================
+EXIT_CODE[test_phase2.sh]=0
+
+################ test_phase3.sh  (2026-10-21T06:42:29+00:00) ################
+CMD: bash tests/test_phase3.sh
+================================================================================
+IT305 PHASE 3 MASTER INTEGRATION & ACCEPTANCE VERIFICATION
+Target Binaries: Part2_Case1/server & Part2_Case1/client
+Timestamp: 2026-10-21 06:42:29 UTC
+Environment: Linux 5.15.167.4-microsoft-standard-WSL2 (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0)
+================================================================================
+
+--------------------------------------------------------------------------------
+GATE 0: Build Cleanliness Audit (Part2_Case1/Makefile)
+--------------------------------------------------------------------------------
+Command: make -C Part2_Case1 clean && make -C Part2_Case1
+[PASS] Part2_Case1/server and Part2_Case1/client built cleanly with zero compiler warnings
+
+>>> Setting up temporary test fixtures in /tmp/test_phase3_fixtures_5234...
+[INFO] Fixtures prepared successfully
+
+--- SCENARIO 1: CLI Argument Parsing & Validation ---
+  [PASS] Scenario 1: CLI argument validation strictly enforces boundary and security rules
+
+--- SCENARIO 2: Zero-Fault Baseline Transfer (p = 0.0) ---
+Starting server with failure_prob = 0.0 on port 19992...
+  [PASS] Scenario 2: Zero-fault transfer completed on attempt 1 with bit-exact SHA-256 match
+
+--- SCENARIO 3: Fault Injection & Full Restart Recovery (p = 0.05) ---
+Starting server with failure_prob = 0.05 on port 19993...
+  [PASS] Scenario 3: Server injected drops, client purged and restarted, completed bit-exact
+
+--- SCENARIO 4: No Partial File Residue on Aborted Transfer ---
+Starting server with failure_prob = 0.50 on port 19994...
+  [INFO] Scenario 4: first client interrupted mid-transfer, exit status 143
+  [PASS] Scenario 4: Partial file residue cleanly purged; restarted transfer matches 100%
+
+--- SCENARIO 5: Persistent Failure & Max Retry Abort (p = 1.0) ---
+Starting server with failure_prob = 1.0 on port 19995...
+  [PASS] Scenario 5: At p=1.0, client cleanly aborted after max retries with zero file residue
+
+--- SCENARIO 6: Multi-Client Concurrent Isolation under Faults ---
+Starting server with failure_prob = 0.03 on port 19996...
+  [PASS] Scenario 6: Concurrent clients recovered independently and finished bit-exact
+
+================================================================================
+PHASE 3 VERIFICATION SUMMARY: 6 / 6 SCENARIOS PASSED
+Detailed log available at: /home/dharmraj/it305/test_scratch/tests/phase3_fault_recovery.log
+================================================================================
+STATUS: ALL PHASE 3 ACCEPTANCE GATES PASSED [100%]
+EXIT_CODE[test_phase3.sh]=0
+
+################ test_phase4.sh  (2026-10-21T06:44:10+00:00) ################
+CMD: bash tests/test_phase4.sh
+================================================================================
+IT305 PHASE 4 MASTER INTEGRATION & ACCEPTANCE VERIFICATION
+================================================================================
+--------------------------------------------------------------------------------
+GATE 0: Build Cleanliness Audit (Part2_Case2/Makefile)
+--------------------------------------------------------------------------------
+[PASS] Part2_Case2 built cleanly with zero compiler warnings
+
+--------------------------------------------------------------------------------
+GATE 1: Session Module Unit Tests (common/session.*)
+--------------------------------------------------------------------------------
+[PASS] common/session.*: All unit tests passed
+
+>>> Preparing test fixtures...
+[INFO] Fixtures prepared successfully
+
+--- SCENARIO 1: CLI Argument Parsing & Validation ---
+  [PASS] Scenario 1: CLI argument validation strictly enforced
+
+--- SCENARIO 2: Zero-Fault Baseline Transfer (p = 0.0) ---
+  [PASS] Scenario 2: Zero-fault transfer completed bit-exact
+
+--- SCENARIO 3: Fault Injection & Mid-File Checkpoint Resume (p = 0.12) ---
+  [PASS] Scenario 3: Server injected disconnect, client resumed same session (0x6AD834B76AA123C6), completed bit-exact
+
+--- SCENARIO 4: Authoritative Checkpoint Streaming Verification ---
+  [PASS] Scenario 4: Mid-file resume verified with authoritative checkpoint progression and 100% SHA-256 match
+
+--- SCENARIO 5: Local File Reconciliation & Authoritative Rewind ---
+  [PASS] Scenario 5: Client detected local file overshoot, truncated uncommitted bytes via ftruncate(), and completed bit-exact
+
+--- SCENARIO 6: Manifest Change & Invalid Session Rejection ---
+  [PASS] Scenario 6: Manifest alteration and invalid session ID both rejected with authoritative RESUME_ERROR
+
+--- SCENARIO 7: Empty Files & File Boundary Conditions ---
+  [PASS] Scenario 7: Empty files, sub-chunk files, and boundary conditions handled bit-exact
+
+--- SCENARIO 8: Concurrent Sessions Under Fault Injection ---
+  [PASS] Scenario 8: Concurrent independent sessions resumed under faults and completed bit-exact
+
+================================================================================
+PHASE 4 VERIFICATION SUMMARY: 8 / 8 SCENARIOS PASSED
+Detailed log available at: /home/dharmraj/it305/test_scratch/tests/phase4_resume_verification.log
+================================================================================
+STATUS: ALL PHASE 4 ACCEPTANCE GATES PASSED [100%]
+EXIT_CODE[test_phase4.sh]=0
+
+################ test_correctness.sh  (2026-10-21T06:44:52+00:00) ################
+CMD: bash scripts/test_correctness.sh
+======================================================================
+IT305 Master 4-Variant Correctness & Regression Test Harness (Phase 6)
+Timestamp: 2026-10-21 06:44:52 UTC
+======================================================================
+
+--- Section 1: Strict Compiler Build Validation (-Wall -Wextra -Werror) ---
+[PASS] Clean build & binaries verified in Part1/
+[PASS] Clean build & binaries verified in Part2_Case1/
+[PASS] Clean build & binaries verified in Part2_Case2/
+[PASS] Clean build & binaries verified in Part2_Case2_Enhanced/
+[PASS] Phase 6 common/logging.* unit test (monotonic clock + thread-safe CSV)
+
+--- Section 2: Preparing Synthetic & Binary Topic Datasets ---
+[PASS] Dataset created (empty_topic, small_topic, large_topic, cane, gatto, cavallo, elefante)
+
+--- Section 3: CLI Argument & Boundary Validation ---
+[PASS] Part1/server rejects missing CLI arguments
+[PASS] Part1/server rejects invalid port (70000)
+[PASS] Part2_Case1/server rejects out-of-range failure probabilities (-0.1, 1.5)
+[PASS] Part2_Case2/server rejects out-of-range failure probabilities (-0.1, 1.5)
+[PASS] Part2_Case2_Enhanced/server rejects out-of-range failure probabilities (-0.1, 1.5)
+[PASS] Part2_Case2_Enhanced/client rejects invalid connection counts (0, 32)
+
+--- Section 4: Part 1 Baseline (Edge Topics, Security & Concurrency) ---
+[PASS] Part 1 rejects path traversal topic ('../etc')
+[PASS] Part 1 bit-exact transfer for topic 'empty_topic'
+[PASS] Part 1 bit-exact transfer for topic 'small_topic'
+[PASS] Part 1 bit-exact transfer for topic 'large_topic'
+[PASS] Part 1 bit-exact transfer for topic 'cane'
+[PASS] Part 1 concurrent 4-client transfer verified (100% diff match)
+
+--- Section 5: Part 2 Case 1 (Fault Injection & Full Restart) ---
+[PASS] Part 2 Case 1 fault recovery (p=0.05) & bit-exact diff verified
+
+--- Section 6: Part 2 Case 2 (Session Management & Checkpoint Resume) ---
+[PASS] Part 2 Case 2 mid-file checkpoint resume (p=0.10) & bit-exact diff verified
+
+--- Section 7: Part 2 Case 2 Enhanced (4-Arg Fallback & Parallel TCP) ---
+[PASS] Part 2 Case 2 Enhanced mandatory 4-arg default CLI (1 connection) verified
+[PASS] Part 2 Case 2 Enhanced 4-connection parallel pwrite() under fault injection (p=0.05) verified
+
+======================================================================
+REGRESSION SUMMARY: 22 PASSED, 0 FAILED
+Full Log Saved To : /home/dharmraj/it305/test_scratch/tests/full_regression.log
+======================================================================
+EXIT_CODE[test_correctness.sh]=0
+
+ALL_SUITES_DONE
+
+================================================================================
+[SECTION 3: SUPPLEMENTARY EDGE-CASE AUDIT (101/101 PASSED - ALL DEFECTS RESOLVED)]
+================================================================================
+[2026-10-21T07:58:36.422+00:00] supplementary correctness audit start; single host (WSL2 Ubuntu, kernel 5.15.167.4-microsoft-standard-WSL2), 12th Gen Intel(R) Core(TM) i5-12450H, 12 logical CPUs, 7781 MiB RAM, loopback 127.0.0.1 (server and all clients on the same machine)
+[2026-10-21T07:58:36.468+00:00] [PASS] part1: server with no args rejected :: rc=1
+[2026-10-21T07:58:36.485+00:00] [PASS] part1: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.500+00:00] [PASS] part1: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:36.514+00:00] [PASS] part1: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:36.528+00:00] [PASS] part1: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:36.542+00:00] [PASS] part1: client with no args rejected :: rc=1
+[2026-10-21T07:58:36.557+00:00] [PASS] part1: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:36.572+00:00] [PASS] part1: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:36.587+00:00] [PASS] part1: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:36.602+00:00] [PASS] case1: server with no args rejected :: rc=1
+[2026-10-21T07:58:36.618+00:00] [PASS] case1: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.632+00:00] [PASS] case1: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:36.648+00:00] [PASS] case1: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:36.665+00:00] [PASS] case1: server invalid failure probability 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.682+00:00] [PASS] case1: server invalid failure probability '-0.1' rejected :: rc=1
+[2026-10-21T07:58:36.697+00:00] [PASS] case1: server invalid failure probability '1.5' rejected :: rc=1
+[2026-10-21T07:58:36.712+00:00] [PASS] case1: server invalid failure probability 'nan' rejected :: rc=1
+[2026-10-21T07:58:36.746+00:00] [PASS] case1: server invalid failure probability '0.1x' rejected :: rc=1
+[2026-10-21T07:58:36.762+00:00] [PASS] case1: server without failure probability rejected :: rc=1
+[2026-10-21T07:58:36.780+00:00] [PASS] case1: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:36.803+00:00] [PASS] case1: client with no args rejected :: rc=1
+[2026-10-21T07:58:36.820+00:00] [PASS] case1: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:36.838+00:00] [PASS] case1: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:36.854+00:00] [PASS] case1: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:36.878+00:00] [PASS] case2: server with no args rejected :: rc=1
+[2026-10-21T07:58:36.898+00:00] [PASS] case2: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.915+00:00] [PASS] case2: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:36.933+00:00] [PASS] case2: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:36.955+00:00] [PASS] case2: server invalid failure probability 'abc' rejected :: rc=1
+[2026-10-21T07:58:36.982+00:00] [PASS] case2: server invalid failure probability '-0.1' rejected :: rc=1
+[2026-10-21T07:58:37.005+00:00] [PASS] case2: server invalid failure probability '1.5' rejected :: rc=1
+[2026-10-21T07:58:37.025+00:00] [PASS] case2: server invalid failure probability 'nan' rejected :: rc=1
+[2026-10-21T07:58:37.041+00:00] [PASS] case2: server invalid failure probability '0.1x' rejected :: rc=1
+[2026-10-21T07:58:37.059+00:00] [PASS] case2: server without failure probability rejected :: rc=1
+[2026-10-21T07:58:37.076+00:00] [PASS] case2: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:37.092+00:00] [PASS] case2: client with no args rejected :: rc=1
+[2026-10-21T07:58:37.107+00:00] [PASS] case2: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:37.123+00:00] [PASS] case2: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:37.747+00:00] [PASS] case2: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:37.766+00:00] [PASS] enhanced: server with no args rejected :: rc=1
+[2026-10-21T07:58:37.782+00:00] [PASS] enhanced: server invalid port 'abc' rejected :: rc=1
+[2026-10-21T07:58:37.797+00:00] [PASS] enhanced: server invalid port '0' rejected :: rc=1
+[2026-10-21T07:58:37.818+00:00] [PASS] enhanced: server invalid port '70000' rejected :: rc=1
+[2026-10-21T07:58:37.837+00:00] [PASS] enhanced: server invalid failure probability 'abc' rejected :: rc=1
+[2026-10-21T07:58:37.860+00:00] [PASS] enhanced: server invalid failure probability '-0.1' rejected :: rc=1
+[2026-10-21T07:58:37.883+00:00] [PASS] enhanced: server invalid failure probability '1.5' rejected :: rc=1
+[2026-10-21T07:58:37.905+00:00] [PASS] enhanced: server invalid failure probability 'nan' rejected :: rc=1
+[2026-10-21T07:58:37.925+00:00] [PASS] enhanced: server invalid failure probability '0.1x' rejected :: rc=1
+[2026-10-21T07:58:37.946+00:00] [PASS] enhanced: server without failure probability rejected :: rc=1
+[2026-10-21T07:58:37.973+00:00] [PASS] enhanced: server nonexistent topics root rejected :: rc=1
+[2026-10-21T07:58:38.002+00:00] [PASS] enhanced: client with no args rejected :: rc=1
+[2026-10-21T07:58:38.023+00:00] [PASS] enhanced: client invalid IP rejected/failed :: rc=1
+[2026-10-21T07:58:38.045+00:00] [PASS] enhanced: client invalid port rejected/failed :: rc=1
+[2026-10-21T07:58:38.064+00:00] [PASS] enhanced: client connection refused terminates (no hang) :: rc=1
+[2026-10-21T07:58:38.177+00:00] [PASS] part1: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:38.182+00:00] [PASS] part1: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/part1_bin_topic/bin_topic
+[2026-10-21T07:58:38.383+00:00] [PASS] part1: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:38.429+00:00] [PASS] part1: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:38.466+00:00] [PASS] part1: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:38.562+00:00] [PASS] case1: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:38.566+00:00] [PASS] case1: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/case1_bin_topic/bin_topic
+[2026-10-21T07:58:38.766+00:00] [PASS] case1: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:38.824+00:00] [PASS] case1: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:38.859+00:00] [PASS] case1: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:41.771+00:00] [PASS] case2: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:41.776+00:00] [PASS] case2: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/case2_bin_topic/bin_topic
+[2026-10-21T07:58:46.199+00:00] [PASS] case2: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:46.520+00:00] [PASS] case2: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:46.577+00:00] [PASS] case2: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:49.579+00:00] [PASS] enhanced: topic 'bin_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=6 bytes=3286274 
+[2026-10-21T07:58:49.595+00:00] [PASS] enhanced: output saved under <output_dir>/<topic>/ :: /home/dharmraj/it305/work_audit/enhanced_bin_topic/bin_topic
+[2026-10-21T07:58:54.202+00:00] [PASS] enhanced: topic 'multi_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=25 bytes=2834663 
+[2026-10-21T07:58:54.513+00:00] [PASS] enhanced: topic 'nozero_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=2 bytes=100005 
+[2026-10-21T07:58:54.567+00:00] [PASS] enhanced: topic 'empty_topic' transfer + SHA-256 byte-exact :: rc=0 timed_out=False files=0 bytes=0 
+[2026-10-21T07:58:54.780+00:00] [PASS] part1: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:58:54.787+00:00] [PASS] part1: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:58:55.017+00:00] [PASS] case1: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:58:55.031+00:00] [PASS] case1: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:58:59.503+00:00] [PASS] case2: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:58:59.511+00:00] [PASS] case2: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:59:04.105+00:00] [PASS] enhanced: unknown topic -> client error exit, no hang :: rc=1 timed_out=False
+[2026-10-21T07:59:04.112+00:00] [PASS] enhanced: server keeps serving after an unknown-topic request :: second client rc=0 
+[2026-10-21T07:59:04.145+00:00] [PASS] case2: SESSION_START -> SESSION_ACCEPT with non-zero id :: type=0x09 sid=0x6ad81b434e4523c6 files=25
+[2026-10-21T07:59:04.753+00:00] [PASS] case2: valid resume accepted at authoritative checkpoint :: type=12 resp=(7698933538879775686, 0, 65536, 0)
+[2026-10-21T07:59:04.760+00:00] [PASS] case2: client/server offset disagreement -> server's authoritative offset wins :: client proposed 105536; response=(7698933538879775686, 0, 65536, 1) flags=0x0001
+[2026-10-21T07:59:04.767+00:00] [PASS] case2: manifest fingerprint mismatch rejected (RESUME_ERROR) :: type=13 code=409
+[2026-10-21T07:59:04.774+00:00] [PASS] case2: unknown/stale session id rejected (RESUME_ERROR) :: type=13 msg=b'SESSION_NOT_FOUND: Unknown session I'
+[2026-10-21T07:59:04.800+00:00] [PASS] case2: session state does NOT survive a server-process restart (in-memory only) :: after restart resume reply type=0x0d -> RESUME_ERROR expected; documented limitation: sessions survive connection loss only
+[2026-10-21T07:59:17.464+00:00] [PASS] case1: faults -> purge partial output and restart whole topic from beginning :: faults=10 attempts=11 purges=10 fresh topic requests=11 integrity=True
+[2026-10-21T07:59:19.671+00:00] [PASS] case2: each injected fault followed by session RESUME at the fault offset :: faults=[('e832b8072cf6', 0), ('e835b40820f6', 0)] resumes=[(5, 0), (8, 0)] integrity=True
+[2026-10-21T07:59:19.676+00:00] [PASS] case2: no redundant payload resent after resume :: data_payload_recv=955798 useful=955798
+[2026-10-21T07:59:20.230+00:00] [PASS] enhanced: 4 worker connections established and bit-exact result (p=0.05) :: workers=['0', '1', '2', '3'] server_max_threads=5 integrity=True faults=2
+[2026-10-21T07:59:20.239+00:00] [PASS] enhanced: connections concurrently active (server thread count) :: max server threads observed=5 (1 acceptor + up to 4 workers)
+[2026-10-21T07:59:23.578+00:00] [PASS] enhanced: SAME server instance serves a SECOND client/session :: first client rc=0; second client rc=0 timed_out=False verify='' (server keeps one global session: g_plan/g_session_id/first_worker_started)
+[2026-10-21T07:59:27.672+00:00] [PASS] enhanced: 150-file real Animals-10 topic (gatto_big150) transfers bit-exact with N=4 :: rc=0 timed_out=False files=150 bytes=1793915 verify=''
+[2026-10-21T07:59:27.781+00:00] [PASS] enhanced: topic with >1024 files (real 'mucca', 1866 files) correctly rejected (capacity limit) :: rc=1 timed_out=False (rejected by design ceiling MAX_WORK_UNITS=1024) server_err_tail=
+[2026-10-21T07:59:28.247+00:00] [PASS] part1 sequential: 8 simultaneous clients all bit-exact :: server max threads=1
+[2026-10-21T07:59:28.260+00:00] [PASS] part1 sequential: server stayed single-threaded :: max threads observed=1
+[2026-10-21T07:59:28.709+00:00] [PASS] part1 mt: 8 simultaneous clients all bit-exact :: server max threads=2
+[2026-10-21T07:59:28.722+00:00] [PASS] part1 mt: server really serviced connections in separate threads :: max threads observed=2
+[2026-10-21T07:59:29.004+00:00] [PASS] no hard-coded IP/port/path in server or client logic (usage text/comments excluded) :: no matches
+[2026-10-21T07:59:29.022+00:00] SUMMARY: 101 PASS / 0 FAIL of 101
