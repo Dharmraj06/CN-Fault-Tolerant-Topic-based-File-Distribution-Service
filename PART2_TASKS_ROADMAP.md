@@ -1051,6 +1051,37 @@ Before generating the final archive, the packaging script executes the following
 | **Fri, 16 Oct (23:59 IST)** | **Official Submission** | Final upload of `FinalSubmission_Group_071_072.tar.gz` to course portal. | Successful upload confirmation. |
 
 ---
+
+## 13. Phase 7: Post-Submission Advanced Viva Features (Enhanced Variant)
+
+### 13.1 Architectural Motivation & Viva Scope
+Following the completion of the baseline assignment and initial benchmark freeze, two advanced systems features were engineered in `Part2_Case2_Enhanced/` for demonstration in the academic viva:
+1. **Feature One: Application-Layer SHA-256 Cryptographic File Integrity Verification:**
+   - Overcomes the fundamental limitation of link-layer/TCP 16-bit checksums by computing cryptographic 256-bit digests across complete files.
+   - Built using OpenSSL EVP streaming in bounded 64 KiB chunks (`common/sha256_util.*`).
+   - Integrates 32-byte digest in `EnhancedFileMetadata.sha256` without breaking frozen v1.0 wire framing.
+   - Enforces staged file writes (`.part` suffix) and atomic publication (`rename()`) upon PASS.
+   - Corrupted files are explicitly flagged with `SHA-256 verification: FAIL` and immediately unlinked.
+   - Standalone offline verification CLI option: `--verify`.
+2. **Feature Two: Adaptive Parallel TCP Transfer Auto-Selection (`--auto`):**
+   - Automatically benchmarks candidate connection counts $C \in \{1, 2, 4, 8\}$ in isolated sandboxes (`.trial_<C>`).
+   - Measures useful transfer duration using `clock_gettime(CLOCK_MONOTONIC)` and throughput on verified file payload bytes.
+   - Implements a deterministic 2% tie-breaker rule favoring fewer connections when throughput is comparable, minimizing operating system overhead.
+   - Promotes the winning trial's files to the output directory and purges temporary sandboxes.
+
+### 13.2 Phase 7 Exit Criteria & Verification Gates
+
+| Gate ID | Verification Test | Target Condition | Exit Criteria | Status |
+|:---:|---|---|---|:---:|
+| **GATE-P7-01** | `test_viva_features.sh` [Test 1] | 1 connection baseline | All 4 files transfer; SHA-256 PASS; diff clean. | **PASS** |
+| **GATE-P7-02** | `test_viva_features.sh` [Test 2] | 4 parallel connections | Disjoint chunks written via `pwrite()`; SHA-256 PASS; diff clean. | **PASS** |
+| **GATE-P7-03** | `test_viva_features.sh` [Test 3] | 1-byte corruption test | Altered byte caught by `--verify`; FAIL reported; exit 1; server source intact. | **PASS** |
+| **GATE-P7-04** | `test_viva_features.sh` [Test 4] | Fault tolerance ($p=0.10$) | Multi-stream recovers dropped units; SHA-256 PASS. | **PASS** |
+| **GATE-P7-05** | `test_viva_features.sh` [Test 5] | Adaptive auto-selection | Benchmarks 1, 2, 4, 8 conns; selects optimal config; promotes verified files. | **PASS** |
+| **GATE-P7-06** | `test_viva_features.sh` [Test 6] | CLI validation | Rejects 0, 32, `--bogus` safely with exit code 1. | **PASS** |
+
+---
 **End of Master Phase-Wise Execution Roadmap**  
-*Document Version: 2.0 (Audited & Frozen)*  
+*Document Version: 3.0 (Post-Viva Extensions Audited & Complete)*  
 *Approved by: Jay Vaghela, Dharmraj Vaghela, Vivek Dodiya, Atharv Trivedi, Shlok Topaliya, Yug Malaviya*
+

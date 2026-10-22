@@ -30,10 +30,14 @@
 | **REQ-18** | End-to-End Cryptographic Integrity | All test scripts and benchmarks | SHA-256 digests computed on every transferred file. 176/176 benchmark runs achieved 100% bit-exact match. | **PASS** |
 | **REQ-19** | Architectural Capacity Ceilings | `common/work_plan.h` (`MAX_WORK_UNITS=1024`) | Documented capacity ceiling. Topics with $>1024$ files rejected cleanly with `MSG_ERROR`. | **PASS** (Documented) |
 | **REQ-20** | Physical Three-Computer LAN Setup | Specification requirement | Experiments run on local single-host WSL2 loopback. Physical LAN deployment cannot be verified. | **NOT VERIFIED** |
+| **REQ-21** | SHA-256 Application-Level Integrity Verification | `Part2_Case2_Enhanced/` & `common/sha256_util.*` | OpenSSL EVP bounded streaming in 64 KiB chunks; staged `.part` files; atomic rename on PASS; unlink on FAIL. Validated via `tests/test_viva_features.sh` (Tests 1–4). | **PASS** |
+| **REQ-22** | Adaptive Parallel TCP Transfer Auto-Selection | `Part2_Case2_Enhanced/client.c` (`--auto`) | Evaluates candidate connections $C \in \{1, 2, 4, 8\}$ in isolated trial sandboxes; measures monotonic throughput; 2% tie-breaker; auto-promotes winner. | **PASS** |
+| **REQ-23** | Standalone Offline Re-Verification CLI Mode | `Part2_Case2_Enhanced/client.c` (`--verify`) | Re-verifies existing local files against authoritative server digests without downloading; detected single-byte corruption with exit code 1. | **PASS** |
 
 ---
 
 ## Summary of Verification
-- **Verified Core Requirements:** 19 / 20 (95%)
-- **Honest Disclosures:** 1 / 20 (Physical 3-computer setup marked `NOT VERIFIED`)
-- **Overall Specification Verdict:** **COMPLIANT WITH DOCUMENTED TESTBED BOUNDARY**
+- **Verified Core & Viva Requirements:** 22 / 23 (95.7%)
+- **Honest Disclosures:** 1 / 23 (Physical 3-computer setup marked `NOT VERIFIED`)
+- **Overall Specification Verdict:** **COMPLIANT WITH DOCUMENTED TESTBED BOUNDARY & VIVA READY**
+

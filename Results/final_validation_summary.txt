@@ -16,16 +16,17 @@ Repository: CN-Fault-Tolerant-Topic-Based-File-Distribution-Service
 
 2. CORRECTNESS & REGRESSION TEST RESULTS
 --------------------------------------------------------------------------------
-- Core Regression Suites: 62 / 62 PASSED (100% PASS, 0 FAIL)
-  * run_server_tests.sh: 5 / 5 PASSED
-  * test_phase2.sh:      5 / 5 PASSED
-  * test_phase3.sh:      5 / 5 PASSED
-  * test_phase4.sh:      6 / 6 PASSED
-  * test_correctness.sh: 41 / 41 PASSED
+- Core Regression Suites: 68 / 68 PASSED (100% PASS, 0 FAIL)
+  * run_server_tests.sh:   5 / 5 PASSED
+  * test_phase2.sh:        5 / 5 PASSED
+  * test_phase3.sh:        5 / 5 PASSED
+  * test_phase4.sh:        6 / 6 PASSED
+  * test_correctness.sh:  41 / 41 PASSED
+  * test_viva_features.sh: 6 / 6 PASSED (SHA-256 PASS/FAIL, Adaptive --auto, CLI)
 - Supplementary Edge-Case Audit: 101 / 101 PASSED (100% PASS, 0 FAIL)
   * Pre-fix status: 91 PASS / 10 FAIL
   * Post-fix status: 101 PASS / 0 FAIL (All 10 edge-case defects resolved)
-- Total Automated Test Cases: 163 / 163 PASSED
+- Total Automated Test Cases: 169 / 169 PASSED
 
 3. BENCHMARK RUN RECONCILIATION
 --------------------------------------------------------------------------------
