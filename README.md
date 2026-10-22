@@ -80,9 +80,63 @@ make -C Part2_Case2_Enhanced clean
 # Start Case 2 Enhanced Server with chunk failure probability in [0.0, 1.0]
 ./Part2_Case2_Enhanced/server <port> <topics_root_dir> <failure probability>
 
-# Run Case 2 Enhanced Client ([num_connections] is optional, 1..16, defaulting strictly to 1 when omitted)
-./Part2_Case2_Enhanced/client <server_ip> <server_port> <topic> <output_dir> [num_connections]
+# Run Case 2 Enhanced Client
+# 1) Default 1-connection transfer (auto-grader compliant, 4 args):
+./Part2_Case2_Enhanced/client <server_ip> <server_port> <topic> <output_dir>
+
+# 2) Explicit parallel connection count (1..16 connections):
+./Part2_Case2_Enhanced/client <server_ip> <server_port> <topic> <output_dir> <num_connections>
+
+# 3) Adaptive Parallel Transfer (--auto mode: benchmarks 1, 2, 4, 8 conns and selects best):
+./Part2_Case2_Enhanced/client <server_ip> <server_port> <topic> <output_dir> --auto
+
+# 4) Standalone Verification (--verify mode: verifies local downloaded files against server SHA-256):
+./Part2_Case2_Enhanced/client <server_ip> <server_port> <topic> <output_dir> --verify
 ```
+
+## Advanced Viva Features (Part 2 Case 2 Enhanced)
+
+### 1. SHA-256 Application-Level File Integrity Verification
+- **Why TCP Reliability is Insufficient:** TCP guarantees ordered, error-free byte streams *over the wire* via 16-bit checksums, but cannot detect data corrupted in kernel buffers, truncated disk writes, silent filesystem bit-rot, or application-level assembly bugs.
+- **Cryptographic Digest Pipeline:**
+  - **Server:** During session initialization (`MSG_SESSION_START`), computes SHA-256 digests of all source topic files using OpenSSL EVP streaming in bounded 64 KiB chunks (`common/sha256_util.c`). Binary digests (32 bytes) are embedded in `EnhancedFileMetadata.sha256`.
+  - **Client Staging Isolation:** Incoming chunks are written concurrently to temporary `.part` files (`<output_dir>/<topic>/<file>.part`) via POSIX `pwrite()`.
+  - **Verification Gate:** Once all work-units complete, the client hashes each staged `.part` file.
+    - If digest matches: prints `SHA-256 verification: PASS (file=<name>, digest=<hex>)` and atomically publishes the file via `rename()`.
+    - If digest mismatches: prints `SHA-256 verification: FAIL — file content does not match the expected digest` and removes the corrupt `.part` file (`unlink()`). Corrupted files are never published as completed.
+- **Standalone Re-Verification (`--verify`):** Connects to server to fetch authoritative metadata and independently re-verifies completed local files without redownloading. Returns exit code 0 on PASS, 1 on FAIL.
+
+### 2. Adaptive Parallel TCP Transfer (`--auto`)
+- **Motivation:** Parallel TCP streams mitigate TCP slow-start and single-stream bottlenecking under packet loss, but excess connections induce thread contention, socket buffer exhaustion, and context-switch overhead.
+- **Automated Performance Selection:**
+  - Evaluates candidate connection counts: `C in {1, 2, 4, 8}`.
+  - Runs clean, isolated trials in `.trial_<C>` directories to prevent caching artifacts.
+  - Measures useful transfer duration via high-resolution monotonic clock (`clock_gettime(CLOCK_MONOTONIC)`).
+  - Throughput calculation is strictly based on verified file payload bytes ($B_{\text{payload}} / T_{\text{elapsed}}$ in MiB/s and MB/s), excluding framing overhead.
+  - **Deterministic Tie-Breaking:** If candidate throughput is within a 2% margin of the maximum measured throughput, the candidate with *fewer* connections is selected to minimize operating system resource utilization.
+  - Automatically promotes winning trial files to the final destination directory and cleans up temporary trial workspaces.
+
+### 3. Dependencies & Prerequisites
+- **OpenSSL Cryptographic Library:**
+  - `Part2_Case2_Enhanced/` links with OpenSSL's `libcrypto` (`-lcrypto`).
+  - To install on Debian/Ubuntu/WSL:
+    ```bash
+    sudo apt-get update && sudo apt-get install -y libssl-dev
+    ```
+
+### 4. Viva Demonstration & Test Suite
+Run the automated end-to-end demonstration harness:
+```bash
+bash tests/test_viva_features.sh
+```
+This harness executes:
+1. Explicit 1-connection transfer and SHA-256 PASS verification.
+2. Explicit 4-connection parallel transfer with concurrent `pwrite()` and SHA-256 PASS.
+3. **Mandatory 1-Byte Corruption Test:** Flips a single byte in a completed local file, re-runs `--verify`, confirms explicit FAIL detection (exit code 1), and validates that the server source file is untouched.
+4. Parallel transfer under probabilistic fault injection ($p=0.10$) with automatic recovery and SHA-256 PASS.
+5. Adaptive Parallel Transfer (`--auto`), measuring throughput across 1, 2, 4, 8 connections and selecting the optimal configuration.
+6. Command-line argument boundary validation (rejecting invalid counts such as 0 or 32).
+
 
 ## Fault-Injection Mechanism Used for Testing
 
