@@ -31,13 +31,12 @@ typedef struct __attribute__((packed)) {
     uint32_t manifest_fingerprint;
 } EnhancedWorkPlanHeader;
 
-/* Server -> client: metadata for one destination file with SHA-256 digest. */
+/* Server -> client: metadata for one destination file. */
 typedef struct __attribute__((packed)) {
     uint32_t file_index;
     uint64_t file_size;
     char filename[MAX_FILENAME_LEN];
     char relative_path[MAX_PATH_BUFFER_LEN];
-    uint8_t sha256[32];
 } EnhancedFileMetadata;
 
 /* Server -> worker: one exclusive byte range [start_offset, end_offset). */

@@ -20,7 +20,6 @@
 #include "../common/fault_injection.h"
 #include "../common/session.h"
 #include "../common/work_plan.h"
-#include "../common/sha256_util.h"
 #include "enhanced_protocol.h"
 
 #define SERVER_BACKLOG 32
@@ -36,8 +35,6 @@ static TopicManifest *g_manifest;
 static WorkPlan *g_plan;
 static uint64_t g_session_id;
 static int g_max_workers;
-static uint8_t (*g_file_sha256)[32] = NULL;
-static int g_active_workers = 0;
 static pthread_mutex_t g_state_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static int receive_payload(int fd, uint8_t expected_type,
@@ -95,10 +92,6 @@ static int send_manifest(int fd)
         snprintf(metadata.relative_path, sizeof(metadata.relative_path),
                  "%s", g_manifest->files[i].relative_path);
 
-        if (g_file_sha256 != NULL) {
-            memcpy(metadata.sha256, g_file_sha256[i], 32);
-        }
-
         if (send_frame(fd, MSG_FILE_BEGIN, 0,
                        &metadata, sizeof(metadata)) != 0) {
             return -1;
@@ -119,9 +112,14 @@ static int session_is_complete(void)
     return complete;
 }
 
-static void *worker_impl(int fd, int worker_id)
+static void *worker_main(void *argument)
 {
+    WorkerArgs *args = (WorkerArgs *)argument;
+    int fd = args->fd;
+    int worker_id = args->worker_id;
     int active_unit = -1;
+
+    free(args);
 
     fprintf(stderr, "[worker %d] connected\n", worker_id);
 
@@ -332,27 +330,6 @@ static void *worker_impl(int fd, int worker_id)
     return NULL;
 }
 
-static void *worker_main(void *argument)
-{
-    WorkerArgs *args = (WorkerArgs *)argument;
-    int fd = args->fd;
-    int worker_id = args->worker_id;
-
-    free(args);
-
-    pthread_mutex_lock(&g_state_mutex);
-    g_active_workers++;
-    pthread_mutex_unlock(&g_state_mutex);
-
-    worker_impl(fd, worker_id);
-
-    pthread_mutex_lock(&g_state_mutex);
-    g_active_workers--;
-    pthread_mutex_unlock(&g_state_mutex);
-
-    return NULL;
-}
-
 static int create_listener(uint16_t port)
 {
     int fd;
@@ -411,38 +388,8 @@ static int initialize_session(int fd)
         return -1;
     }
 
-    if (g_file_sha256 != NULL) {
-        free(g_file_sha256);
-        g_file_sha256 = NULL;
-    }
-
-    g_file_sha256 = calloc(g_manifest->file_count ? g_manifest->file_count : 1, sizeof(*g_file_sha256));
-    if (g_file_sha256 == NULL) {
-        (void)send_error_frame(fd, "Unable to allocate digest storage");
-        free_topic_manifest(g_manifest);
-        g_manifest = NULL;
-        return -1;
-    }
-
-    for (uint32_t i = 0; i < g_manifest->file_count; ++i) {
-        char full_src_path[MAX_PATH_BUFFER_LEN * 2];
-        if (snprintf(full_src_path, sizeof(full_src_path), "%s/%s",
-                     g_manifest->directory_path, g_manifest->files[i].relative_path) >= (int)sizeof(full_src_path) ||
-            compute_file_sha256(full_src_path, g_file_sha256[i]) != 0) {
-            fprintf(stderr, "Failed to compute SHA-256 for source file: %s\n", full_src_path);
-            (void)send_error_frame(fd, "Failed to compute source file digest");
-            free(g_file_sha256);
-            g_file_sha256 = NULL;
-            free_topic_manifest(g_manifest);
-            g_manifest = NULL;
-            return -1;
-        }
-    }
-
     if (create_work_plan(g_manifest, (int)requested, &new_plan) != 0) {
         (void)send_error_frame(fd, "Unable to create work plan");
-        free(g_file_sha256);
-        g_file_sha256 = NULL;
         free_topic_manifest(g_manifest);
         g_manifest = NULL;
         return -1;
@@ -451,8 +398,6 @@ static int initialize_session(int fd)
     if (session_create(request.topic, g_manifest->manifest_fingerprint,
                        g_manifest->file_count, &g_session_id) != 0) {
         (void)send_error_frame(fd, "Unable to create session");
-        free(g_file_sha256);
-        g_file_sha256 = NULL;
         destroy_work_plan(new_plan);
         free_topic_manifest(g_manifest);
         g_manifest = NULL;
@@ -561,14 +506,6 @@ int main(int argc, char **argv)
         }
 
         if (peek_hdr.type == MSG_SESSION_START) {
-            /* Drain any previous workers before resetting session state */
-            while (g_active_workers > 0) {
-                pthread_mutex_unlock(&g_state_mutex);
-                struct timespec ts = {0, 10000000L};
-                nanosleep(&ts, NULL);
-                pthread_mutex_lock(&g_state_mutex);
-            }
-
             /* Reset previous session state if complete or idle */
             if (g_plan != NULL) {
                 destroy_work_plan(g_plan);
@@ -578,10 +515,6 @@ int main(int argc, char **argv)
                     g_manifest = NULL;
                 }
                 g_session_id = 0;
-            }
-            if (g_file_sha256 != NULL) {
-                free(g_file_sha256);
-                g_file_sha256 = NULL;
             }
 
             if (initialize_session(fd) != 0) {

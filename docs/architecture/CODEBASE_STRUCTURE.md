@@ -56,66 +56,60 @@ CN-Fault-Tolerant-Topic-based-File-Distribution-Service/
 │           ├── DEVELOPMENT_WORKFLOW.md          # Sequential execution, Git, and handoff procedures
 │           └── COLLEGE_LEVEL_CODING_GUIDELINES.md # Undergraduate C socket coding standards & conventions
 │
-├── [IMPLEMENTATION & VIVA ARTIFACTS — COMPLETE & VERIFIED]
+├── [PLANNED IMPLEMENTATION ARTIFACTS — TO BE CREATED IN PHASES 1–6]
 │   ├── common/                                  # Shared POSIX C Infrastructure Headers & Implementations
-│   │   ├── protocol.h / protocol.c              # [Phase 1] 16-byte binary framing & socket helpers
-│   │   ├── topic_manager.h / topic_manager.c    # [Phase 1] Directory traversal & path security
-│   │   ├── file_transfer.h / file_transfer.c    # [Phase 2] Bounded 64 KB chunk streaming & disk I/O
-│   │   ├── fault_injection.h / fault_injection.c# [Phase 3] Probabilistic connection drop engine
-│   │   ├── session.h / session.c                # [Phase 4] In-memory thread-safe session table
-│   │   ├── work_plan.h / work_plan.c            # [Phase 5] Non-overlapping work-unit partitioning
-│   │   ├── logging.h / logging.c                # [Phase 6] Thread-safe monotonic logger & CSV metrics
-│   │   └── sha256_util.h / sha256_util.c        # [Viva Feature] Bounded OpenSSL EVP SHA-256 streaming & hex utils
+│   │   ├── protocol.h / protocol.c              # [Planned: Phase 1] 16-byte binary framing & socket helpers
+│   │   ├── topic_manager.h / topic_manager.c    # [Planned: Phase 1] Directory traversal & path security
+│   │   ├── file_transfer.h / file_transfer.c    # [Planned: Phase 2] Bounded 64 KB chunk streaming & disk I/O
+│   │   ├── fault_injection.h / fault_injection.c# [Planned: Phase 3] Probabilistic connection drop engine
+│   │   ├── session.h / session.c                # [Planned: Phase 4] In-memory thread-safe session table
+│   │   ├── work_plan.h / work_plan.c            # [Planned: Phase 5] Non-overlapping work-unit partitioning
+│   │   └── logging.h / logging.c                # [Planned: Phase 6] Thread-safe monotonic logger & CSV metrics
 │   │
 │   ├── Part1/                                   # Part 1: Baseline Single- & Multi-Threaded Service
-│   │   ├── server.c                             # [Phase 1] Sequential & Multi-threaded baseline server
-│   │   ├── client.c                             # [Phase 2] Standard Part 1 sequential client
-│   │   └── Makefile                             # [Phase 1/2] Produces 'server' and 'client' binaries
+│   │   ├── server.c                             # [Planned: Phase 1] Sequential & Multi-threaded baseline server
+│   │   ├── client.c                             # [Planned: Phase 2] Standard Part 1 sequential client
+│   │   └── Makefile                             # [Planned: Phase 1/2] Produces 'server' and 'client' binaries
 │   │
 │   ├── Part2_Case1/                             # Part 2 Case 1: Fault Injection & Full Topic Restart
-│   │   ├── server.c                             # [Phase 3] MT server with probabilistic drop injection
-│   │   ├── client.c                             # [Phase 3] Client with directory purge & restart loop
-│   │   └── Makefile                             # [Phase 3] Produces 'server' and 'client' binaries
+│   │   ├── server.c                             # [Planned: Phase 3] MT server with probabilistic drop injection
+│   │   ├── client.c                             # [Planned: Phase 3] Client with directory purge & restart loop
+│   │   └── Makefile                             # [Planned: Phase 3] Produces 'server' and 'client' binaries
 │   │
 │   ├── Part2_Case2/                             # Part 2 Case 2: In-Memory Session Management & Resume
-│   │   ├── server.c                             # [Phase 4] MT server with checkpoint tracking & resume
-│   │   ├── client.c                             # [Phase 4] Client with CHUNK_ACK and offset rewind
-│   │   └── Makefile                             # [Phase 4] Produces 'server' and 'client' binaries
+│   │   ├── server.c                             # [Planned: Phase 4] MT server with checkpoint tracking & resume
+│   │   ├── client.c                             # [Planned: Phase 4] Client with CHUNK_ACK and offset rewind
+│   │   └── Makefile                             # [Planned: Phase 4] Produces 'server' and 'client' binaries
 │   │
-│   ├── Part2_Case2_Enhanced/                    # Part 2 Case 2 Enhanced: Parallel TCP, SHA-256 & Adaptive Auto-Selection
-│   │   ├── enhanced_protocol.h                  # [Phase 5 & Viva] Enhanced metadata with 32-byte SHA-256 digest
-│   │   ├── server.c                             # [Phase 5 & Viva] MT server calculating SHA-256 and dispatching work units
-│   │   ├── client.c                             # [Phase 5 & Viva] Multi-socket client: staged .part writes, atomic publish, --verify, --auto
-│   │   └── Makefile                             # [Phase 5 & Viva] Compiles server & client linking -lcrypto
+│   ├── Part2_Case2_Enhanced/                    # Part 2 Case 2 Enhanced: Parallel TCP & Positional Writes
+│   │   ├── server.c                             # [Planned: Phase 5] MT server dispatching parallel work units
+│   │   ├── client.c                             # [Planned: Phase 5] Multi-socket client with concurrent pwrite()
+│   │   └── Makefile                             # [Planned: Phase 5] Produces 'server' and 'client' binaries
 │   │
-│   ├── tests/                                   # Unit, Integration & Viva Test Suites
-│   │   ├── test_phase1.c                        # [Phase 1] Protocol framing & security test harness
-│   │   ├── test_phase2.sh                       # [Phase 2] Part 1 end-to-end diff verification script
-│   │   ├── test_phase3.sh                       # [Phase 3] Case 1 fault recovery & restart test script
-│   │   ├── test_phase4.sh                       # [Phase 4] Case 2 checkpoint & offset rewind test script
-│   │   ├── test_phase5.sh                       # [Phase 5] Case 2 Enhanced parallel pwrite test script
-│   │   └── test_viva_features.sh                # [Viva Feature] 6-test harness for SHA-256 PASS/FAIL, 1-byte corruption, --auto
+│   ├── tests/                                   # Unit & Integration Test Suites
+│   │   ├── test_phase1.c                        # [Planned: Phase 1] Protocol framing & security test harness
+│   │   ├── test_phase2.sh                       # [Planned: Phase 2] Part 1 end-to-end diff verification script
+│   │   ├── test_phase3.sh                       # [Planned: Phase 3] Case 1 fault recovery & restart test script
+│   │   ├── test_phase4.sh                       # [Planned: Phase 4] Case 2 checkpoint & offset rewind test script
+│   │   └── test_phase5.sh                       # [Planned: Phase 5] Case 2 Enhanced parallel pwrite test script
 │   │
 │   ├── scripts/                                 # Automated Regression, Benchmark & Packaging Tooling
-│   │   ├── test_correctness.sh                  # [Phase 6] Master 4-variant regression test harness (22 checks)
-│   │   ├── run_benchmarks.py                    # [Phase 6] Multi-client / fault rate benchmark runner
-│   │   ├── plot_results.py                      # [Phase 6] Publication-quality matplotlib generator
-│   │   └── package_submission.sh                # [Phase 6] Clean-sandbox tarball packager & validator
+│   │   ├── test_correctness.sh                  # [Planned: Phase 6] Master 4-variant regression test harness
+│   │   ├── run_benchmarks.py                    # [Planned: Phase 6] Multi-client / fault rate benchmark runner
+│   │   ├── plot_results.py                      # [Planned: Phase 6] Publication-quality matplotlib generator
+│   │   └── package_submission.sh                # [Planned: Phase 6] Clean-sandbox tarball packager & validator
 │   │
-│   ├── Results/                                 # Benchmark Raw Measurements, Plots & Viva Verification
-│   │   ├── exp1_part1_concurrency.csv           # [Phase 6] Part 1 concurrency measurements
-│   │   ├── exp2_fault_tolerance.csv             # [Phase 6] Case 1 vs Case 2 throughput data
-│   │   ├── exp3_overhead_comparison.csv         # [Phase 6] Case 1 vs Case 2 retransmission overhead
-│   │   ├── exp4_enhanced_speedup.csv            # [Phase 6] Case 2 Enhanced parallel speedup data
-│   │   ├── viva_benchmark_results.csv           # [Viva Feature] Measured trial results for adaptive parallel transfer
-│   │   ├── viva_features_verification.md        # [Viva Feature] Formal verification and benchmark report
-│   │   ├── viva_features.log                    # [Viva Feature] Complete test run execution log (6/6 PASS)
-│   │   ├── Part1_throughput_vs_clients.png      # [Phase 6] Plot: Part 1 concurrency scaling
-│   │   ├── Part2_Case1_vs_Case2_throughput.png  # [Phase 6] Plot: Throughput under varying fault rates
-│   │   ├── Part2_Case1_vs_Case2_overhead.png    # [Phase 6] Plot: Retransmission overhead comparison
-│   │   └── Part2_Enhanced_speedup_comparison.png# [Phase 6] Plot: Parallel connection speedup
+│   ├── Results/                                 # Benchmark Raw Measurements & Generated Plots
+│   │   ├── exp1_part1_concurrency.csv           # [Planned: Phase 6] Part 1 concurrency measurements
+│   │   ├── exp2_fault_tolerance.csv             # [Planned: Phase 6] Case 1 vs Case 2 throughput data
+│   │   ├── exp3_overhead_comparison.csv         # [Planned: Phase 6] Case 1 vs Case 2 retransmission overhead
+│   │   ├── exp4_enhanced_speedup.csv            # [Planned: Phase 6] Case 2 Enhanced parallel speedup data
+│   │   ├── Part1_throughput_vs_clients.png      # [Planned: Phase 6] Plot: Part 1 concurrency scaling
+│   │   ├── Part2_Case1_vs_Case2_throughput.png  # [Planned: Phase 6] Plot: Throughput under varying fault rates
+│   │   ├── Part2_Case1_vs_Case2_overhead.png    # [Planned: Phase 6] Plot: Retransmission overhead comparison
+│   │   └── Part2_Enhanced_speedup_comparison.png# [Planned: Phase 6] Plot: Parallel connection speedup
 │   │
-│   └── FinalReport_Group_071_072.pdf            # [Phase 6] Final consolidated course report PDF
+│   └── FinalReport_Group_071_072.pdf            # [Planned: Phase 6] Final consolidated course report PDF
 ```
 
 ---
@@ -155,27 +149,23 @@ The following table provides the exhaustive responsibility and dependency mappin
 | `common/work_plan.h` | Planned | Work-unit definitions, interval partitioning, parallel worker assignment. | `WorkUnit`, `WorkPlan`, `create_work_plan()`, `get_next_work_unit()`, `mark_work_unit_failed()` | `<pthread.h>` | Case 2 Enhanced | Phase 5 (Shlok) | Shared Contract |
 | `common/work_plan.c` | Planned | Partitioning manifest into non-overlapping chunk ranges; failure recovery. | Implementation of interval partitioning and worker coordination | `common/work_plan.h` | Case 2 Enhanced | Phase 5 (Shlok) | Shared Module |
 | `common/logging.h` | Planned | Thread-safe event logging, monotonic nanosecond timing, CSV recording. | `log_event()`, `get_monotonic_time_ns()`, `record_benchmark_metric()` | `<time.h>`, `<stdio.h>` | All modules & tests | Phase 6 (Yug) | Shared Contract |
-| `common/logging.c` | Implemented | Mutex-protected stderr logging and structured CSV benchmark writing. | Implementation of thread-safe logging and timing routines | `common/logging.h` | All Makefiles | Phase 6 (Yug) | Shared Module |
-| `common/sha256_util.h` | Implemented | Cryptographic SHA-256 calculation and hex utility interface. | `compute_file_sha256()`, `sha256_to_hex()`, `hex_to_sha256()` | `<stdint.h>`, OpenSSL EVP | Enhanced server & client | Viva Feature | Shared Contract |
-| `common/sha256_util.c` | Implemented | Streaming OpenSSL EVP SHA-256 calculation in bounded 64 KiB chunks. | Implementation of EVP digest streaming, formatting, and hex parsing | `common/sha256_util.h` | Enhanced Makefile (`-lcrypto`) | Viva Feature | Shared Module |
-| `Part1/server.c` | Implemented | Baseline sequential & multi-threaded topic server. | CLI: `./server <port> <topics_root_dir> [mt\|sequential]` | `protocol.h`, `topic_manager.h` | Part 1 Binary | Phase 1 (Jay) | Target Executable |
-| `Part1/client.c` | Implemented | Baseline sequential topic client. | CLI: `./client <ip> <port> <topic> <out_dir>` | `protocol.h`, `file_transfer.h` | Part 1 Binary | Phase 2 (Vivek) | Target Executable |
-| `Part1/Makefile` | Implemented | Build script compiling `server` and `client` in `Part1/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 1/2 (Jay/Vivek)| Build Script |
-| `Part2_Case1/server.c` | Implemented | Multi-threaded server with probabilistic fault injection and zero session state. | CLI: `./server <port> <root> <prob>` | `protocol.h`, `topic_manager.h`, `fault_injection.h` | Case 1 Binary | Phase 3 (Atharv) | Target Executable |
-| `Part2_Case1/client.c` | Implemented | Client detecting disconnect, purging destination directory, and restarting. | CLI: `./client <ip> <port> <topic> <out_dir>` | `protocol.h`, `file_transfer.h` | Case 1 Binary | Phase 3 (Atharv) | Target Executable |
-| `Part2_Case1/Makefile` | Implemented | Build script compiling `server` and `client` in `Part2_Case1/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 3 (Atharv) | Build Script |
-| `Part2_Case2/server.c` | Implemented | Multi-threaded server managing sessions, checkpoints, and resume offsets. | CLI: `./server <port> <root> <prob>` | `protocol.h`, `topic_manager.h`, `fault_injection.h`, `session.h` | Case 2 Binary | Phase 4 (Dharmraj) | Target Executable |
-| `Part2_Case2/client.c` | Implemented | Client acknowledging chunks (`CHUNK_ACK`), reconnecting, and rewinding via `ftruncate()`. | CLI: `./client <ip> <port> <topic> <out_dir>` | `protocol.h`, `file_transfer.h`, `session.h` | Case 2 Binary | Phase 4 (Dharmraj) | Target Executable |
-| `Part2_Case2/Makefile` | Implemented | Build script compiling `server` and `client` in `Part2_Case2/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 4 (Dharmraj) | Build Script |
-| `Part2_Case2_Enhanced/server.c`| Implemented | Multi-socket server dispatching work units and calculating source SHA-256 digests. | CLI: `./server <port> <root> <prob>` | `protocol.h`, `session.h`, `work_plan.h`, `sha256_util.h` | Enhanced Binary | Phase 5 & Viva | Target Executable |
-| `Part2_Case2_Enhanced/client.c`| Implemented | Parallel client with staged `.part` writes, SHA-256 verification, `--auto`, `--verify`. | CLI: `./client <ip> <port> <topic> <out_dir> [num_conns\|--auto\|--verify]` | `protocol.h`, `work_plan.h`, `sha256_util.h` | Enhanced Binary | Phase 5 & Viva | Target Executable |
-| `Part2_Case2_Enhanced/Makefile`| Implemented | Build script compiling Enhanced `server` and `client` linking `-lcrypto`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules, `libcrypto` | Grader & Developer | Phase 5 & Viva | Build Script |
-| `tests/test_viva_features.sh`| Implemented | 6-test verification harness: SHA-256 PASS/FAIL, 1-byte corruption, fault recovery, `--auto`. | `bash tests/test_viva_features.sh` | Bash, diff, sha256sum | Developer & Viva | Viva Suite | Test Harness |
-| `scripts/test_correctness.sh`| Implemented | Master bash regression harness testing all 4 variants against 22 edge cases. | Bash script executing unit, CLI, traversal, and diff tests | Shell, curl, diff, sha256sum | Developer & CI | Phase 6 (Yug) | Test Harness |
-| `scripts/run_benchmarks.py` | Implemented | Automated benchmark orchestrator executing multi-client/fault matrix. | Python script generating CSV measurement logs | Python 3, socket | Evaluator & Author | Phase 6 (Yug) | Benchmark Harness |
-| `scripts/plot_results.py` | Implemented | Graph generation script parsing raw CSVs and rendering 4 PNG plots. | Python script producing publication-grade matplotlib figures | Python 3, matplotlib, pandas | Final Report Author | Phase 6 (Yug) | Plotting Tool |
-| `scripts/package_submission.sh`| Implemented | Clean archive generator verifying directory layout and clean sandbox build. | Shell script creating `FinalSubmission_Group_071_072.tar.gz` | tar, gzip, gcc | Course Submission | Phase 6 (Yug) | Packaging Tool |
-| `Results/viva_features_verification.md` | Implemented | Formal verification, architectural specification, and benchmark report for viva features. | Markdown report with measured tables and corruption analysis | Markdown | Evaluator & Viva | Viva Deliverable | Documentation |
+| `common/logging.c` | Planned | Mutex-protected stderr logging and structured CSV benchmark writing. | Implementation of thread-safe logging and timing routines | `common/logging.h` | All Makefiles | Phase 6 (Yug) | Shared Module |
+| `Part1/server.c` | Planned | Baseline sequential & multi-threaded topic server. | CLI: `./server <port> <topics_root_dir>` | `protocol.h`, `topic_manager.h` | Part 1 Binary | Phase 1 (Jay) | Target Executable |
+| `Part1/client.c` | Planned | Baseline sequential topic client. | CLI: `./client <ip> <port> <topic> <out_dir>` | `protocol.h`, `file_transfer.h` | Part 1 Binary | Phase 2 (Vivek) | Target Executable |
+| `Part1/Makefile` | Planned | Build script compiling `server` and `client` in `Part1/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 1/2 (Jay/Vivek)| Build Script |
+| `Part2_Case1/server.c` | Planned | Multi-threaded server with probabilistic fault injection and zero session state. | CLI: `./server <port> <root> <prob>` | `protocol.h`, `topic_manager.h`, `fault_injection.h` | Case 1 Binary | Phase 3 (Atharv) | Target Executable |
+| `Part2_Case1/client.c` | Planned | Client detecting disconnect, purging destination directory, and restarting. | CLI: `./client <ip> <port> <topic> <out_dir>` | `protocol.h`, `file_transfer.h` | Case 1 Binary | Phase 3 (Atharv) | Target Executable |
+| `Part2_Case1/Makefile` | Planned | Build script compiling `server` and `client` in `Part2_Case1/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 3 (Atharv) | Build Script |
+| `Part2_Case2/server.c` | Planned | Multi-threaded server managing sessions, checkpoints, and resume offsets. | CLI: `./server <port> <root> <prob>` | `protocol.h`, `topic_manager.h`, `fault_injection.h`, `session.h` | Case 2 Binary | Phase 4 (Dharmraj) | Target Executable |
+| `Part2_Case2/client.c` | Planned | Client acknowledging chunks (`CHUNK_ACK`), reconnecting, and rewinding via `ftruncate()`. | CLI: `./client <ip> <port> <topic> <out_dir>` | `protocol.h`, `file_transfer.h`, `session.h` | Case 2 Binary | Phase 4 (Dharmraj) | Target Executable |
+| `Part2_Case2/Makefile` | Planned | Build script compiling `server` and `client` in `Part2_Case2/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 4 (Dharmraj) | Build Script |
+| `Part2_Case2_Enhanced/server.c`| Planned | Multi-socket server dispatching non-overlapping work units. | CLI: `./server <port> <root> <prob>` | `protocol.h`, `session.h`, `work_plan.h`, `fault_injection.h` | Enhanced Binary | Phase 5 (Shlok) | Target Executable |
+| `Part2_Case2_Enhanced/client.c`| Planned | Parallel client spawning 1–16 worker threads writing concurrently via `pwrite()`. | CLI: `./client <ip> <port> <topic> <out_dir> [num_conns]` | `protocol.h`, `file_transfer.h`, `work_plan.h` | Enhanced Binary | Phase 5 (Shlok) | Target Executable |
+| `Part2_Case2_Enhanced/Makefile`| Planned | Build script compiling `server` and `client` in `Part2_Case2_Enhanced/`. | Targets: `all`, `server`, `client`, `clean` | `gcc`, common modules | Grader & Developer | Phase 5 (Shlok) | Build Script |
+| `scripts/test_correctness.sh`| Planned | Master bash regression harness testing all 4 variants against edge cases. | Bash script executing unit, CLI, traversal, and diff tests | Shell, curl, diff, sha256sum | Developer & CI | Phase 6 (Yug) | Test Harness |
+| `scripts/run_benchmarks.py` | Planned | Automated benchmark orchestrator executing multi-client/fault matrix. | Python script generating CSV measurement logs | Python 3, socket | Evaluator & Author | Phase 6 (Yug) | Benchmark Harness |
+| `scripts/plot_results.py` | Planned | Graph generation script parsing raw CSVs and rendering 4 PNG plots. | Python script producing publication-grade matplotlib figures | Python 3, matplotlib, pandas | Final Report Author | Phase 6 (Yug) | Plotting Tool |
+| `scripts/package_submission.sh`| Planned | Clean archive generator verifying directory layout and clean sandbox build. | Shell script creating `FinalSubmission_Group_071_072.tar.gz` | tar, gzip, gcc | Course Submission | Phase 6 (Yug) | Packaging Tool |
 
 ---
 

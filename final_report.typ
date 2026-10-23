@@ -647,51 +647,6 @@ Experiment 4 measures the performance of Case 2 Enhanced across connection count
 3. *Backward Compatibility Verification:*
    The default CLI invocation without `-n` matches the $N=1$ baseline ($1.68$ s vs $1.66$ s), proving complete compliance with automated grading scripts.
 
-== 8.3 Application-Level Cryptographic Integrity Verification (SHA-256)
-While TCP guarantees reliable in-order byte stream delivery via its 16-bit Internet checksum (RFC 793, RFC 9293), link-layer and transport-layer checksums fail to protect against application bugs, concurrent `pwrite()` file reconstruction corruption, or silent disk degradation. 
-
-To provide true end-to-end reliability, `Part2_Case2_Enhanced/` integrates an OpenSSL EVP streaming SHA-256 pipeline:
-1. *Streaming Digest Calculation:* Using `EVP_DigestInit_ex`, `EVP_DigestUpdate`, and `EVP_DigestFinal_ex` in bounded 64 KiB chunks, both client and server compute 256-bit digests with strict $O(1)$ memory consumption.
-2. *Protocol Transparency:* The server populates `EnhancedFileMetadata.sha256` (32 bytes) during manifest transmission.
-3. *Staged Publication Gate:* Chunks are written into temporary `.part` files via POSIX `pwrite()`. Upon transfer completion, the client computes the SHA-256 digest over the finalized file:
-   - *Matching Digest:* The client prints `SHA-256 verification: PASS` and atomically publishes the file via `rename()`.
-   - *Mismatched Digest:* The client prints `SHA-256 verification: FAIL` and immediately unlinks the corrupt `.part` file, preventing corrupted files from ever appearing in the final directory.
-4. *Standalone Verification Mode:* The client supports `--verify`, fetching authoritative digests from the server to re-verify local copies without initiating re-transfers.
-
-== 8.4 Adaptive Parallel TCP Transfer Auto-Selection (`--auto`)
-To systematically demonstrate the trade-offs of multi-stream concurrency and eliminate manual tuning, the Enhanced client incorporates an automatic selection mode (`--auto`):
-1. *Candidate Search Space:* Evaluates $N in {1, 2, 4, 8}$ parallel TCP connections.
-2. *Clean Trial Isolation:* Each candidate trial downloads into an isolated directory (`.trial_<N>`) to prevent filesystem caching or pre-existing blocks from distorting measurements.
-3. *High-Resolution Useful Throughput:* Transfer durations are captured via `clock_gettime(CLOCK_MONOTONIC)`, and throughput is calculated strictly on verified payload bytes:
-   $ Theta_"useful" = B_"payload" / T_"elapsed" quad ["MiB/s" "and" "MB/s"] $
-4. *Deterministic Tie-Breaking Rule:* If a candidate is within a 2% margin of the peak measured throughput, the candidate with *fewer* connections is selected to minimize operating system socket descriptors and thread context switching:
-   $ "If" quad (Theta_"max" - Theta_N) / Theta_"max" <= 0.02, quad "select" min(N, N_"max") $
-5. *Automatic Promotion:* The winning configuration's verified files are moved into the final destination directory, and temporary trial sandboxes are pruned.
-
-== 8.5 Empirical Demonstration of Integrity Failure and Auto-Tuning
-The automated demonstration suite (`tests/test_viva_features.sh`) executed on loopback yielded the following verified findings:
-
-#v(4pt)
-#table(
-  columns: (1.2fr, 1.2fr, 1.4fr, 1.4fr, 1.2fr, 1.2fr),
-  align: (center, center, center, center, center, center),
-  stroke: 0.5pt + rgb("#cccccc"),
-  [Candidate ($N$)], [Payload Bytes], [Elapsed Time], [Useful Throughput], [Integrity], [Selection],
-  [1 Conn], [262,878 B], [0.3604 s], [0.70 MiB/s (0.73 MB/s)], [PASS], [No],
-  [2 Conns], [262,878 B], [0.1867 s], [1.34 MiB/s (1.41 MB/s)], [PASS], [No],
-  [4 Conns], [262,878 B], [0.1809 s], [*1.39 MiB/s (1.45 MB/s)*], [PASS], [*SELECTED*],
-  [8 Conns], [262,878 B], [0.1898 s], [1.32 MiB/s (1.38 MB/s)], [PASS], [No]
-)
-#v(4pt)
-
-*Mandatory Single-Byte Corruption Detection:* When byte offset 10 of `small.txt` was altered from `'N'` to `'X'`, standalone verification `--verify` immediately triggered:
-```
-SHA-256 verification: FAIL — file content does not match the expected digest
-(file=small.txt, expected=80dcb222..., actual=55fc306f...)
-[ERROR] Standalone SHA-256 verification FAILED for 1 file(s). (exit code: 1)
-```
-The server source file was confirmed completely untouched, proving rigorous end-to-end cryptographic integrity.
-
 #pagebreak()
 
 // ==========================================
