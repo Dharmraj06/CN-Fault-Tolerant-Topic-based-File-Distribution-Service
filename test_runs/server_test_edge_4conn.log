@@ -1,0 +1,13 @@
+Enhanced Phase 5 server listening on port 9040
+Topics root: ./raw-img
+Failure probability: 0.000
+[worker 0] connected
+[worker 3] connected
+[worker 2] connected
+[worker 0] Assigned unit 1 (file 1: small_a.txt, [0, 50))
+[worker 1] connected
+[worker 3] Assigned unit 2 (file 2: small_b.txt, [0, 100))
+[worker 3] disconnected
+[worker 2] disconnected
+[worker 0] disconnected
+[worker 1] disconnected

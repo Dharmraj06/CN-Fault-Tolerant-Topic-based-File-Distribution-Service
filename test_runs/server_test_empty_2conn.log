@@ -1,0 +1,7 @@
+Enhanced Phase 5 server listening on port 9042
+Topics root: ./raw-img
+Failure probability: 0.000
+[worker 0] connected
+[worker 1] connected
+[worker 0] disconnected
+[worker 1] disconnected

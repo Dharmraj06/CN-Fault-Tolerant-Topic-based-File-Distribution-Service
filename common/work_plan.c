@@ -13,9 +13,21 @@ static int add_unit(WorkPlan *plan,
 {
     WorkUnit *unit;
 
-    if (plan->total_units >= MAX_WORK_UNITS ||
-        start > end || end > file->file_size) {
+    if (plan == NULL || file == NULL || start > end || end > file->file_size) {
         return -1;
+    }
+
+    if (plan->total_units >= plan->capacity_units) {
+        uint32_t new_cap = plan->capacity_units ? plan->capacity_units * 2 : 64;
+        if (new_cap < plan->capacity_units || new_cap > MAX_WORK_UNITS) {
+            return -1;
+        }
+        WorkUnit *new_units = realloc(plan->units, (size_t)new_cap * sizeof(WorkUnit));
+        if (new_units == NULL) {
+            return -1;
+        }
+        plan->units = new_units;
+        plan->capacity_units = new_cap;
     }
 
     unit = &plan->units[plan->total_units];
@@ -50,6 +62,7 @@ int create_work_plan(const TopicManifest *manifest,
 {
     WorkPlan *plan;
     uint32_t i;
+    uint32_t initial_cap = 64;
 
     if (out_plan == NULL) {
         return -1;
@@ -66,7 +79,43 @@ int create_work_plan(const TopicManifest *manifest,
         return -1;
     }
 
+    if (manifest->file_count >= (uint32_t)num_conns) {
+        initial_cap = manifest->file_count > 0 ? manifest->file_count : 16;
+    } else if (manifest->file_count > 0) {
+        /* Estimate slices needed */
+        uint64_t total_slices = 0;
+        for (i = 0; i < manifest->file_count; ++i) {
+            uint64_t sz = manifest->files[i].file_size;
+            if (sz == 0) {
+                total_slices += 1;
+            } else {
+                total_slices += (sz + WORK_SLICE_SIZE - 1) / WORK_SLICE_SIZE;
+            }
+        }
+        if (total_slices > MAX_WORK_UNITS) {
+            free(plan);
+            return -1;
+        }
+        initial_cap = (uint32_t)total_slices;
+        if (initial_cap < 16) initial_cap = 16;
+    } else {
+        initial_cap = 16;
+    }
+
+    if (initial_cap > MAX_WORK_UNITS) {
+        free(plan);
+        return -1;
+    }
+
+    plan->units = calloc(initial_cap, sizeof(WorkUnit));
+    if (plan->units == NULL) {
+        free(plan);
+        return -1;
+    }
+    plan->capacity_units = initial_cap;
+
     if (pthread_mutex_init(&plan->plan_mutex, NULL) != 0) {
+        free(plan->units);
         free(plan);
         return -1;
     }
@@ -227,6 +276,7 @@ void destroy_work_plan(WorkPlan *plan)
     if (plan->mutex_initialized) {
         pthread_mutex_destroy(&plan->plan_mutex);
     }
+    free(plan->units);
     free(plan);
 }
 

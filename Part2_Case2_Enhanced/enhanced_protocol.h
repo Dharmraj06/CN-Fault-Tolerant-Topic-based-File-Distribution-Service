@@ -14,7 +14,7 @@
  */
 
 #define ENHANCED_MAX_CONNECTIONS 16
-#define ENHANCED_MAX_UNITS 1024
+#define ENHANCED_MAX_UNITS 100000U
 #define ENHANCED_DATA_CHUNK (64U * 1024U)
 
 /* Client -> server on each worker socket. */

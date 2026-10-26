@@ -1,0 +1,64 @@
+Enhanced Phase 5 server listening on port 9050
+Topics root: ./raw-img
+Failure probability: 0.020
+[worker 0] connected
+[worker 0] Assigned unit 0 (file 0: 1.jpeg, [0, 10715))
+[worker 1] connected
+[worker 2] connected
+[worker 3] connected
+[worker 1] Assigned unit 1 (file 1: 10.jpeg, [0, 8885))
+[worker 2] Assigned unit 2 (file 2: 100.jpeg, [0, 3671))
+[worker 3] Assigned unit 3 (file 3: 1001.jpeg, [0, 10084))
+[worker 0] Assigned unit 4 (file 4: 1002.jpeg, [0, 8909))
+[worker 3] Assigned unit 5 (file 5: 1004.jpeg, [0, 14059))
+[worker 1] Assigned unit 6 (file 6: 1005.jpeg, [0, 13032))
+[worker 2] Assigned unit 7 (file 7: 1006.jpeg, [0, 9188))
+[worker 0] Assigned unit 8 (file 8: 1007.jpeg, [0, 8694))
+[worker 3] Assigned unit 9 (file 9: 1008.jpeg, [0, 24181))
+[worker 2] Assigned unit 10 (file 10: 101.jpeg, [0, 4197))
+[worker 1] Assigned unit 11 (file 11: 1011.jpeg, [0, 7464))
+[worker 0] Assigned unit 12 (file 12: 1012.jpeg, [0, 18460))
+[worker 3] Assigned unit 13 (file 13: 1013.jpeg, [0, 12740))
+[worker 2] Assigned unit 14 (file 14: 1014.jpeg, [0, 13168))
+[worker 1] Assigned unit 15 (file 15: 1015.jpeg, [0, 9931))
+[worker 0] Assigned unit 16 (file 16: 1016.jpeg, [0, 14216))
+[worker 3] Assigned unit 17 (file 17: 1017.jpeg, [0, 9914))
+[worker 2] Assigned unit 18 (file 18: 1018.jpeg, [0, 13074))
+[worker 1] Assigned unit 19 (file 19: 1019.jpeg, [0, 7261))
+[worker 0] Assigned unit 20 (file 20: 1021.jpeg, [0, 5622))
+[worker 3] Assigned unit 21 (file 21: 1022.jpeg, [0, 8091))
+[worker 2] Assigned unit 22 (file 22: 1024.jpeg, [0, 14939))
+[worker 1] Assigned unit 23 (file 23: 1025.jpeg, [0, 18106))
+[worker 0] Assigned unit 24 (file 24: 1027.jpeg, [0, 12220))
+[worker 2] Assigned unit 25 (file 25: 1028.jpeg, [0, 10497))
+[worker 3] Assigned unit 26 (file 26: 1029.jpeg, [0, 11654))
+[worker 1] Assigned unit 27 (file 27: 103.jpeg, [0, 4271))
+[worker 0] Assigned unit 28 (file 28: 1030.jpeg, [0, 10588))
+[worker 3] Assigned unit 29 (file 29: 1032.jpeg, [0, 10106))
+[worker 2] Assigned unit 30 (file 30: 1033.jpeg, [0, 12279))
+[worker 1] Assigned unit 31 (file 31: 1034.jpeg, [0, 10451))
+[worker 0] Assigned unit 32 (file 32: 1037.jpeg, [0, 13010))
+[worker 3] Assigned unit 33 (file 33: 1038.jpeg, [0, 22857))
+[worker 2] Assigned unit 34 (file 34: 1039.jpeg, [0, 9371))
+[worker 1] Assigned unit 35 (file 35: 104.jpeg, [0, 7564))
+[worker 0] Assigned unit 36 (file 36: 1040.jpeg, [0, 10297))
+[worker 3] Assigned unit 37 (file 37: 1041.jpeg, [0, 11690))
+[worker 1] Assigned unit 38 (file 38: 1042.jpeg, [0, 10925))
+[worker 2] Assigned unit 39 (file 39: 1043.jpeg, [0, 15587))
+[worker 0] Assigned unit 40 (file 40: 1044.jpeg, [0, 14947))
+[worker 3] Assigned unit 41 (file 41: 1045.jpeg, [0, 13351))
+[worker 1] Assigned unit 42 (file 42: 1046.jpeg, [0, 16504))
+[worker 2] Assigned unit 43 (file 43: 1047.jpeg, [0, 12078))
+[FAULT] [2026-10-26 03:28:02] Injected disconnect on socket fd=5: worker=1 unit=42 offset=0
+[worker 0] Assigned unit 42 (file 42: 1046.jpeg, [0, 16504))
+[worker 1] connected
+[worker 1] Assigned unit 44 (file 44: 1048.jpeg, [0, 14351))
+[worker 3] Assigned unit 45 (file 45: 1049.jpeg, [0, 12664))
+[worker 2] Assigned unit 46 (file 46: 1050.jpeg, [0, 9049))
+[worker 1] Assigned unit 47 (file 47: 1051.jpeg, [0, 13156))
+[worker 0] Assigned unit 48 (file 48: 1052.jpeg, [0, 20876))
+[worker 3] Assigned unit 49 (file 49: 1053.jpeg, [0, 8817))
+[worker 3] disconnected
+[worker 0] disconnected
+[worker 2] disconnected
+[worker 1] disconnected

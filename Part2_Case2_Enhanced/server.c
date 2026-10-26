@@ -154,6 +154,11 @@ static void *worker_main(void *argument)
 
         active_unit = (int)unit.unit_id;
 
+        fprintf(stderr, "[worker %d] Assigned unit %u (file %u: %s, [%llu, %llu))\n",
+                worker_id, unit.unit_id, unit.file_index, unit.filename,
+                (unsigned long long)unit.start_offset,
+                (unsigned long long)unit.end_offset);
+
         {
             EnhancedWorkAssignment assignment;
 
@@ -169,7 +174,8 @@ static void *worker_main(void *argument)
             if (send_frame(fd, MSG_WORK_ASSIGN, 0,
                            &assignment, sizeof(assignment)) != 0) {
                 (void)mark_work_unit_failed(g_plan, unit.unit_id);
-                break;
+                close(fd);
+                return NULL;
             }
         }
 
@@ -257,7 +263,8 @@ static void *worker_main(void *argument)
                            sizeof(data_header) + amount) != 0) {
                 free(payload);
                 (void)mark_work_unit_failed(g_plan, unit.unit_id);
-                break;
+                close(fd);
+                return NULL;
             }
 
             free(payload);
@@ -317,6 +324,10 @@ static void *worker_main(void *argument)
             if (mark_work_unit_complete(g_plan, unit.unit_id) != 0) {
                 close(fd);
                 return NULL;
+            }
+
+            if (session_is_complete()) {
+                session_mark_complete(g_session_id);
             }
 
             active_unit = -1;
@@ -498,9 +509,16 @@ int main(int argc, char **argv)
         pthread_mutex_lock(&g_state_mutex);
 
         FrameHeader peek_hdr;
-        ssize_t peek_n = recv(fd, &peek_hdr, sizeof(peek_hdr), MSG_PEEK);
+        ssize_t peek_n = recv(fd, &peek_hdr, sizeof(peek_hdr), MSG_PEEK | MSG_WAITALL);
         if (peek_n != (ssize_t)sizeof(peek_hdr)) {
             pthread_mutex_unlock(&g_state_mutex);
+            close(fd);
+            continue;
+        }
+
+        if (ntohs(peek_hdr.magic) != PROTOCOL_MAGIC || peek_hdr.version != PROTOCOL_VERSION) {
+            pthread_mutex_unlock(&g_state_mutex);
+            (void)send_error_frame(fd, "Invalid protocol header");
             close(fd);
             continue;
         }

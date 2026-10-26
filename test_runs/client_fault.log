@@ -1,0 +1,70 @@
+Session accepted: ID=7700771956266050502, files=50, connections=4
+[worker 0] Manifest received: 50 files, 50 units
+[worker 0] Assigned unit 0
+[worker 2] Manifest received: 50 files, 50 units
+[worker 2] Assigned unit 2
+[worker 1] Manifest received: 50 files, 50 units
+[worker 3] Manifest received: 50 files, 50 units
+[worker 3] Assigned unit 3
+[worker 1] Assigned unit 1
+[worker 0] Assigned unit 4
+[worker 3] Assigned unit 5
+[worker 2] Assigned unit 7
+[worker 1] Assigned unit 6
+[worker 0] Assigned unit 8
+[worker 3] Assigned unit 9
+[worker 2] Assigned unit 10
+[worker 1] Assigned unit 11
+[worker 0] Assigned unit 12
+[worker 3] Assigned unit 13
+[worker 2] Assigned unit 14
+[worker 1] Assigned unit 15
+[worker 0] Assigned unit 16
+[worker 3] Assigned unit 17
+[worker 2] Assigned unit 18
+[worker 1] Assigned unit 19
+[worker 0] Assigned unit 20
+[worker 3] Assigned unit 21
+[worker 2] Assigned unit 22
+[worker 1] Assigned unit 23
+[worker 0] Assigned unit 24
+[worker 3] Assigned unit 26
+[worker 2] Assigned unit 25
+[worker 1] Assigned unit 27
+[worker 0] Assigned unit 28
+[worker 2] Assigned unit 30
+[worker 3] Assigned unit 29
+[worker 1] Assigned unit 31
+[worker 0] Assigned unit 32
+[worker 3] Assigned unit 33
+[worker 2] Assigned unit 34
+[worker 1] Assigned unit 35
+[worker 0] Assigned unit 36
+[worker 3] Assigned unit 37
+[worker 1] Assigned unit 38
+[worker 2] Assigned unit 39
+[worker 0] Assigned unit 40
+[worker 1] Assigned unit 42
+[worker 1] Connection interrupted; reconnecting (attempt 1/50)
+[worker 3] Assigned unit 41
+[worker 2] Assigned unit 43
+[worker 1] Manifest received: 50 files, 50 units
+[worker 1] Assigned unit 44
+[worker 0] Assigned unit 42
+[worker 3] Assigned unit 45
+[worker 2] Assigned unit 46
+[worker 1] Assigned unit 47
+[worker 0] Assigned unit 48
+[worker 3] Assigned unit 49
+[worker 3] Transfer complete
+[worker 0] Transfer complete
+[worker 2] Transfer complete
+[worker 1] Transfer complete
+Integrity verified: Manifest CRC32 0x580F5993 matches server.
+Transfer Summary:
+  Topic:                gatto_sample
+  Connections:          4
+  Files transferred:    50
+  Total bytes:          587761
+  Status:               SUCCESS
+Client finished.

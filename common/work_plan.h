@@ -5,7 +5,8 @@
 #include <pthread.h>
 #include "topic_manager.h"
 
-#define MAX_WORK_UNITS 1024
+#define MAX_WORK_UNITS 100000U
+#define DEFAULT_WORK_UNITS 1024U
 #define WORK_SLICE_SIZE (256ULL * 1024ULL)
 
 typedef enum {
@@ -30,8 +31,9 @@ typedef struct {
 typedef struct {
     uint64_t session_id;
     uint32_t total_units;
+    uint32_t capacity_units;
     uint32_t completed_units;
-    WorkUnit units[MAX_WORK_UNITS];
+    WorkUnit *units;
     pthread_mutex_t plan_mutex;
     int mutex_initialized;
 } WorkPlan;
