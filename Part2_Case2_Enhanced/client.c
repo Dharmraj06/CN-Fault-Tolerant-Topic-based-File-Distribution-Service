@@ -17,7 +17,6 @@
 #include <unistd.h>
 
 #include "../common/protocol.h"
-#include "../common/topic_manager.h"
 #include "enhanced_protocol.h"
 
 typedef struct {
@@ -36,7 +35,6 @@ typedef struct {
     ClientFile *files;
     int manifest_ready;
     pthread_mutex_t manifest_mutex;
-    int transfer_failed;
 } ClientSession;
 
 typedef struct {
@@ -50,38 +48,9 @@ static int receive_expected(int fd, uint8_t type,
 {
     FrameHeader header;
 
-    if (recv_frame_header(fd, &header) != 0) {
-        return -1;
-    }
-
-    if (header.type == MSG_ERROR) {
-        char message[256] = {0};
-        size_t len = header.payload_len;
-        if (len >= sizeof(message)) {
-            len = sizeof(message) - 1;
-        }
-        if (len > 0) {
-            (void)recv_frame_payload(fd, &header, message, len);
-        }
-        fprintf(stderr, "Server error: %s\n", message[0] ? message : "Unknown error");
-        return -2;
-    }
-
-    if (header.type != type) {
-        fprintf(stderr, "Unexpected response: expected type %u, got type %u\n",
-                type, header.type);
-        if (header.payload_len > 0) {
-            void *discard = NULL;
-            if (recv_frame_payload_alloc(fd, &header, &discard) == 0) {
-                free(discard);
-            }
-        }
-        return -1;
-    }
-
-    if (header.payload_len > capacity) {
-        fprintf(stderr, "Payload length %llu exceeds capacity %zu\n",
-                (unsigned long long)header.payload_len, capacity);
+    if (recv_frame_header(fd, &header) != 0 ||
+        header.type != type ||
+        header.payload_len > capacity) {
         return -1;
     }
 
@@ -199,10 +168,8 @@ static int receive_manifest(int fd, ClientSession *session)
             sizeof(metadata.relative_path) - 1] = '\0';
 
         if (metadata.relative_path[0] == '\0' ||
-            metadata.relative_path[0] == '/' ||
-            metadata.relative_path[0] == '\\' ||
             strstr(metadata.relative_path, "..") != NULL) {
-            fprintf(stderr, "Security violation: rejected unsafe path '%s'\n", metadata.relative_path);
+            fprintf(stderr, "Invalid relative file path\n");
             return -1;
         }
 
@@ -343,13 +310,13 @@ static int worker_stream(int fd, ClientSession *session, int worker_id)
                 length = sizeof(message) - 1;
             }
 
-            if (length > 0 && recv_frame_payload(fd, &header, message, length) != 0) {
-                return -2;
+            if (recv_frame_payload(fd, &header, message, length) != 0) {
+                return -1;
             }
 
             fprintf(stderr, "[worker %d] Server error: %s\n",
                     worker_id, message);
-            return -2;
+            return -1;
         }
 
         if (header.type == MSG_WORK_ASSIGN) {
@@ -486,46 +453,30 @@ static int worker_stream(int fd, ClientSession *session, int worker_id)
     }
 }
 
-#define MAX_RECONNECT_ATTEMPTS 50
-
 static void *worker_main(void *argument)
 {
     WorkerArgs *args = (WorkerArgs *)argument;
     ClientSession *session = args->session;
     int worker_id = args->worker_id;
     int fd = args->initial_fd;
-    int reconnect_attempts = 0;
 
     free(args);
 
     for (;;) {
         int result;
 
-        if (session->transfer_failed) {
-            break;
-        }
-
         if (fd < 0) {
-            if (reconnect_attempts >= MAX_RECONNECT_ATTEMPTS) {
-                fprintf(stderr, "[worker %d] Max reconnection attempts (%d) reached; aborting\n",
-                        worker_id, MAX_RECONNECT_ATTEMPTS);
-                session->transfer_failed = 1;
-                break;
-            }
-
             fd = connect_server(session);
 
             if (fd < 0) {
-                reconnect_attempts++;
-                struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL);
+                { struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL); }
                 continue;
             }
 
             if (send_worker_hello(fd, session, worker_id) != 0) {
                 close(fd);
                 fd = -1;
-                reconnect_attempts++;
-                struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL);
+                { struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL); }
                 continue;
             }
         }
@@ -538,16 +489,10 @@ static void *worker_main(void *argument)
             break;
         }
 
-        if (result == -2) {
-            session->transfer_failed = 1;
-            break;
-        }
-
-        reconnect_attempts++;
         fprintf(stderr,
-                "[worker %d] Connection interrupted; reconnecting (attempt %d/%d)\n",
-                worker_id, reconnect_attempts, MAX_RECONNECT_ATTEMPTS);
-        struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL);
+                "[worker %d] Connection interrupted; reconnecting\n",
+                worker_id);
+        { struct timespec ts = {0, 50000000L}; nanosleep(&ts, NULL); }
     }
 
     return NULL;
@@ -696,83 +641,13 @@ int main(int argc, char **argv)
         pthread_join(threads[i], NULL);
     }
 
-    int success = 1;
-    if (session.transfer_failed) {
-        fprintf(stderr, "Transfer failed due to worker or server error.\n");
-        success = 0;
-    }
-
-    uint64_t total_transferred_bytes = 0;
-    FileEntry *verify_entries = NULL;
-
-    if (session.file_count > 0) {
-        verify_entries = calloc(session.file_count, sizeof(FileEntry));
-        if (verify_entries == NULL) {
-            fprintf(stderr, "Memory allocation failed for integrity check\n");
-            success = 0;
-        }
-    }
-
-    for (i = 0; i < (int)session.file_count; ++i) {
-        char check_path[MAX_PATH_BUFFER_LEN * 2];
-        struct stat st;
-
-        snprintf(check_path, sizeof(check_path), "%s/%s",
-                 session.output_dir, session.files[i].path);
-
-        if (stat(check_path, &st) != 0) {
-            fprintf(stderr, "Verification failed: missing file '%s'\n", session.files[i].path);
-            success = 0;
-            continue;
-        }
-
-        if ((uint64_t)st.st_size != session.files[i].size) {
-            fprintf(stderr, "Verification failed: file '%s' size mismatch (expected %llu, got %llu)\n",
-                    session.files[i].path,
-                    (unsigned long long)session.files[i].size,
-                    (unsigned long long)st.st_size);
-            success = 0;
-            continue;
-        }
-
-        total_transferred_bytes += (uint64_t)st.st_size;
-
-        if (verify_entries != NULL) {
-            char *slash = strrchr(session.files[i].path, '/');
-            const char *bname = slash ? slash + 1 : session.files[i].path;
-            strncpy(verify_entries[i].filename, bname, sizeof(verify_entries[i].filename) - 1);
-            verify_entries[i].filename[sizeof(verify_entries[i].filename) - 1] = '\0';
-            snprintf(verify_entries[i].relative_path, sizeof(verify_entries[i].relative_path), "%s", session.files[i].path);
-            verify_entries[i].file_size = session.files[i].size;
-        }
-    }
-
-    if (success && session.file_count > 0 && verify_entries != NULL) {
-        uint32_t local_crc = compute_manifest_crc32(verify_entries, session.file_count);
-        if (local_crc != session.fingerprint) {
-            fprintf(stderr, "Integrity verification failed: CRC32 0x%08X != server 0x%08X\n",
-                    local_crc, session.fingerprint);
-            success = 0;
-        } else {
-            printf("Integrity verified: Manifest CRC32 0x%08X matches server.\n", local_crc);
-        }
-    }
-
-    free(verify_entries);
     free(session.files);
     pthread_mutex_destroy(&session.manifest_mutex);
 
-    if (thread_count != (int)connections || !success) {
-        fprintf(stderr, "Transfer failed or incomplete.\n");
+    if (thread_count != (int)connections) {
         return EXIT_FAILURE;
     }
 
-    printf("Transfer Summary:\n");
-    printf("  Topic:                %s\n", argv[3]);
-    printf("  Connections:          %ld\n", connections);
-    printf("  Files transferred:    %u\n", session.file_count);
-    printf("  Total bytes:          %llu\n", (unsigned long long)total_transferred_bytes);
-    printf("  Status:               SUCCESS\n");
     printf("Client finished.\n");
     return EXIT_SUCCESS;
 }

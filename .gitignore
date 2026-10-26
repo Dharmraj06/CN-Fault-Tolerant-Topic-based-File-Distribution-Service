@@ -16,6 +16,9 @@ output*/
 temp/
 /tmp/
 raw-img/
+test_runs/
+demo_output/
+
 
 # OS and Editor artifacts
 .DS_Store

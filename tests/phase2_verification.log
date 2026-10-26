@@ -1,59 +1,60 @@
 ================================================================================
 IT305 PHASE 2 MASTER INTEGRATION & ACCEPTANCE VERIFICATION
 Target Binaries: Part1/server & Part1/client
-Timestamp: 2026-10-13 17:23:30 UTC
-Environment: Linux 6.6.87.2-microsoft-standard-WSL2 (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0)
+Timestamp: 2026-10-26 03:35:22 UTC
+Environment: Linux 5.15.167.4-microsoft-standard-WSL2 (gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0)
 ================================================================================
 
 --------------------------------------------------------------------------------
 GATE 0: Build Cleanliness Audit (Part1/Makefile)
 --------------------------------------------------------------------------------
 Command: make -C Part1 clean && make -C Part1
-make: Entering directory '/mnt/f/CN_P/Part1'
-rm -f server client server.o client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o
-make: Leaving directory '/mnt/f/CN_P/Part1'
-make: Entering directory '/mnt/f/CN_P/Part1'
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+rm -f server client server.o client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
+make: Entering directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
 gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c server.c -o server.o
 gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/protocol.c -o ../common/protocol.o
 gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/topic_manager.c -o ../common/topic_manager.o
-gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o -pthread
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/logging.c -o ../common/logging.o
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o server server.o ../common/protocol.o ../common/topic_manager.o ../common/logging.o -pthread
 gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c client.c -o client.o
 gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -c ../common/file_transfer.c -o ../common/file_transfer.o
-gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o -pthread
-make: Leaving directory '/mnt/f/CN_P/Part1'
+gcc -std=c99 -Wall -Wextra -Werror -pedantic -pthread -I../common -o client client.o ../common/protocol.o ../common/topic_manager.o ../common/file_transfer.o ../common/logging.o -pthread
+make: Leaving directory '/mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/Part1'
 [PASS] Part1/server and Part1/client built cleanly with zero compiler warnings
 
->>> Setting up temporary test fixtures in /tmp/test_phase2_fixtures_448...
+>>> Setting up temporary test fixtures in /tmp/test_phase2_fixtures_19500...
 [INFO] Fixtures prepared successfully
 
 >>> Starting baseline Part1/server on port 19990 (Multi-Threaded mode)...
 --- SCENARIO 1: Multiple Small Files ---
 [CLIENT] Topic 'topic_small' accepted: 3 files, 580 total bytes (fingerprint 0x768C5B1F)
-[CLIENT] Transfer complete: 3 files (580 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_sc1/topic_small'
+[CLIENT] Transfer complete: 3 files (580 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_sc1/topic_small'
   [PASS] Scenario 1: Multiple small files transferred bit-exact (exit code: 0)
 --- SCENARIO 2: Files Larger Than 64 KiB ---
 [CLIENT] Topic 'topic_large' accepted: 2 files, 512000 total bytes (fingerprint 0x0342DF97)
-[CLIENT] Transfer complete: 2 files (512000 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_sc2/topic_large'
+[CLIENT] Transfer complete: 2 files (512000 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_sc2/topic_large'
   [PASS] Scenario 2: Large files transferred across multiple chunks bit-exact (exit code: 0)
 --- SCENARIO 3: Exact Chunk Boundary (64 KiB, 128 KiB) ---
 [CLIENT] Topic 'topic_boundary' accepted: 2 files, 196608 total bytes (fingerprint 0x18DB4BFD)
-[CLIENT] Transfer complete: 2 files (196608 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_sc3/topic_boundary'
+[CLIENT] Transfer complete: 2 files (196608 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_sc3/topic_boundary'
   [PASS] Scenario 3: Exact chunk boundary files transferred bit-exact (exit code: 0)
 --- SCENARIO 4: Final Partial Chunks ---
 [CLIENT] Topic 'topic_partial' accepted: 2 files, 225280 total bytes (fingerprint 0x59EADC08)
-[CLIENT] Transfer complete: 2 files (225280 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_sc4/topic_partial'
+[CLIENT] Transfer complete: 2 files (225280 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_sc4/topic_partial'
   [PASS] Scenario 4: Files with final partial chunks reassembled bit-exact (exit code: 0)
 --- SCENARIO 5: Empty Files (0 Bytes) ---
 [CLIENT] Topic 'topic_empty' accepted: 3 files, 25 total bytes (fingerprint 0x4B3F2916)
-[CLIENT] Transfer complete: 3 files (25 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_sc5/topic_empty'
+[CLIENT] Transfer complete: 3 files (25 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_sc5/topic_empty'
   [PASS] Scenario 5: Zero-byte files created and verified bit-exact (exit code: 0)
 --- SCENARIO 6: Missing Topics (404 Rejection) ---
-[SERVER] Rejecting topic 'nonexistent_topic_404' from 127.0.0.1:43330: Topic directory not found (code 404)
+[SERVER] Rejecting topic 'nonexistent_topic_404' from 127.0.0.1:49932: Topic directory not found (code 404)
 [CLIENT] Server rejected topic 'nonexistent_topic_404' (Error 404: Topic directory not found)
   [PASS] Scenario 6: Nonexistent topic correctly rejected with error code (exit code: 1)
 --- SCENARIO 7: Filenames Containing Spaces ---
 [CLIENT] Topic 'topic_spaces' accepted: 2 files, 81962 total bytes (fingerprint 0x86288D73)
-[CLIENT] Transfer complete: 2 files (81962 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_sc7/topic_spaces'
+[CLIENT] Transfer complete: 2 files (81962 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_sc7/topic_spaces'
   [PASS] Scenario 7: Files with spaces in filename transferred bit-exact (exit code: 0)
 --- SCENARIO 8: Traversal Attempts & Invalid Topics ---
 [CLIENT] Error: Invalid topic name '../../etc/passwd' (forbidden characters or traversal attempt)
@@ -66,87 +67,87 @@ make: Leaving directory '/mnt/f/CN_P/Part1'
 [CLIENT] Topic 'topic_disconnect' accepted: 1 files, 104857600 total bytes (fingerprint 0xE45F6BBC)
   [PASS] Scenario 9: Client detected server disconnect and exited cleanly with error (exit code: 1)
 --- SCENARIO 10: Destination Write Failure ---
-[CLIENT] Error: Unable to open '/tmp/test_phase2_downloads_448/out_sc10/topic_small/small_1.txt' for writing: Permission denied
+[CLIENT] Error: Unable to open '/tmp/test_phase2_downloads_19500/out_sc10/topic_small/small_1.txt' for writing: Permission denied
 [CLIENT] Topic 'topic_small' accepted: 3 files, 580 total bytes (fingerprint 0x768C5B1F)
   [PASS] Scenario 10: Destination write failure gracefully detected and handled (exit code: 1)
 --- SCENARIO 11 & 12: Eight Simultaneous Clients & Isolation ---
 ===============================================================
 IT305 Baseline Topic File Server (Part 1)
 Listening Port    : 19990
-Topics Root Dir   : /tmp/test_phase2_fixtures_448
+Topics Root Dir   : /tmp/test_phase2_fixtures_19500
 Operational Mode  : Multi-Threaded (MT)
 ===============================================================
 [SERVER] Ready and listening for incoming client requests...
-[SERVER] Connection accepted from 127.0.0.1:43292 (fd=4)
-[SERVER] Client 127.0.0.1:43292 requested topic: 'topic_small'
-[SERVER] Topic 'topic_small' resolved for 127.0.0.1:43292 (3 files, 580 total bytes, fingerprint 0x768C5B1F)
-[SERVER] Successfully completed topic 'topic_small' transfer to 127.0.0.1:43292
-[SERVER] Connection accepted from 127.0.0.1:43296 (fd=5)
-[SERVER] Client 127.0.0.1:43296 requested topic: 'topic_large'
-[SERVER] Topic 'topic_large' resolved for 127.0.0.1:43296 (2 files, 512000 total bytes, fingerprint 0x0342DF97)
-[SERVER] Successfully completed topic 'topic_large' transfer to 127.0.0.1:43296
-[SERVER] Connection accepted from 127.0.0.1:43312 (fd=4)
-[SERVER] Client 127.0.0.1:43312 requested topic: 'topic_boundary'
-[SERVER] Topic 'topic_boundary' resolved for 127.0.0.1:43312 (2 files, 196608 total bytes, fingerprint 0x18DB4BFD)
-[SERVER] Successfully completed topic 'topic_boundary' transfer to 127.0.0.1:43312
-[SERVER] Connection accepted from 127.0.0.1:43316 (fd=5)
-[SERVER] Client 127.0.0.1:43316 requested topic: 'topic_partial'
-[SERVER] Topic 'topic_partial' resolved for 127.0.0.1:43316 (2 files, 225280 total bytes, fingerprint 0x59EADC08)
-[SERVER] Successfully completed topic 'topic_partial' transfer to 127.0.0.1:43316
-[SERVER] Connection accepted from 127.0.0.1:43326 (fd=4)
-[SERVER] Client 127.0.0.1:43326 requested topic: 'topic_empty'
-[SERVER] Topic 'topic_empty' resolved for 127.0.0.1:43326 (3 files, 25 total bytes, fingerprint 0x4B3F2916)
-[SERVER] Successfully completed topic 'topic_empty' transfer to 127.0.0.1:43326
-[SERVER] Connection accepted from 127.0.0.1:43330 (fd=5)
-[SERVER] Client 127.0.0.1:43330 requested topic: 'nonexistent_topic_404'
-[SERVER] Connection accepted from 127.0.0.1:43340 (fd=4)
-[SERVER] Client 127.0.0.1:43340 requested topic: 'topic_spaces'
-[SERVER] Topic 'topic_spaces' resolved for 127.0.0.1:43340 (2 files, 81962 total bytes, fingerprint 0x86288D73)
-[SERVER] Successfully completed topic 'topic_spaces' transfer to 127.0.0.1:43340
-[SERVER] Connection accepted from 127.0.0.1:39886 (fd=5)
-[SERVER] Client 127.0.0.1:39886 requested topic: 'topic_small'
-[SERVER] Topic 'topic_small' resolved for 127.0.0.1:39886 (3 files, 580 total bytes, fingerprint 0x768C5B1F)
-[SERVER] Successfully completed topic 'topic_small' transfer to 127.0.0.1:39886
-[SERVER] Connection accepted from 127.0.0.1:39888 (fd=4)
-[SERVER] Client 127.0.0.1:39888 requested topic: 'alpha_topic'
-[SERVER] Topic 'alpha_topic' resolved for 127.0.0.1:39888 (2 files, 97307 total bytes, fingerprint 0x8CB8159A)
-[SERVER] Connection accepted from 127.0.0.1:39902 (fd=5)
-[SERVER] Client 127.0.0.1:39902 requested topic: 'beta_topic'
-[SERVER] Topic 'beta_topic' resolved for 127.0.0.1:39902 (2 files, 112666 total bytes, fingerprint 0xA03D34DF)
-[SERVER] Successfully completed topic 'alpha_topic' transfer to 127.0.0.1:39888
-[SERVER] Successfully completed topic 'beta_topic' transfer to 127.0.0.1:39902
-[SERVER] Connection accepted from 127.0.0.1:39908 (fd=6)
-[SERVER] Client 127.0.0.1:39908 requested topic: 'alpha_topic'
-[SERVER] Topic 'alpha_topic' resolved for 127.0.0.1:39908 (2 files, 97307 total bytes, fingerprint 0x8CB8159A)
-[SERVER] Successfully completed topic 'alpha_topic' transfer to 127.0.0.1:39908
-[SERVER] Connection accepted from 127.0.0.1:39916 (fd=4)
-[SERVER] Client 127.0.0.1:39916 requested topic: 'beta_topic'
-[SERVER] Topic 'beta_topic' resolved for 127.0.0.1:39916 (2 files, 112666 total bytes, fingerprint 0xA03D34DF)
-[SERVER] Successfully completed topic 'beta_topic' transfer to 127.0.0.1:39916
-[SERVER] Connection accepted from 127.0.0.1:39922 (fd=5)
-[SERVER] Client 127.0.0.1:39922 requested topic: 'alpha_topic'
-[SERVER] Topic 'alpha_topic' resolved for 127.0.0.1:39922 (2 files, [CLIENT] Topic 'beta_topic' accepted: 2 files, 112666 total bytes (fingerprint 0xA03D34DF)
-[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_2/beta_topic'
-[CLIENT] Topic 'alpha_topic' accepted: 2 files, 97307 total bytes (fingerprint 0x8CB8159A)
-[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_1/alpha_topic'
+[SERVER] Connection accepted from 127.0.0.1:49908 (fd=4)
+[SERVER] Client 127.0.0.1:49908 requested topic: 'topic_small'
+[SERVER] Topic 'topic_small' resolved for 127.0.0.1:49908 (3 files, 580 total bytes, fingerprint 0x768C5B1F)
+[SERVER] Successfully completed topic 'topic_small' transfer to 127.0.0.1:49908
+[SERVER] Connection accepted from 127.0.0.1:49910 (fd=5)
+[SERVER] Client 127.0.0.1:49910 requested topic: 'topic_large'
+[SERVER] Topic 'topic_large' resolved for 127.0.0.1:49910 (2 files, 512000 total bytes, fingerprint 0x0342DF97)
+[SERVER] Successfully completed topic 'topic_large' transfer to 127.0.0.1:49910
+[SERVER] Connection accepted from 127.0.0.1:49912 (fd=4)
+[SERVER] Client 127.0.0.1:49912 requested topic: 'topic_boundary'
+[SERVER] Topic 'topic_boundary' resolved for 127.0.0.1:49912 (2 files, 196608 total bytes, fingerprint 0x18DB4BFD)
+[SERVER] Successfully completed topic 'topic_boundary' transfer to 127.0.0.1:49912
+[SERVER] Connection accepted from 127.0.0.1:49922 (fd=5)
+[SERVER] Client 127.0.0.1:49922 requested topic: 'topic_partial'
+[SERVER] Topic 'topic_partial' resolved for 127.0.0.1:49922 (2 files, 225280 total bytes, fingerprint 0x59EADC08)
+[SERVER] Successfully completed topic 'topic_partial' transfer to 127.0.0.1:49922
+[SERVER] Connection accepted from 127.0.0.1:49928 (fd=4)
+[SERVER] Client 127.0.0.1:49928 requested topic: 'topic_empty'
+[SERVER] Topic 'topic_empty' resolved for 127.0.0.1:49928 (3 files, 25 total bytes, fingerprint 0x4B3F2916)
+[SERVER] Successfully completed topic 'topic_empty' transfer to 127.0.0.1:49928
+[SERVER] Connection accepted from 127.0.0.1:49932 (fd=5)
+[SERVER] Client 127.0.0.1:49932 requested topic: 'nonexistent_topic_404'
+[SERVER] Connection accepted from 127.0.0.1:49936 (fd=4)
+[SERVER] Client 127.0.0.1:49936 requested topic: 'topic_spaces'
+[SERVER] Topic 'topic_spaces' resolved for 127.0.0.1:49936 (2 files, 81962 total bytes, fingerprint 0x86288D73)
+[SERVER] Successfully completed topic 'topic_spaces' transfer to 127.0.0.1:49936
+[SERVER] Connection accepted from 127.0.0.1:56172 (fd=5)
+[SERVER] Client 127.0.0.1:56172 requested topic: 'topic_small'
+[SERVER] Topic 'topic_small' resolved for 127.0.0.1:56172 (3 files, 580 total bytes, fingerprint 0x768C5B1F)
+[SERVER] Successfully completed topic 'topic_small' transfer to 127.0.0.1:56172
+[SERVER] Connection accepted from 127.0.0.1:56178 (fd=4)
+[SERVER] Client 127.0.0.1:56178 requested topic: 'alpha_topic'
+[SERVER] Connection accepted from 127.0.0.1:56182 (fd=5)
+[SERVER] Topic 'alpha_topic' resolved for 127.0.0.1:56178 (2 files, 97307 total bytes, fingerprint 0x8CB8159A)
+[SERVER] Client 127.0.0.1:56182 requested topic: 'beta_topic'
+[SERVER] Topic 'beta_topic' resolved for 127.0.0.1:56182 (2 files, 112666 total bytes, fingerprint 0xA03D34DF)
+[SERVER] Successfully completed topic 'alpha_topic' transfer to 127.0.0.1:56178
+[SERVER] Connection accepted from 127.0.0.1:56198 (fd=6)
+[SERVER] Client 127.0.0.1:56198 requested topic: 'alpha_topic'
+[SERVER] Topic 'alpha_topic' resolved for 127.0.0.1:56198 (2 files, 97307 total bytes, fingerprint 0x8CB8159A)
+[SERVER] Successfully completed topic 'beta_topic' transfer to 127.0.0.1:56182
+[SERVER] Successfully completed topic 'alpha_topic' transfer to 127.0.0.1:56198
+[SERVER] Connection accepted from 127.0.0.1:56204 (fd=7)
+[SERVER] Client 127.0.0.1:56204 requested topic: 'beta_topic'
+[SERVER] Topic 'beta_topic' resolved for 127.0.0.1:56204 (2 files, 112666 total bytes, fingerprint 0xA03D34DF)
+[SERVER] Successfully completed topic 'beta_topic' transfer to 127.0.0.1:56204
+[SERVER] Connection accepted from 127.0.0.1:56218 (fd=4)
+[SERVER] Client 127.0.0.1:56218 requested topic: 'alpha_topic'
+[SERVER] Topic 'alpha_topic' resolved for 127.0.0.1:56218 (2 files[CLIENT] Topic 'alpha_topic' accepted: 2 files, 97307 total bytes (fingerprint 0x8CB8159A)
+[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_3/alpha_topic'
 [CLIENT] Topic 'beta_topic' accepted: 2 files, 112666 total bytes (fingerprint 0xA03D34DF)
-[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_4/beta_topic'
+[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_2/beta_topic'
 [CLIENT] Topic 'alpha_topic' accepted: 2 files, 97307 total bytes (fingerprint 0x8CB8159A)
-[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_3/alpha_topic'
+[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_1/alpha_topic'
 [CLIENT] Topic 'alpha_topic' accepted: 2 files, 97307 total bytes (fingerprint 0x8CB8159A)
-[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_5/alpha_topic'
+[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_5/alpha_topic'
 [CLIENT] Topic 'beta_topic' accepted: 2 files, 112666 total bytes (fingerprint 0xA03D34DF)
-[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_6/beta_topic'
-[CLIENT] Topic 'alpha_topic' accepted: 2 files, 97307 total bytes (fingerprint 0x8CB8159A)
-[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_7/alpha_topic'
+[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_4/beta_topic'
 [CLIENT] Topic 'beta_topic' accepted: 2 files, 112666 total bytes (fingerprint 0xA03D34DF)
-[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_448/out_client_8/beta_topic'
+[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_6/beta_topic'
+[CLIENT] Topic 'alpha_topic' accepted: 2 files, 97307 total bytes (fingerprint 0x8CB8159A)
+[CLIENT] Transfer complete: 2 files (97307 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_7/alpha_topic'
+[CLIENT] Topic 'beta_topic' accepted: 2 files, 112666 total bytes (fingerprint 0xA03D34DF)
+[CLIENT] Transfer complete: 2 files (112666 bytes) successfully saved to '/tmp/test_phase2_downloads_19500/out_client_8/beta_topic'
   [PASS] Scenario 11: All 8 simultaneous independent clients completed with exit code 0
   [PASS] Scenario 12: Perfect isolation verified across all 8 clients with zero cross-contamination
 
 ================================================================================
 VERIFICATION SUMMARY: 12 / 12 SCENARIOS PASSED
-Integrity Report Generated: /mnt/f/CN_P/tests/phase2_integrity_report.txt
-Verification Log Generated: /mnt/f/CN_P/tests/phase2_verification.log
+Integrity Report Generated: /mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/tests/phase2_integrity_report.txt
+Verification Log Generated: /mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/tests/phase2_verification.log
 DECISION: PASS (All Phase 2 Acceptance Criteria 100% Satisfied)
 ================================================================================
