@@ -1,0 +1,29 @@
+Enhanced Phase 5 server listening on port 5000
+Topics root: /mnt/c/Users/vaghe/OneDrive/Desktop/DA-IICT/SEM-V/CN/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/CN-Fault-Tolerant-Topic-based-File-Distribution-Service/raw-img
+Failure probability: 0.000
+[server] connection accepted (fd=4)
+[server] header: type=8 payload_len=132
+[server] session request: topic='cane' connections=1
+[server] manifest built: 4863 files
+[server] session 7699786216728765382 accepted (4863 units)
+[worker 0] connected
+[worker 0] disconnected
+[server] connection accepted (fd=5)
+[server] header: type=8 payload_len=132
+[server] session request: topic='cane' connections=4
+[server] manifest built: 4863 files
+[server] session 7699800173380585587 accepted (4863 units)
+[server] connection accepted (fd=4)
+[server] header: type=15 payload_len=12
+[worker 0] connected
+[server] connection accepted (fd=6)
+[server] header: type=15 payload_len=12
+[worker 1] connected
+[server] connection accepted (fd=7)
+[server] header: type=15 payload_len=12
+[worker 3] connected
+[worker 2] connected
+[worker 2] disconnected
+[worker 1] disconnected
+[worker 0] disconnected
+[worker 3] disconnected
